@@ -2,19 +2,15 @@ unit UBoard;
 
 interface
 
-const
-  COLUMNS = 8;
-  ROWS = 8;
-  COUNTERS = 24;
-
 type
   TBoard = class(TObject)
     private
       rows      : integer;
       columns   : integer;
       counters  : integer;
+      board     : array of array of integer;
     public
-      constructor create(columns, rows, counters : integer);
+      constructor create(columns_, rows_, counters_ : integer);
         { initialise variables }
       function getrows(rows: integer): integer;
         { "get rows" returns number of rows }
@@ -29,24 +25,25 @@ implementation
 
 { TBoard }
 
-constructor TBoard.create(columns, rows, counters: integer);
+constructor TBoard.create(columns_, rows_, counters_ : integer);
 begin
-  columns := COLUMNS;
-  rows := ROWS;
-  counters := COUNTERS;
+  columns := columns_;
+  rows := rows_;
+  counters := counters_;
+
 end;
 
-function TBoard.getcolumns(columns: integer): integer;
+function TBoard.getcolumns(): integer;
 begin
   result := columns;
 end;
 
-function TBoard.getcounters(counters: integer): integer;
+function TBoard.getcounters(): integer;
 begin
   result := counters;
 end;
 
-function TBoard.getrows(rows: integer): integer;
+function TBoard.getrows(): integer;
 begin
   result := rows;
 end;
