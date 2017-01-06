@@ -12,12 +12,13 @@ type
     public
       constructor create(columns_, rows_, counters_ : integer);
         { initialise variables }
-      function getrows(rows: integer): integer;
+      function get_rows(var rows): integer;
         { "get rows" returns number of rows }
-      function getcolumns(columns: integer): integer;
+      function get_columns(var columns): integer;
         { "get columns" returns number of columns }
-      function getcounters(counters: integer): integer;
+      function get_counters(var counters): integer;
         { "get counters" returns number of counters }
+      function init_array(var board): boolean;
   end;
 
 
@@ -33,19 +34,24 @@ begin
 
 end;
 
-function TBoard.getcolumns(): integer;
+function TBoard.get_columns(): integer;
 begin
   result := columns;
 end;
 
-function TBoard.getcounters(): integer;
+function TBoard.get_counters(): integer;
 begin
   result := counters;
 end;
 
-function TBoard.getrows(): integer;
+function TBoard.get_rows(): integer;
 begin
   result := rows;
+end;
+
+function TBoard.init_array(var board): boolean;
+begin
+
 end;
 
 end.
