@@ -1,0 +1,32 @@
+object CForm: TCForm
+  Left = 0
+  Top = 0
+  Caption = 'Checkers'
+  ClientHeight = 900
+  ClientWidth = 1000
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GridBoard: TDrawGrid
+    Left = 0
+    Top = 0
+    Width = 850
+    Height = 850
+    Color = clBtnFace
+    ColCount = 8
+    DefaultColWidth = 100
+    DefaultRowHeight = 100
+    FixedCols = 0
+    RowCount = 8
+    FixedRows = 0
+    GridLineWidth = 2
+    ScrollBars = ssNone
+    TabOrder = 0
+  end
+end
