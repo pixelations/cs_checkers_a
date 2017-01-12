@@ -11,7 +11,6 @@ object CForm: TCForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object ListBoxModeSelect: TListBox
@@ -59,6 +58,7 @@ object CForm: TCForm
     Top = 0
     Width = 825
     Height = 825
+    Color = clActiveBorder
     ColCount = 8
     DefaultColWidth = 100
     DefaultRowHeight = 100
@@ -67,5 +67,24 @@ object CForm: TCForm
     FixedRows = 0
     ScrollBars = ssNone
     TabOrder = 5
+    OnDrawCell = GridBoardDrawCell
+    ColWidths = (
+      100
+      100
+      100
+      100
+      100
+      100
+      100
+      100)
+    RowHeights = (
+      100
+      100
+      100
+      100
+      100
+      100
+      100
+      100)
   end
 end

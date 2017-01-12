@@ -14,10 +14,10 @@ type
     BtnSave: TButton;
     BtnLoad: TButton;
     GridBoard: TStringGrid;
-    procedure FormCreate(Sender: TObject);
+    procedure GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
   private
     { Private declarations }
-    procedure populate();
   public
     { Public declarations }
   end;
@@ -31,14 +31,17 @@ implementation
 
 { TCForm }
 
-procedure TCForm.FormCreate(Sender: TObject);
+procedure TCForm.GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
 begin
-populate;
-end;
-
-procedure TCForm.populate;
-begin
-GridBoard.Cells[0,0]:= 'O';
+  GridBoard.Canvas.Pen.Color := clBlack;
+  GridBoard.Canvas.Brush.Color := clGray;
+  GridBoard.Canvas.Ellipse(
+  Rect.Left+10,
+  Rect.Top+10,
+  Rect.Left+90,
+  Rect.Top+90
+  );
 end;
 
 end.
