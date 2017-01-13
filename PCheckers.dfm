@@ -53,12 +53,11 @@ object CForm: TCForm
     Caption = 'Load'
     TabOrder = 4
   end
-  object GridBoard: TStringGrid
-    Left = 1
+  object GridBoard: TDrawGrid
+    Left = 0
     Top = 0
     Width = 825
     Height = 825
-    Color = clActiveBorder
     ColCount = 8
     DefaultColWidth = 100
     DefaultRowHeight = 100
@@ -67,7 +66,6 @@ object CForm: TCForm
     FixedRows = 0
     ScrollBars = ssNone
     TabOrder = 5
-    OnDrawCell = GridBoardDrawCell
     ColWidths = (
       100
       100

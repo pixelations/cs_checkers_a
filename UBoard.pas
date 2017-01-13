@@ -5,20 +5,22 @@ interface
 type
   TBoard = class(TObject)
     private
-      rows      : integer;
-      columns   : integer;
-      counters  : integer;
-      board     : array of array of integer;
+      Columns   : integer;
+      XRows     : integer;
+      YRows     : integer;
+      Counters  : integer;
+    function GetRows: integer;
     public
-      constructor create(columns_, rows_, counters_ : integer);
+      constructor Create(ACol, AXRow, AYRow, ACount : integer);
         { initialise variables }
-      function get_rows(var rows): integer;
+      function GetXRows(): integer;
+      function GetYRows(): integer;
         { "get rows" returns number of rows }
-      function get_columns(var columns): integer;
+      function GetColumns(var Columns): integer;
         { "get columns" returns number of columns }
-      function get_counters(var counters): integer;
+      function GetCounters(var Counters): integer;
         { "get counters" returns number of counters }
-      function init_array(var board): boolean;
+      function Init3DArray(var Board): boolean;
   end;
 
 
@@ -26,32 +28,46 @@ implementation
 
 { TBoard }
 
-constructor TBoard.create(columns_, rows_, counters_ : integer);
+constructor TBoard.Create(ACol, AXRow, AYRow, ACount : integer);
 begin
-  columns := columns_;
-  rows := rows_;
-  counters := counters_;
-
+  Columns := ACol;
+  XRows := AXRow;
+  YRows := AYRow;
+  counters := ACount;
 end;
 
-function TBoard.get_columns(): integer;
+function TBoard.GetColumns(): integer;
 begin
-  result := columns;
+  result := Columns;
 end;
 
-function TBoard.get_counters(): integer;
+function TBoard.GetCounters(): integer;
 begin
-  result := counters;
+  result := Counters;
 end;
 
-function TBoard.get_rows(): integer;
+function TBoard.GetXRows(): integer;
 begin
-  result := rows;
+  result := XRows;
 end;
 
-function TBoard.init_array(var board): boolean;
+function TBoard.GetYRows(): integer;
 begin
+  result := YRows;
+end;
 
+function TBoard.Init3DArray(var Board): boolean;
+var
+  i : integer;
+  j: Integer;
+begin
+  setlength(Board, Columns);
+  for i := 0 to Columns do
+  begin
+    setlength(Board[i], XRows);
+    for j := 0 to XRows do
+      setlength(Board[i,j], YRows);
+  end;
 end;
 
 end.

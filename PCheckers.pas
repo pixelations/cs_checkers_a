@@ -13,9 +13,7 @@ type
     BtnRestart: TButton;
     BtnSave: TButton;
     BtnLoad: TButton;
-    GridBoard: TStringGrid;
-    procedure GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
-      Rect: TRect; State: TGridDrawState);
+    GridBoard: TDrawGrid;
   private
     { Private declarations }
   public
@@ -24,24 +22,13 @@ type
 
 var
   CForm: TCForm;
+  Board: array of array of array of bool;
+
 
 implementation
 
 {$R *.dfm}
 
 { TCForm }
-
-procedure TCForm.GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
-  Rect: TRect; State: TGridDrawState);
-begin
-  GridBoard.Canvas.Pen.Color := clBlack;
-  GridBoard.Canvas.Brush.Color := clGray;
-  GridBoard.Canvas.Ellipse(
-  Rect.Left+10,
-  Rect.Top+10,
-  Rect.Left+90,
-  Rect.Top+90
-  );
-end;
 
 end.
