@@ -8,19 +8,19 @@ type
       Columns   : integer;
       XRows     : integer;
       YRows     : integer;
-      Counters  : integer;
-    function GetRows: integer;
     public
       constructor Create(ACol, AXRow, AYRow, ACount : integer);
         { initialise variables }
       function GetXRows(): integer;
       function GetYRows(): integer;
-        { "get rows" returns number of rows }
+        { returns number of rows }
       function GetColumns(var Columns): integer;
-        { "get columns" returns number of columns }
+        { returns number of columns }
       function GetCounters(var Counters): integer;
-        { "get counters" returns number of counters }
+        { returns number of counters }
       function Init3DArray(var Board): boolean;
+        { initialises a 3D array }
+      function InitDraughts(var Board): boolean;
   end;
 
 
@@ -43,7 +43,7 @@ end;
 
 function TBoard.GetCounters(): integer;
 begin
-  result := Counters;
+  //result := Counters;
 end;
 
 function TBoard.GetXRows(): integer;
@@ -58,16 +58,41 @@ end;
 
 function TBoard.Init3DArray(var Board): boolean;
 var
-  i : integer;
-  j: Integer;
+  i, j, k  : integer;
 begin
-  setlength(Board, Columns);
+  setlength(Board, Columns);        //first dimension is length Columns
   for i := 0 to Columns do
   begin
-    setlength(Board[i], XRows);
+    setlength(Board[i], XRows);     //second dimension is length XRows
     for j := 0 to XRows do
-      setlength(Board[i,j], YRows);
+      setlength(Board[i,j], YRows); //third dimension is lenghth YRows
   end;
+
+  for i := 0 to Columns do
+  begin
+    for j := 0 to XRows do
+    begin
+      for k := 0 to YRows do
+        Board[i, j, k] := false;   //sets all the values in the array to false
+    end;
+  end;
+
+  result := true;
+end;
+
+function TBoard.InitDraughts(var Board): boolean;
+var
+  i: integer;
+begin
+  if (Columns = XRows) and (Columns mod 2 = 0) then
+  begin
+    {begin the starting checker position}
+    for i := 0 to ((Columns div 2) - 1) do
+      begin
+        //start here next
+      end;
+  end;
+
 end;
 
 end.
