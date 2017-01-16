@@ -30,41 +30,51 @@ implementation
 
 constructor TBoard.Create(ACol, AXRow, AYRow, ACount : integer);
 begin
-  Columns := ACol;
-  XRows := AXRow;
-  YRows := AYRow;
-  counters := ACount;
+  Columns := ACol - 1;       //converts from "counting numbers" to 0, 1, 2, 3..
+  XRows := AXRow - 1;
+  YRows := AYRow - 1;
 end;
 
 function TBoard.GetColumns(): integer;
 begin
-  result := Columns;
+  result := Columns + 1;
 end;
 
 function TBoard.GetCounters(): integer;
+var
+  i, j, t: Integer;
 begin
-  //result := Counters;
+  for i := 0 to XRows do
+  begin
+    for j := 0 to Columns do
+    begin
+      if Board[i, j, 0] then
+        inc(t);          //variable t stores the number of checkers on the board
+    end;
+  end;
+
+  result := t;
 end;
 
 function TBoard.GetXRows(): integer;
 begin
-  result := XRows;
+  result := XRows + 1;
 end;
 
 function TBoard.GetYRows(): integer;
 begin
-  result := YRows;
+  result := YRows + 1;
 end;
 
 function TBoard.Init3DArray(var Board): boolean;
 var
   i, j, k  : integer;
 begin
-  setlength(Board, Columns);        //first dimension is length Columns
-  for i := 0 to Columns do
+  setlength(Board, XRows);        //first dimension is length XRows
+  for i := 0 to XRows do
   begin
-    setlength(Board[i], XRows);     //second dimension is length XRows
-    for j := 0 to XRows do
+    setlength(Board[i], Columns);     //second dimension is length Columns
+    for j := 0 to Columns do
       setlength(Board[i,j], YRows); //third dimension is lenghth YRows
   end;
 
@@ -82,15 +92,23 @@ end;
 
 function TBoard.InitDraughts(var Board): boolean;
 var
-  i: integer;
+  i, j, z: integer;
 begin
+  z := true;   // inital state
   if (Columns = XRows) and (Columns mod 2 = 0) then
-  begin
-    {begin the starting checker position}
-    for i := 0 to ((Columns div 2) - 1) do
+  begin                                //if board has equal sides, that are even
+    for i := 0 to ((XRows div 2) - 1) do //ignores the two rows down the center
       begin
-        //start here next
+        for j := 0 to Columns do
+        begin
+          if z then
+            Board[i, j, 0] := true;         //places counter on board (true)
+            //uses symmetry to place opponents checker
+            Board[XRows - i, Columns - j, 0] := true;
+          z := not z;            //creates a checker-board pattern
+        end;
       end;
+
   end;
 
 end;
