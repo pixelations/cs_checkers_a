@@ -3,24 +3,25 @@ unit UBoard;
 interface
 
 type
+  TCubeArray = array of array of array of boolean;
   TBoard = class(TObject)
     private
       Columns   : integer;
       XRows     : integer;
       YRows     : integer;
     public
-      constructor Create(ACol, AXRow, AYRow, ACount : integer);
+      constructor Create(ACol, AXRow, AYRow: integer);
         { initialise variables }
       function GetXRows(): integer;
       function GetYRows(): integer;
         { returns number of rows }
-      function GetColumns(var Columns): integer;
+      function GetColumns(): integer;
         { returns number of columns }
-      function GetCounters(var Counters): integer;
+      function GetCounters(var Board:TCubeArray): integer;
         { returns number of counters }
-      function Init3DArray(var Board): boolean;
+      function Init3DArray(var Board:TCubeArray): boolean;
         { initialises a 3D array }
-      function InitDraughts(var Board): boolean;
+      function InitDraughts(var Board:TCubeArray): boolean;
   end;
 
 
@@ -28,7 +29,7 @@ implementation
 
 { TBoard }
 
-constructor TBoard.Create(ACol, AXRow, AYRow, ACount : integer);
+constructor TBoard.Create(ACol, AXRow, AYRow: integer);
 begin
   Columns := ACol - 1;       //converts from "counting numbers" to 0, 1, 2, 3..
   XRows := AXRow - 1;
@@ -40,7 +41,7 @@ begin
   result := Columns + 1;
 end;
 
-function TBoard.GetCounters(): integer;
+function TBoard.GetCounters(var Board:TCubeArray): integer;
 var
   i, j, t: Integer;
 begin
@@ -48,7 +49,7 @@ begin
   begin
     for j := 0 to Columns do
     begin
-      if Board[i, j, 0] then
+      if Board[i, j, 0] = true then
         inc(t);          //variable t stores the number of checkers on the board
     end;
   end;
@@ -66,7 +67,7 @@ begin
   result := YRows + 1;
 end;
 
-function TBoard.Init3DArray(var Board): boolean;
+function TBoard.Init3DArray(var Board:TCubeArray): boolean;
 var
   i, j, k  : integer;
 begin
@@ -90,9 +91,10 @@ begin
   result := true;
 end;
 
-function TBoard.InitDraughts(var Board): boolean;
+function TBoard.InitDraughts(var Board:TCubeArray): boolean;
 var
-  i, j, z: integer;
+  i, j: integer;
+  z: boolean;
 begin
   z := true;   // inital state
   if (Columns = XRows) and (Columns mod 2 = 0) then
