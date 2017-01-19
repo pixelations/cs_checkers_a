@@ -45,6 +45,7 @@ function TBoard.GetCounters(var Board:TCubeArray): integer;
 var
   i, j, t: Integer;
 begin
+  t := 0;
   for i := 0 to XRows do
   begin
     for j := 0 to Columns do
@@ -106,11 +107,10 @@ begin
           if z and (i mod 2 = 0) then
           begin
             Board[i, j, 0] := true;         //places counter on board (true)
-            Board[XRows - i, Columns - j, 0] := true;
-
+            Board[XRows - i, Columns - j, 0] := true; //places opponent's
           end else if z then
           begin
-            Board[i, Columns - j, 0] := true;
+            Board[i, Columns - j, 0] := true;    //places counters by 'snaking'
             Board[XRows - i, Columns, 0] := true;
           end;
             //uses symmetry to place opponents checker
