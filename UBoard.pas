@@ -71,10 +71,10 @@ function TBoard.Init3DArray(var Board:TCubeArray): boolean;
 var
   i, j, k  : integer;
 begin
-  setlength(Board, XRows);        //first dimension is length XRows
+  setlength(Board, XRows + 1);        //first dimension is length XRows
   for i := 0 to XRows do
   begin
-    setlength(Board[i], Columns);     //second dimension is length Columns
+    setlength(Board[i], Columns + 1);     //second dimension is length Columns
     for j := 0 to Columns do
       setlength(Board[i,j], YRows); //third dimension is lenghth YRows
   end;
@@ -96,17 +96,24 @@ var
   i, j: integer;
   z: boolean;
 begin
-  z := true;   // inital state
-  if (Columns = XRows) and (Columns mod 2 = 0) then
+  z := false;   // inital state
+  if (Columns = XRows) and ((Columns + 1) mod 2 = 0) then
   begin                                //if board has equal sides, that are even
     for i := 0 to ((XRows div 2) - 1) do //ignores the two rows down the center
       begin
         for j := 0 to Columns do
         begin
-          if z then
+          if z and (i mod 2 = 0) then
+          begin
             Board[i, j, 0] := true;         //places counter on board (true)
-            //uses symmetry to place opponents checker
             Board[XRows - i, Columns - j, 0] := true;
+
+          end else if z then
+          begin
+            Board[i, Columns - j, 0] := true;
+            Board[XRows - i, Columns, 0] := true;
+          end;
+            //uses symmetry to place opponents checker
           z := not z;            //creates a checker-board pattern
         end;
       end;
