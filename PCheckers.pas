@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, UBoard;
 
 type
   TCForm = class(TForm)
@@ -14,6 +14,7 @@ type
     BtnSave: TButton;
     BtnLoad: TButton;
     GridBoard: TDrawGrid;
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -22,13 +23,24 @@ type
 
 var
   CForm: TCForm;
-  Board: array of array of array of bool;
+  CBoard: TBoard;
+  Board: TCubeArray;
 
 
 implementation
 
+const
+  ROWS  = 8;
+  COLUMNS = 8;
+  FIELDS = 3;
+
 {$R *.dfm}
 
 { TCForm }
+
+procedure TCForm.FormCreate(Sender: TObject);
+begin
+  CBoard := TBoard.Create(COLUMNS, ROWS, FIELDS);
+end;
 
 end.
