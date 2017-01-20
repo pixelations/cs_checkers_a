@@ -24,7 +24,7 @@ type
 var
   CForm: TCForm;
   CBoard: TBoard;
-  Board: TCubeArray;
+  Board: TObjectArray;
 
 
 implementation
