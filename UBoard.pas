@@ -3,12 +3,26 @@ unit UBoard;
 interface
 
 type
-  TCubeArray = array of array of array of boolean;
+  TCoordinate = array[0..1] of integer;
+  TCounter = class(TObject)
+    private
+      XPos: integer;
+      YPos: integer;
+      Colour: boolean;
+      Promoted: boolean;
+    public
+      constructor Create(XPosition, YPosition: integer; CColour: boolean);
+      function GetPos(): TCoordinate;
+      function GetColour(): boolean;
+      function IsPromoted(): boolean;
+      function ChangePos(NewX, NewY: integer): boolean;
+  end;
+  TObjectArray = array of array of TCounter;
   TBoard = class(TObject)
     private
-      Columns   : integer;
-      XRows     : integer;
-      YRows     : integer;
+      Columns: integer;
+      XRows: integer;
+      YRows: integer;
     public
       constructor Create(ACol, AXRow, AYRow: integer);
         { initialise variables }
@@ -17,13 +31,12 @@ type
         { returns number of rows }
       function GetColumns(): integer;
         { returns number of columns }
-      function GetCounters(var Board:TCubeArray): integer;
+      function GetCounters(var Board: TObjectArray): integer;
         { returns number of counters }
-      function Init3DArray(var Board:TCubeArray): boolean;
+      function InitArray(var Board: TObjectArray): boolean;
         { initialises a 3D array }
-      function InitDraughts(var Board:TCubeArray): boolean;
+      function InitDraughts(var Board: TObjectArray): boolean;
   end;
-
 
 implementation
 
@@ -41,7 +54,7 @@ begin
   result := Columns + 1;
 end;
 
-function TBoard.GetCounters(var Board:TCubeArray): integer;
+function TBoard.GetCounters(var Board:TObjectArray): integer;
 var
   i, j, t: Integer;
 begin
@@ -51,7 +64,7 @@ begin
     for j := 0 to Columns do
     begin
       if Board[i, j, 0] = true then
-        inc(t);          //variable t stores the number of checkers on the board
+        inc(t);          //variable t stores the number of counters on the board
     end;
   end;
 
@@ -68,31 +81,24 @@ begin
   result := YRows + 1;
 end;
 
-function TBoard.Init3DArray(var Board:TCubeArray): boolean;
+function TBoard.InitArray(var Board:TObjectArray): boolean;
 var
-  i, j, k  : integer;
+  i, j: integer;
 begin
   setlength(Board, XRows + 1);        //first dimension is length XRows
   for i := 0 to XRows do
-  begin
     setlength(Board[i], Columns + 1);     //second dimension is length Columns
-    for j := 0 to Columns do
-      setlength(Board[i,j], YRows); //third dimension is lenghth YRows
-  end;
 
   for i := 0 to Columns do
   begin
     for j := 0 to XRows do
-    begin
-      for k := 0 to YRows do
-        Board[i, j, k] := false;   //sets all the values in the array to false
-    end;
+                  ///////FIX
   end;
 
   result := true;
 end;
 
-function TBoard.InitDraughts(var Board:TCubeArray): boolean;
+function TBoard.InitDraughts(var Board:TObjectArray): boolean;
 var
   i, j: integer;
   z: boolean;
@@ -113,13 +119,45 @@ begin
             Board[i, Columns - j, 0] := true;    //places counters by 'snaking'
             Board[XRows - i, Columns, 0] := true;
           end;
-            //uses symmetry to place opponents checker
+            //uses symmetry to place opponents counter
           z := not z;            //creates a checker-board pattern
         end;
       end;
 
   end;
+  result := true;
+end;
 
+{ TCounter }
+
+constructor TCounter.Create(XPosition, YPosition: integer; CColour: boolean);
+begin
+  XPos := XPosition;
+  YPos := YPosition;
+  Colour := CColour;
+end;
+
+function TCounter.ChangePos(NewX, NewY: integer): boolean;
+begin
+  XPos := NewX;
+  YPos := NewY;
+  result := true;
+end;
+
+function TCounter.GetColour(): boolean;
+begin
+  result := Colour;
+end;
+
+function TCounter.GetPos(): TCoordinate;
+begin
+  result[0] := XPos; ///dunno
+  result[1] := YPos;
+end;
+
+function TCounter.IsPromoted(): boolean;
+begin
+  result := Promoted;
 end;
 
 end.
