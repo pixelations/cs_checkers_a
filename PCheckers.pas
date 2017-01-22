@@ -32,7 +32,6 @@ implementation
 const
   ROWS  = 8;
   COLUMNS = 8;
-  FIELDS = 3;
 
 {$R *.dfm}
 
@@ -40,7 +39,9 @@ const
 
 procedure TCForm.FormCreate(Sender: TObject);
 begin
-  CBoard := TBoard.Create(COLUMNS, ROWS, FIELDS);
+  CBoard := TBoard.Create(COLUMNS, ROWS);
+
+
 end;
 
 end.
