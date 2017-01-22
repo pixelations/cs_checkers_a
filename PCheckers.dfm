@@ -1,4 +1,4 @@
-object CForm: TCForm
+object CheckersForm: TCheckersForm
   Left = 0
   Top = 0
   Caption = 'Checkers'

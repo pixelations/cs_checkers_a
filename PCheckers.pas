@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, UBoard;
 
 type
-  TCForm = class(TForm)
+  TCheckersForm = class(TForm)
     ListBoxModeSelect: TListBox;
     BtnStart: TButton;
     BtnRestart: TButton;
@@ -22,7 +22,7 @@ type
   end;
 
 var
-  CForm: TCForm;
+  CheckersForm: TCheckersForm;
   CBoard: TBoard;
   Board: TObjectArray;
 
@@ -37,10 +37,12 @@ const
 
 { TCForm }
 
-procedure TCForm.FormCreate(Sender: TObject);
+procedure TCheckersForm.FormCreate(Sender: TObject);
 begin
   CBoard := TBoard.Create(COLUMNS, ROWS);
-
+  CBoard.InitArray(Board);
+  CBoard.InitDraughts(Board);
+  showmessage(inttostr(CBoard.GetCounters(Board)));
 
 end;
 

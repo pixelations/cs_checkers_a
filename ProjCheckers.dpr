@@ -2,13 +2,13 @@ program ProjCheckers;
 
 uses
   Vcl.Forms,
-  PCheckers in 'PCheckers.pas' {CForm};
+  PCheckers in 'PCheckers.pas' {CheckersForm};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TCForm, CForm);
+  Application.CreateForm(TCheckersForm, CheckersForm);
   Application.Run;
 end.

@@ -30,7 +30,7 @@ type
         { returns number of rows }
       function GetColumns(): integer;
         { returns number of columns }
-      function GetCounters(const Counter: TCounter; Board: TObjectArray): integer;
+      function GetCounters(Board: TObjectArray): integer;
         { returns number of counters }
       function InitArray(var Board: TObjectArray): boolean;
         { initialises an array }
@@ -68,16 +68,17 @@ begin
   result := Columns + 1;
 end;
 
-function TBoard.GetCounters(const Counter: TCounter; Board: TObjectArray): integer;
+function TBoard.GetCounters(Board: TObjectArray): integer;
 var
   i, j, t: Integer;
+  Counter: TCounter;
 begin
   t := 0;
   for i := 0 to Rows do
   begin
     for j := 0 to Columns do
     begin
-      if Board[i, j] = Counter then
+      if Board[i, j] <> nil then
         inc(t);          //variable t stores the number of counters on the board
     end;
   end;
