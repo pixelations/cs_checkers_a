@@ -15,6 +15,8 @@ type
     BtnLoad: TButton;
     GridBoard: TDrawGrid;
     procedure FormCreate(Sender: TObject);
+    procedure GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
   private
     { Private declarations }
   public
@@ -44,6 +46,23 @@ begin
   CBoard.InitDraughts(Board);
   showmessage(inttostr(CBoard.GetCounters(Board)));
 
+end;
+
+procedure TCheckersForm.GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
+var
+  i: Integer;
+  j: Integer;
+begin
+with GridBoard do                       // Set scope to DrawGrid
+  begin
+    if assigned(Board[ARow][ACol]) then   // Select colour based on cell array
+      Canvas.Brush.Color := clBlack
+    else
+      Canvas.Brush.Color := clWhite;
+
+    Canvas.FillRect(Rect);               // Fill cell with selected colour
+  end;
 end;
 
 end.

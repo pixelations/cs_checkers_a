@@ -71,16 +71,15 @@ end;
 function TBoard.GetCounters(Board: TObjectArray): integer;
 var
   i, j, t: Integer;
-  Counter: TCounter;
 begin
   t := 0;
   for i := 0 to Rows do
   begin
     for j := 0 to Columns do
-    begin
-      if Board[i, j] <> nil then
-        inc(t);          //variable t stores the number of counters on the board
-    end;
+      begin
+        if Board[i, j] <> nil then
+          inc(t);          //variable t stores the number of counters on the board
+      end;
   end;
 
   result := t;
@@ -104,31 +103,30 @@ end;
 function TBoard.InitDraughts(var Board:TObjectArray): boolean;
 var
   i, j: integer;
-  z: boolean;
+  z, t: boolean;
 begin
   z := false;   // inital state
-  if (Columns = Rows) and ((Columns + 1) mod 2 = 0) then
+  t := true;
+  if (Columns = Rows) and (Columns mod 2 = 1) then
   begin                                //if board has equal sides, that are even
-    for i := 0 to ((Rows div 2) - 1) do //ignores the two rows down the center
+    for i := 0 to Rows do
       begin
-        for j := 0 to Columns do
-        begin
-          if z and (i mod 2 = 0) then
+        //does not populate middle rows
+        if (i <> Rows div 2) and (i <> (Rows div 2) + 1) then
           begin
-            Board[i, j] := AddCounter(i, j, true);
-            //places counter on board (true)
-            Board[Rows - i, Columns - j] := AddCounter(Rows - i, Columns - j,
-            false); //places opponent's counter by symmetry
-          end else if z then
-          begin
-            Board[i, Columns - j] := AddCounter(i, Columns - j, true);
-            //places counters by 'snaking'
-            Board[Rows - i, Columns] := AddCounter(Rows - i, j, false);
-          end;
-            //uses symmetry to place opponents counter
-          z := not z;            //creates a checker-board pattern
-        end;
+            for j := 0 to Columns do
+              begin
+                if z and (i mod 2 = 0) then
+                  Board[i, j] := AddCounter(i, j, t) // t = false for opponent
+                else if z then
+                  Board[i, Columns - j] := AddCounter(i, j, t);
+                z := not z;
+              end;
+          end else
+            t := false;
       end;
+
+
 
   end;
   result := true;

@@ -67,6 +67,7 @@ object CheckersForm: TCheckersForm
     FixedRows = 0
     ScrollBars = ssNone
     TabOrder = 5
+    OnDrawCell = GridBoardDrawCell
     ColWidths = (
       100
       100
