@@ -53,7 +53,7 @@ begin
   showmessage(inttostr(t[0]));
   showmessage(inttostr(t[1]));
   //
-  Board[4,4].Free; //////////////////////////////////////////////////////////////fix the draw func
+  CBoard.RemoveCounter(4,4,Board);
 end;
 
 procedure TCheckersForm.GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;

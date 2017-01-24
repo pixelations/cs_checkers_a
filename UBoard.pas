@@ -144,6 +144,7 @@ function TBoard.RemoveCounter(ARow, ACol: integer;
   Board: TObjectArray): boolean;
 begin
   Board[ARow, ACol].Free;
+  Board[ARow, ACol] := nil;
 end;
 
 { TCounter }
