@@ -40,12 +40,20 @@ const
 { TCForm }
 
 procedure TCheckersForm.FormCreate(Sender: TObject);
+var t :TCoordinate;
 begin
   CBoard := TBoard.Create(COLUMNS, ROWS);
   CBoard.InitArray(Board);
   CBoard.InitDraughts(Board);
+  //Get Counters Test
   showmessage(inttostr(CBoard.GetCounters(Board)));
-
+  //GetPos Test
+  Board[4,4] := TCounter.Create(4, 4, true);
+  t := (Board[4, 4].GetPos);
+  showmessage(inttostr(t[0]));
+  showmessage(inttostr(t[1]));
+  //
+  Board[4,4].Free; //////////////////////////////////////////////////////////////fix the draw func
 end;
 
 procedure TCheckersForm.GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
@@ -56,7 +64,7 @@ var
 begin
 with GridBoard do                       // Set scope to DrawGrid
   begin
-    if assigned(Board[ARow][ACol]) then   // Select colour based on cell array
+    if assigned(Board[ARow, ACol]) then   // Select colour based on cell array
       Canvas.Brush.Color := clBlack
     else
       Canvas.Brush.Color := clWhite;
