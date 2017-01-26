@@ -34,12 +34,13 @@ type
         { returns number of counters }
       function InitArray(var Board: TObjectArray): boolean;
         { initialises an array }
-      function InitDraughts(var Board: TObjectArray): boolean;
+      function InitDraughts(Board: TObjectArray): boolean;
         { places counters in a checkered pattern, with centre rows empty }
       function AddCounter(ARow, ACol: integer; AColour: boolean): TCounter;
         { places a counter on selected tile of the board }
       function RemoveCounter(ARow, ACol: integer; Board: TObjectArray): boolean;
         { removes a counter on selected tile of the board }
+      function ClearBoard(Board: TObjectArray): boolean;////do thuis
       {
       Other possibilities:
         function
@@ -100,7 +101,7 @@ begin
   result := true;
 end;
 
-function TBoard.InitDraughts(var Board:TObjectArray): boolean;
+function TBoard.InitDraughts(Board:TObjectArray): boolean;
 var
   i, j: integer;
   z, t: boolean;
