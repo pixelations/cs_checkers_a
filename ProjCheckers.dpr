@@ -2,7 +2,8 @@ program ProjCheckers;
 
 uses
   Vcl.Forms,
-  PCheckers in 'PCheckers.pas' {CheckersForm};
+  PCheckers in 'PCheckers.pas' {CheckersForm},
+  USaveLoad in 'USaveLoad.pas';
 
 {$R *.res}
 

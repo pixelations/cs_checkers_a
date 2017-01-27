@@ -3,8 +3,9 @@ unit PCheckers;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, UBoard;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.Grids, Vcl.StdCtrls, UBoard, USaveLoad;
 
 type
   TCheckersForm = class(TForm)
@@ -58,16 +59,16 @@ end;
 
 procedure TCheckersForm.GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
   Rect: TRect; State: TGridDrawState);
-var
-  i: Integer;
-  j: Integer;
 begin
 with GridBoard do                       // Set scope to DrawGrid
   begin
     if assigned(Board[ARow, ACol]) then   // Select colour based on cell array
-      Canvas.Brush.Color := clBlack
+      if Board[ARow, ACol].IsPromoted then
+          Canvas.Brush.Color := clBlack
+      else
+          Canvas.Brush.Color := clWhite  /// does not work
     else
-      Canvas.Brush.Color := clWhite;
+      Canvas.Brush.Color := clInfoBk;
 
     Canvas.FillRect(Rect);               // Fill cell with selected colour
   end;

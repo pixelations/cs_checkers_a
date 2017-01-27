@@ -12,11 +12,17 @@ type
       Promoted: boolean;
     public
       constructor Create(YPosition, XPosition: integer; CColour: boolean);
+        { initialises variables }
       function GetPos(): TCoordinate;
+        { returns the position of the counter }
       function GetColour(): boolean;
+        { returns colour of the counter }
       function IsPromoted(): boolean;
+        { returns boolean dependent on if the counter is promoted }
       function ChangePos(NewY, NewX: integer): boolean;
+        { changes position that is stored by the counter }
       function PromoteCounter(): boolean;
+        { changes promoted value of the counter }
   end;
   TObjectArray = array of array of TCounter;
   TBoard = class(TObject)
@@ -25,7 +31,7 @@ type
       Rows: integer;
     public
       constructor Create(ACol, ARow: integer);
-        { initialise variables }
+        { initialises variables }
       function GetRows(): integer;
         { returns number of rows }
       function GetColumns(): integer;
@@ -40,18 +46,8 @@ type
         { places a counter on selected tile of the board }
       function RemoveCounter(ARow, ACol: integer; Board: TObjectArray): boolean;
         { removes a counter on selected tile of the board }
-      function ClearBoard(Board: TObjectArray): boolean;////do thuis
-      {
-      Other possibilities:
-        function
-          free all counters on the board
-          //if implementing keyboard controls
-          move counter
-          //for select and move
-          select/deselect counter
-          //would enter a sub-routine that hights the cell?
-          place counter
-      }
+      function ClearBoard(Board: TObjectArray): boolean;
+        { Removes all counters from the board }
   end;
 
 implementation
@@ -117,14 +113,18 @@ begin
           begin
             for j := 0 to Columns do
               begin
-                if z and (i mod 2 = 0) then
-                  Board[i, j] := AddCounter(i, j, t) // t = false for opponent
-                else if z then
-                  Board[i, Columns - j] := AddCounter(i, j, t);
+                if z then
+                  begin
+                    case i mod 2 of
+                      0: Board[i, j] := AddCounter(i, j, t);
+                      1: Board[i, Columns - j] := AddCounter(i, j, t);
+                    end;
+                  end;
                 z := not z;
               end;
-          end else
-            t := false;
+          end else if i = Rows div 2 then
+
+            t := false;    // t = false for opponent
       end;
 
 
@@ -142,10 +142,24 @@ begin
 end;
 
 function TBoard.RemoveCounter(ARow, ACol: integer;
-  Board: TObjectArray): boolean;
+Board: TObjectArray): boolean;
 begin
   Board[ARow, ACol].Free;
   Board[ARow, ACol] := nil;
+  result := true;
+end;
+
+function TBoard.ClearBoard(Board: TObjectArray): boolean;
+var
+  i: Integer;
+  j: Integer;
+begin
+  for i := 0 to Rows do
+    begin
+      for j := 0 to Columns do
+        RemoveCounter(i, j, Board);
+    end;
+  result := true;
 end;
 
 { TCounter }
