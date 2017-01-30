@@ -40,7 +40,7 @@ type
         { returns number of counters }
       function InitArray(var Board: TObjectArray): boolean;
         { initialises an array }
-      function InitDraughts(Board: TObjectArray): boolean;
+      function InitDraughts(var Board: TObjectArray): boolean;
         { places counters in a checkered pattern, with centre rows empty }
       function AddCounter(ARow, ACol: integer; AColour: boolean): TCounter;
         { places a counter on selected tile of the board }
@@ -97,7 +97,7 @@ begin
   result := true;
 end;
 
-function TBoard.InitDraughts(Board:TObjectArray): boolean;
+function TBoard.InitDraughts(var Board:TObjectArray): boolean;
 var
   i, j: integer;
   z, t: boolean;
@@ -105,7 +105,7 @@ begin
   z := false;   // inital state
   t := true;
   if (Columns = Rows) and (Columns mod 2 = 1) then
-  begin                                //if board has equal sides, that are even
+    begin                                //if board has equal sides, that are even
     for i := 0 to Rows do
       begin
         //does not populate middle rows
@@ -120,16 +120,16 @@ begin
                       1: Board[i, Columns - j] := AddCounter(i, j, t);
                     end;
                   end;
-                z := not z;
+                  z := not z;
               end;
-          end else if i = Rows div 2 then
+          end else if i = (Rows div 2) or (Rows div 2) + 1 then
 
             t := false;    // t = false for opponent
-      end;
+        end;
 
 
 
-  end;
+    end;
   result := true;
 end;
 

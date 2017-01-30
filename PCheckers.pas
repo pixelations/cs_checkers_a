@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Vcl.Grids, Vcl.StdCtrls, UBoard, USaveLoad;
+  Vcl.Grids, Vcl.StdCtrls, USaveLoad, UBoard, UAI;
 
 type
   TCheckersForm = class(TForm)
@@ -14,9 +14,9 @@ type
     BtnRestart: TButton;
     BtnSave: TButton;
     BtnLoad: TButton;
-    GridBoard: TDrawGrid;
+    DrawGrid: TDrawGrid;
     procedure FormCreate(Sender: TObject);
-    procedure GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
+    procedure DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
   private
     { Private declarations }
@@ -41,7 +41,8 @@ const
 { TCForm }
 
 procedure TCheckersForm.FormCreate(Sender: TObject);
-var t :TCoordinate;
+var
+t : TCoordinate;
 begin
   CBoard := TBoard.Create(COLUMNS, ROWS);
   CBoard.InitArray(Board);
@@ -57,16 +58,18 @@ begin
   CBoard.RemoveCounter(4,4,Board);
 end;
 
-procedure TCheckersForm.GridBoardDrawCell(Sender: TObject; ACol, ARow: Integer;
+procedure TCheckersForm.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
   Rect: TRect; State: TGridDrawState);
 begin
-with GridBoard do                       // Set scope to DrawGrid
+with DrawGrid do                       // Set scope to DrawGrid
   begin
-    if assigned(Board[ARow, ACol]) then   // Select colour based on cell array
-      if Board[ARow, ACol].IsPromoted then
-          Canvas.Brush.Color := clBlack
-      else
-          Canvas.Brush.Color := clWhite  /// does not work
+    if assigned(Board[ARow, ACol]) then
+      begin   // Select colour based on cell array
+        if Board[ARow, ACol].GetColour then
+            Canvas.Brush.Color := clBlack
+        else
+            Canvas.Brush.Color := clWhite
+      end
     else
       Canvas.Brush.Color := clInfoBk;
 

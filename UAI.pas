@@ -1,9 +1,9 @@
-unit USaveLoad;
+unit UAI;
 
 interface
 
 type
-  TSaveLoad = class(Tobject)
+  TAI = class(TObject)
     private
 
     public
