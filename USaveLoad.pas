@@ -14,25 +14,29 @@ type
 
   TSaveLoad = class(Tobject)
     private
-      BoardSave: TObjectRecord;
+      BoardSave: Array of TObjectRecord;
+      TheFile: ObjectFile;
       FileName: string;
     public
-      constructor Create(AFileName: string);
+      constructor Create(AFileName: string; BoardLength: integer);
       function Save(Board: TObjectArray): boolean;
-      function Load(AFileName: string): TObjectRecord;
+      function Load(): TObjectRecord;
   end;
 
 implementation
 
 { TSaveLoad }
 
-constructor TSaveLoad.Create(AFileName: string);
+constructor TSaveLoad.Create(AFileName: string; BoardLength: integer);
 begin
   FileName := AFileName;
+  assignfile(TheFile, FileName);
+  setlength(BoardSave, BoardLength);///////do tyhsi
 end;
 
-function TSaveLoad.Load(BoardFile): TObjectRecord;
+function TSaveLoad.Load(): TObjectRecord;
 begin
+reset(TheFile);
 
 end;
 
