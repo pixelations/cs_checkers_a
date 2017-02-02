@@ -12,7 +12,7 @@ type
 
   ObjectFile = file of TObjectRecord;
 
-  TSaveLoad = class(Tobject)
+  TSaveLoad = class(TObject)
     private
       BoardSave: Array of TObjectRecord;
       XLength: integer;
@@ -21,7 +21,7 @@ type
       FileName: string;
     public
       constructor Create(AFileName: string; AXLength, AYLength: integer);
-      function Save(Board: TObjectArray): boolean;
+      function Save(Board: TObjectArray): ObjectFile;
       function Load(): TObjectArray;
   end;
 
@@ -68,9 +68,11 @@ begin
       result := nil;
 end;
 
-function TSaveLoad.Save(Board: TObjectArray): boolean;
+function TSaveLoad.Save(Board: TObjectArray): ObjectFile;
+var
+  i, j: integer;
 begin
-
+//do this
 end;
 
 end.
