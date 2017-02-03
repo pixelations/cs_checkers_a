@@ -14,34 +14,31 @@ type
 
   TSaveLoad = class(TObject)
     private
-      BoardSave: Array of TObjectRecord;
       XLength: integer;
       YLength: integer;
-      TheFile: ObjectFile;
-      FileName: string;
     public
-      constructor Create(AFileName: string; AXLength, AYLength: integer);
-      function Save(Board: TObjectArray): ObjectFile;
-      function Load(): TObjectArray;
+      constructor Create(AXLength, AYLength: integer);
+      function Save(Board: TObjectArray; FileName: string): ObjectFile;
+      function Load(FileName: string): TObjectArray;
   end;
 
 implementation
 
 { TSaveLoad }
 
-constructor TSaveLoad.Create(AFileName: string; AXLength, AYLength: integer);
+constructor TSaveLoad.Create(AXLength, AYLength: integer);
 begin
-  FileName := AFileName;
   XLength := AXLength;
   YLength := AYLength;
-  assignfile(TheFile, FileName);
-end;
+end;        
 
-function TSaveLoad.Load(): TObjectArray;
+function TSaveLoad.Load(FileName: string): TObjectArray;
 var
   i, j: integer;
   IsCounter: TObjectRecord;
+  TheFile: ObjectFile;
 begin
+  assignfile(TheFile, FileName);
   if XLength*YLength = length(TheFile) then
   //if the file and array have the same dimensions
     begin
@@ -62,17 +59,27 @@ begin
           if ((i + 1) mod XLength) = 0 then           
             inc(j);
         end;
-        
-      closefile(TheFile);
     end else
       result := nil;
+    closefile(TheFile);
 end;
 
-function TSaveLoad.Save(Board: TObjectArray): ObjectFile;
+function TSaveLoad.Save(Board: TObjectArray; FileName: string): ObjectFile;
 var
   i, j: integer;
 begin
-//do this
+  //if board spaces = filespaces
+  j := 0;
+  assignfile(result, FileName);
+  rewrite(result);
+  for i := 0 to (XLength*YLength - 1) do
+    begin
+      seek(result, i);
+      result[i] := Board[j, (i mod XLength)];
+      if ((i + 1) mod XLength) = 0 then           
+            inc(j);
+    end;
+  closefile(result);
 end;
 
 end.
