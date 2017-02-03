@@ -9,17 +9,15 @@ type
   TObjectRecord = Record
     Counter: TCounter;
   end;
-
   ObjectFile = file of TObjectRecord;
-
   TSaveLoad = class(TObject)
     private
       XLength: integer;
       YLength: integer;
     public
       constructor Create(AXLength, AYLength: integer);
-      function Save(Board: TObjectArray; FileName: string): ObjectFile;
-      function Load(FileName: string): TObjectArray;
+      function FileToArray(FileName: string): TObjectArray;
+      function ArrayToFile(Board: TObjectArray; FileName: string): ObjectFile;
   end;
 
 implementation
@@ -32,7 +30,7 @@ begin
   YLength := AYLength;
 end;        
 
-function TSaveLoad.Load(FileName: string): TObjectArray;
+function TSaveLoad.FileToArray(FileName: string): TObjectArray;
 var
   i, j: integer;
   IsCounter: TObjectRecord;
@@ -42,42 +40,38 @@ begin
   if XLength*YLength = length(TheFile) then
   //if the file and array have the same dimensions
     begin
-      j := 0;
       reset(TheFile);                    //makes the file ready to be read
-      
       setlength(result, YLength);           //sets the array dimensions
       for i := 0 to YLength - 1 do
-        setlength(result, XLength - 1);
-        
-      for i := 0 to (XLength*YLength - 1) do
+        setlength(result, XLength);
+      for i := Low(result) to High(result) do
         begin
-          seek(TheFile, i);
-          read(TheFile, IsCounter);
-          //will loop through all n spaces, then return to 0
-          result[j, (i mod XLength)] := IsCounter.Counter;
-          //if it has populated one row the increment row value
-          if ((i + 1) mod XLength) = 0 then           
-            inc(j);
+          for j := Low(result[i]) to High(result[i]) do
+            begin
+              //finds record corresponding to space on the board
+              seek(TheFile, (j + i*XLength));
+              read(TheFile, IsCounter);
+              result[i, j] := IsCounter.Counter;
+            end;
         end;
     end else
       result := nil;
-    closefile(TheFile);
+  closefile(TheFile);
 end;
 
-function TSaveLoad.Save(Board: TObjectArray; FileName: string): ObjectFile;
+function TSaveLoad.ArrayToFile(Board: TObjectArray; FileName: string): ObjectFile;
 var
   i, j: integer;
 begin
-  //if board spaces = filespaces
-  j := 0;
   assignfile(result, FileName);
   rewrite(result);
-  for i := 0 to (XLength*YLength - 1) do
+  for i := Low(Board) to High(Board) do
     begin
-      seek(result, i);
-      result[i] := Board[j, (i mod XLength)];
-      if ((i + 1) mod XLength) = 0 then           
-            inc(j);
+      for j := Low(Board[i]) to High(Board[i]) do
+        begin
+          seek(result, (j + i*XLength));
+          write(result, Board[i, j]);
+        end;
     end;
   closefile(result);
 end;

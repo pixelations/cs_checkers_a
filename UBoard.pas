@@ -91,7 +91,7 @@ function TBoard.InitArray(var Board:TObjectArray): boolean;
 var
   i: integer;
 begin
-  setlength(Board, Rows + 1);        //first dimension is length XRows
+  setlength(Board, Rows + 1);        //first dimension is length Rows
   for i := 0 to Rows do
     setlength(Board[i], Columns + 1);     //second dimension is length Columns
   result := true;
