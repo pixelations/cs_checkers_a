@@ -70,7 +70,7 @@ begin
       for j := Low(Board[i]) to High(Board[i]) do
         begin
           seek(result, (j + i*XLength));
-          write(result, Board[i, j]);
+          write(result, Board[i, j]);  //written to the result file
         end;
     end;
   closefile(result);
