@@ -6,23 +6,28 @@ uses
   UBoard, UMove, System.SysUtils;
 
 type
+  TMoveList = Array of  TObjectArray;
   TAI = class(TObject)
     private
       MaxDepth: integer;
-      AIColour: boolean;    public
+      AIColour: boolean;
+    public
       constructor Create(ADifficulty: string; AAIColour: boolean);
       function ManualDepth(ADepth: integer): boolean;
-      function Minimax(Board: TObjectArray; MaxPlayer: boolean): TMove;
+      function Minimax(Board: TObjectArray; MaxPlayer: boolean; Depth: integer):
+       TObjectArray;
       function Max(a, b: real): real;
       function Min(a, b: real): real;
       function BoardVal(Board: TObjectArray): real;
-
+      function PossibleLegalMoves(Board: TObjectArray): TMoveList;
   end;
 
 const
-  Random = 'RANDOM';  Easy = 'EASY';
+  Random = 'RANDOM';
+  Easy = 'EASY';
   Intermediate = 'INTERMEDIATE';
   Hard = 'HARD';
+
 implementation
 
 { TAI }
@@ -78,27 +83,51 @@ begin
   end;
 end;
 
-function TAI.Minimax(Board: TObjectArray; MaxPlayer: boolean): TMove;
+function TAI.Minimax(Board: TObjectArray; MaxPlayer: boolean; Depth: integer):
+ TObjectArray;
 var
-  Depth, b: integer;
-  BestValue: TObjectArray;
+  i, b: integer;
 begin
   if Depth <> 0 then
     begin
-      if MaxPlayer then
+      if MaxPlayer then                          ///////////////////////////////////
         begin
         // add in systematic legal move gen
-        for {each possible move} do
+        for {each legal move} do
           begin
-          b
+          b := Minimax({move}, MaxPlayer, Depth - 1);
+          if Depth - 1 <> 0 then
+            result := Max(BoardVal(BestValue), BoardVal(b));
           end;
         end;
       if (not MaxPlayer) then
         begin
-        
+        for {each legal move} do
+          begin
+          b := Minimax({move}, MaxPlayer, Depth - 1);
+          if Depth - 1 <> 0 then
+            result := Min(BoardVal(BestValue), BoardVal(b));
+          end;
         end;
     end;
 
+end;
+
+function TAI.PossibleLegalMoves(Board: TObjectArray): TMoveList;
+var
+  i, j: integer;
+begin
+  setlength(result, MaxDepth);
+  for i := Low(result) to High(result) do
+    setlength(Board[i], 8);//do this
+
+  for i := Low(Board) to High(Board) do
+    begin
+      for j := Low(Board[i]) to High(Board[i]) do
+        begin
+
+        end;
+    end;
 end;
 
 end.
