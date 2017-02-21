@@ -80,13 +80,18 @@ end;
 
 function TAI.Minimax(Board: TObjectArray; MaxPlayer: boolean): TMove;
 var
-  Depth: integer;
+  Depth, b: integer;
+  BestValue: TObjectArray;
 begin
   if Depth <> 0 then
     begin
       if MaxPlayer then
         begin
-        // add in systematic legal move gen  
+        // add in systematic legal move gen
+        for {each possible move} do
+          begin
+          b
+          end;
         end;
       if (not MaxPlayer) then
         begin
