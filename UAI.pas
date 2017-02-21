@@ -9,11 +9,10 @@ type
   TAI = class(TObject)
     private
       MaxDepth: integer;
-      AIColour: boolean;
-    public
+      AIColour: boolean;    public
       constructor Create(ADifficulty: string; AAIColour: boolean);
       function ManualDepth(ADepth: integer): boolean;
-      function Minimax(Board: TObjectArray): TMove;
+      function Minimax(Board: TObjectArray; MaxPlayer: boolean): TMove;
       function Max(a, b: real): real;
       function Min(a, b: real): real;
       function BoardVal(Board: TObjectArray): real;
@@ -21,11 +20,9 @@ type
   end;
 
 const
-  Random = 'RANDOM';
-  Easy = 'EASY';
+  Random = 'RANDOM';  Easy = 'EASY';
   Intermediate = 'INTERMEDIATE';
   Hard = 'HARD';
-
 implementation
 
 { TAI }
@@ -33,8 +30,7 @@ implementation
 function TAI.BoardVal(Board: TObjectArray): real;
 var
   i, j: integer;
-begin
-  //sticking to basic each counter = +-1
+begin  //sticking to basic each counter = +-1
   result := 0;
   for i := Low(Board) to High(Board) do
     begin
@@ -45,7 +41,6 @@ begin
           dec(result);
     end;
 end;
-
 constructor TAI.Create(ADifficulty: string;  AAIColour: boolean);
 begin
   Uppercase(ADifficulty);
@@ -83,13 +78,21 @@ begin
   end;
 end;
 
-function TAI.Minimax(Board: TObjectArray): TMove;
+function TAI.Minimax(Board: TObjectArray; MaxPlayer: boolean): TMove;
 var
   Depth: integer;
 begin
-  Depth := MaxDepth;
-  if Depth = 0 then     //this
-
+  if Depth <> 0 then
+    begin
+      if MaxPlayer then
+        begin
+        // add in systematic legal move gen  
+        end;
+      if (not MaxPlayer) then
+        begin
+        
+        end;
+    end;
 
 end;
 
