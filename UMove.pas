@@ -25,10 +25,21 @@ function TMove.CheckLegalMove(Board: TObjectArray; Move: TMoveVector): Boolean;
 begin
   if not assigned(Board[Move[1, 0], Move[1, 1]]) then
     begin
-      if (not (Move[1, 0] < 0)) and (not (Move[1, 0] > 8)) and
+      if (not (Move[1, 0] < 0)) and (not (Move[1, 0] > 8)) and   //not out of bounds
       (not (Move[1, 1] < 0)) and not (Move[1, 1] > 8) then
         begin
-          ///////do this
+          if abs(Move[0, 0] - Move[1, 0]) = abs(Move[0, 1] - Move[1, 1]) then
+            begin                                        //is diagonal
+              if abs(Move[0, 0] - Move[1, 0]) = 2 then
+                begin
+                  if assigned(Board[(Move[0, 0] + Move[1, 0])/2,
+                  (Move[0, 1] + Move[1, 1])/2]) then
+                    result := true;
+
+                    //for non AI you still need to check if moving backwards unpromoted
+                    //and implement 11 -11 1-1 -1-1 move result
+                end;
+            end;
         end;
     end
   else
