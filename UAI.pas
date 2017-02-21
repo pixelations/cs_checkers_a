@@ -6,8 +6,7 @@ uses
   UBoard, UMove, System.SysUtils;
 
 type
-  TMoveList = Array of  TObjectArray;
-  TAI = class(TObject)
+  TAI = class
     private
       MaxDepth: integer;
       AIColour: boolean;
@@ -19,7 +18,6 @@ type
       function Max(a, b: real): real;
       function Min(a, b: real): real;
       function BoardVal(Board: TObjectArray): real;
-      function PossibleLegalMoves(Board: TObjectArray): TMoveList;
   end;
 
 const
@@ -111,23 +109,6 @@ begin
         end;
     end;
 
-end;
-
-function TAI.PossibleLegalMoves(Board: TObjectArray): TMoveList;
-var
-  i, j: integer;
-begin
-  setlength(result, MaxDepth);
-  for i := Low(result) to High(result) do
-    setlength(Board[i], 8);//do this
-
-  for i := Low(Board) to High(Board) do
-    begin
-      for j := Low(Board[i]) to High(Board[i]) do
-        begin
-
-        end;
-    end;
 end;
 
 end.

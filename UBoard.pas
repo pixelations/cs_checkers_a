@@ -25,7 +25,7 @@ type
         { changes promoted value of the counter }
   end;
   TObjectArray = array of array of TCounter;
-  TBoard = class(TObject)
+  TBoard = class
     private
       Columns: integer;
       Rows: integer;

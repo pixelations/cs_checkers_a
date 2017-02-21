@@ -9,15 +9,15 @@ type
   TObjectRecord = Record
     Counter: TCounter;
   end;
-  ObjectFile = file of TObjectRecord;
-  TSaveLoad = class(TObject)
+  TObjectFile = file of TObjectRecord;
+  TSaveLoad = class
     private
       XLength: integer;
       YLength: integer;
     public
       constructor Create(AXLength, AYLength: integer);
       function FileToArray(FileName: string): TObjectArray;
-      function ArrayToFile(Board: TObjectArray; FileName: string): ObjectFile;
+      function ArrayToFile(Board: TObjectArray; FileName: string): TObjectFile;
   end;
 
 implementation
@@ -30,11 +30,11 @@ begin
   YLength := AYLength;
 end;        
 
-function TSaveLoad.FileToArray(FileName: string): TObjectArray;
+function TSaveLoad.FileToArray(FileName: string): TObjectFile;
 var
   i, j: integer;
   IsCounter: TObjectRecord;
-  TheFile: ObjectFile;
+  TheFile: TObjectFile;
 begin
   assignfile(TheFile, FileName);
   if XLength*YLength = length(TheFile) then
@@ -59,7 +59,7 @@ begin
   closefile(TheFile);
 end;
 
-function TSaveLoad.ArrayToFile(Board: TObjectArray; FileName: string): ObjectFile;
+function TSaveLoad.ArrayToFile(Board: TObjectArray; FileName: string): TObjectRecord;
 var
   i, j: integer;
 begin
