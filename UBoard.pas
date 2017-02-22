@@ -11,7 +11,7 @@ type
       Colour: boolean;
       Promoted: boolean;
     public
-      constructor Create(YPosition, XPosition: integer; CColour: boolean);
+      constructor Create(YPosition, XPosition: integer; CColour, CPromoted: boolean);
         { initialises variables }
       function GetPos(): TCoordinate;
         { returns the position of the counter }
@@ -42,9 +42,9 @@ type
         { initialises an array }
       function InitDraughts(var Board: TObjectArray): boolean;
         { places counters in a checkered pattern, with centre rows empty }
-      function AddCounter(ARow, ACol: integer; AColour: boolean): TCounter;
+      function AddCounter(ARow, ACol: integer; ACounter: TCounter; var Board: TObjectArray): boolean;
         { places a counter on selected tile of the board }
-      function RemoveCounter(ARow, ACol: integer; Board: TObjectArray): boolean;
+      function RemoveCounter(ARow, ACol: integer; var Board: TObjectArray): boolean;
         { removes a counter on selected tile of the board }
       function ClearBoard(Board: TObjectArray): boolean;
         { Removes all counters from the board }
@@ -101,6 +101,7 @@ function TBoard.InitDraughts(var Board:TObjectArray): boolean;
 var
   i, j: integer;
   z, t: boolean;
+  CCounter: TCounter;
 begin
   z := false;   // inital state
   t := true;
@@ -116,8 +117,16 @@ begin
                 if z then
                   begin
                     case i mod 2 of
-                      0: Board[i, j] := AddCounter(i, j, t);
-                      1: Board[i, Columns - j] := AddCounter(i, j, t);
+                      0: begin
+                          CCounter.Create(i, j, t, false);
+                          AddCounter(i, j, CCounter, Board);
+                          CCounter.Free;
+                       end;
+                      1: begin
+                          CCounter.Create(i, Columns - j, t, false);
+                          AddCounter(i, j, CCounter, Board);
+                          CCounter.Free;
+                      end;
                     end;
                   end;
                   z := not z;
@@ -133,16 +142,13 @@ begin
   result := true;
 end;
 
-function TBoard.AddCounter(ARow, ACol: integer; AColour: boolean): TCounter;
-var
-  ACounter: TCounter;
+function TBoard.AddCounter(ARow, ACol: integer; ACounter: TCounter; var Board: TObjectArray): boolean;
 begin
-  ACounter := TCounter.Create(ARow, ACol, AColour);
-  result := ACounter;
+  Board[ARow, ACol] := ACounter;
+  result := true;
 end;
 
-function TBoard.RemoveCounter(ARow, ACol: integer;
-Board: TObjectArray): boolean;
+function TBoard.RemoveCounter(ARow, ACol: integer; var Board: TObjectArray): boolean;
 begin
   Board[ARow, ACol].Free;
   Board[ARow, ACol] := nil;
@@ -164,11 +170,12 @@ end;
 
 { TCounter }
 
-constructor TCounter.Create(YPosition, XPosition: integer; CColour: boolean);
+constructor TCounter.Create(YPosition, XPosition: integer; CColour, CPromoted: boolean);
 begin
   YPos := YPosition;
   XPos := XPosition;
   Colour := CColour;
+  Promoted := CPromoted;
 end;
 
 function TCounter.ChangePos(NewY, NewX: integer): boolean;

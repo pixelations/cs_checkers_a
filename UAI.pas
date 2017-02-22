@@ -3,32 +3,37 @@ unit UAI;
 interface
 
 uses
-  UBoard, UMove, System.SysUtils;
+  System.SysUtils, UBoard, UMove;
 
 type
   TAI = class
     private
       MaxDepth: integer;
       AIColour: boolean;
+      BestValue: TObjectArray;
+      NextBoard: TObjectArray;
     public
-      constructor Create(ADifficulty: string; AAIColour: boolean);
+      constructor Create(ADifficulty: integer; AAIColour: boolean);
       function ManualDepth(ADepth: integer): boolean;
       function Minimax(Board: TObjectArray; MaxPlayer: boolean; Depth: integer):
        TObjectArray;
-      function Max(a, b: real): real;
-      function Min(a, b: real): real;
+      function Max(a, b: TObjectArray): TObjectArray;
+      function Min(a, b: TObjectArray): TObjectArray;
       function BoardVal(Board: TObjectArray): real;
+      function AIMove(Board:TObjectArray): TObjectArray;
   end;
-
-const
-  Random = 'RANDOM';
-  Easy = 'EASY';
-  Intermediate = 'INTERMEDIATE';
-  Hard = 'HARD';
 
 implementation
 
 { TAI }
+
+function TAI.AIMove(Board: TObjectArray): TObjectArray;
+begin
+  Minimax(Board, true, MaxDepth);
+  result := NextBoard;
+  NextBoard := nil;
+  BestValue := nil;
+end;
 
 function TAI.BoardVal(Board: TObjectArray): real;
 var
@@ -44,16 +49,15 @@ begin  //sticking to basic each counter = +-1
           dec(result);
     end;
 end;
-constructor TAI.Create(ADifficulty: string;  AAIColour: boolean);
+constructor TAI.Create(ADifficulty: integer;  AAIColour: boolean);
 begin
-  Uppercase(ADifficulty);
   case ADifficulty of
-    Random: MaxDepth := 0;
-    Easy: MaxDepth := 1;
-    Intermediate: MaxDepth := 2;
-    Hard: MaxDepth := 3;
-  end;                            //add else case
+    0: MaxDepth := 1;
+    1: MaxDepth := 2;
+    2: MaxDepth := 3;
+  end;
   AIColour := AAIColour;
+  BestValue := nil;
 end;
 
 function TAI.ManualDepth(ADepth: integer): boolean;
@@ -63,52 +67,72 @@ begin
   result := true;
 end;
 
-function TAI.Max(a, b: real): real;
+function TAI.Max(a, b: TObjectArray): TObjectArray;
 begin
-  case True of
-    a > b: result := a;
-    b > a: result := b;
-    a = b: result := a;
-  end;
+  if a = nil then result := b
+  else
+    if b = nil then result := a
+    else
+      begin
+        case True of
+          BoardVal(a) > BoardVal(b): result := a;
+          BoardVal(b) > BoardVal(a): result := b;
+          BoardVal(a) = BoardVal(b): result := a;
+        end;
+      end;
 end;
 
-function TAI.Min(a, b: real): real;
+function TAI.Min(a, b: TObjectArray): TObjectArray;
 begin
-  case True of
-    a < b: result := a;
-    b < a: result := b;
-    a = b: result := a;
-  end;
+  if a = nil then result := b
+  else
+    if b = nil then result := a
+    else
+      begin
+        case True of
+          BoardVal(a) < BoardVal(b): result := a;
+          BoardVal(b) < BoardVal(a): result := b;
+          BoardVal(a) = BoardVal(b): result := a;
+        end;
+      end;
 end;
 
 function TAI.Minimax(Board: TObjectArray; MaxPlayer: boolean; Depth: integer):
  TObjectArray;
 var
-  i, b: integer;
+  b: integer;
+  CMove: TMove;
+  i: TMoveVector;
 begin
+  CMove := TMove.Create();
   if Depth <> 0 then
     begin
-      if MaxPlayer then                          ///////////////////////////////////
+      if MaxPlayer then
         begin
-        // add in systematic legal move gen
-        for {each legal move} do
+        for i := Low(CMove.AllPossibleLegalMoves(Board, AIColour)) to
+        High(CMove.AllPossibleLegalMoves(Board, AIColour)) do
           begin
-          b := Minimax({move}, MaxPlayer, Depth - 1);
-          if Depth - 1 <> 0 then
-            result := Max(BoardVal(BestValue), BoardVal(b));
+            b := Minimax(CMove.MakeMove(Board, i), false, Depth - 1);
+            BestValue := Max(BestValue, b);
+            result := BestValue;
+            if (b = BestValue) and (Depth = MaxDepth - 1) then
+              NextBoard := Board;
           end;
         end;
       if (not MaxPlayer) then
         begin
-        for {each legal move} do
+        for i := Low(CMove.AllPossibleLegalMoves(Board, AIColour)) to
+        High(CMove.AllPossibleLegalMoves(Board, AIColour)) do
           begin
-          b := Minimax({move}, MaxPlayer, Depth - 1);
-          if Depth - 1 <> 0 then
-            result := Min(BoardVal(BestValue), BoardVal(b));
+            b := Minimax(CMove.MakeMove(Board, i), true, Depth - 1);
+            BestValue := Min(BestValue, b);
+            result := BestValue;
+            if (b = BestValue) and (Depth = MaxDepth - 1) then
+              NextBoard := Board;
           end;
         end;
     end;
-
+  CMove.Free;
 end;
 
 end.

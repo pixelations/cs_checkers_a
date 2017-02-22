@@ -9,11 +9,12 @@ type
   TMoveVector = array[0..1] of TCoordinate;
   TMoveList = Array of TMoveVector;
   TMove = class
-    private
-
     public
+      constructor Create();
+      function MakeMove(Board: TObjectArray; Move: TMoveVector): TObjectArray;
       function CheckLegalMove(Board: TObjectArray; Move: TMoveVector): Boolean;
       function PossibleLegalMoves(Board: TObjectArray; Pos: TCoordinate): TMoveList;
+      function AllPossibleLegalMoves(Board: TObjectArray; PlayerColour: Boolean): TMoveList;
   end;
 
 implementation
@@ -21,26 +22,89 @@ implementation
 
 { TMove }
 
-function TMove.CheckLegalMove(Board: TObjectArray; Move: TMoveVector): Boolean;
+constructor TMove.Create;
 begin
-  if not assigned(Board[Move[1, 0], Move[1, 1]]) then
-    begin
-      if (not (Move[1, 0] < 0)) and (not (Move[1, 0] > 8)) and   //not out of bounds
-      (not (Move[1, 1] < 0)) and not (Move[1, 1] > 8) then
-        begin
-          if abs(Move[0, 0] - Move[1, 0]) = abs(Move[0, 1] - Move[1, 1]) then
-            begin                                        //is diagonal
-              if abs(Move[0, 0] - Move[1, 0]) = 2 then
-                begin
-                  if assigned(Board[(Move[0, 0] + Move[1, 0])/2,
-                  (Move[0, 1] + Move[1, 1])/2]) then
-                    result := true;
 
-                    //for non AI you still need to check if moving backwards unpromoted
-                    //and implement 11 -11 1-1 -1-1 move result
+end;
+
+function TMove.MakeMove(Board: TObjectArray; Move: TMoveVector): TObjectArray;
+var
+  t: TCounter;
+  CBoard: TBoard;
+begin
+  t := Board[Move[0, 0], Move[0, 1]];
+  result := Board;
+  CBoard.Create(8, 8);
+  CBoard.RemoveCounter(Move[0, 0], Move[0, 1], result);
+  CBoard.AddCounter(Move[1, 0], Move[1, 1], t, result);
+  CBoard.Free;
+end;
+
+function TMove.AllPossibleLegalMoves(Board: TObjectArray;
+  PlayerColour: Boolean): TMoveList;
+var
+  i, j, k: integer;
+  p: TCoordinate;
+  ml: TMoveList;
+begin
+  setlength(result, 0);
+  setlength(ml, 8);
+  for i := Low(Board) to High(Board) do
+    begin
+      for j := Low(Board[i]) to High(Board[i]) do
+        begin
+          if Board[i, j].GetColour = PlayerColour then
+            begin
+              p[0] := i;
+              p[1] := j;
+              ml := PossibleLegalMoves(Board, p);
+              for k := Low(ml) to High(ml) do
+                begin
+                  setlength(result, length(result) + 1);
+                  result[length(result) - 1] = ml[k];
                 end;
             end;
         end;
+    end;
+end;
+
+function TMove.CheckLegalMove(Board: TObjectArray; Move: TMoveVector): Boolean;
+begin
+  if (not (Move[1, 0] < 0)) and (not (Move[1, 0] > 8)) and   //not out of bounds
+      (not (Move[1, 1] < 0)) and not (Move[1, 1] > 8) then
+    begin
+      if not assigned(Board[Move[1, 0], Move[1, 1]]) then
+        begin
+          if abs(Move[0, 0] - Move[1, 0]) = abs(Move[0, 1] - Move[1, 1]) then
+            begin                                                        //is diagonal
+              if (Board[Move[0, 0], Move[0, 1]].GetColour and (Move[1, 1] - Move[0, 1]) > 0)
+              xor ((not Board[Move[0, 0], Move[0, 1]].GetColour) and
+              (Move[1, 1] - Move[0, 1]) < 0 ) then
+                //to move in correct dircetion, based on checker colour
+                begin
+                  if abs(Move[0, 0] - Move[1, 0]) = 2 then
+                    begin
+                      if assigned(Board[(Move[0, 0] + Move[1, 0])/2,
+                      (Move[0, 1] + Move[1, 1])/2]) then
+                      //checks for checker inbetween a 2 space move
+                        result := true;
+                    end
+                  else
+                    if abs(Move[0, 0] - Move[1, 0]) = 1 then
+                      begin
+                        result := true;
+                      end
+                    else
+                      result := false;
+                end
+              else
+                result := false;
+            end
+          else
+            result := false;
+        end
+      else
+        result := false;
     end
   else
     result := false;
