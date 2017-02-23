@@ -34,7 +34,7 @@ var
 begin
   t := Board[Move[0, 0], Move[0, 1]];
   result := Board;
-  CBoard.Create(8, 8);
+  CBoard.Create();
   CBoard.RemoveCounter(Move[0, 0], Move[0, 1], result);
   CBoard.AddCounter(Move[1, 0], Move[1, 1], t, result);
   CBoard.Free;
@@ -61,7 +61,7 @@ begin
               for k := Low(ml) to High(ml) do
                 begin
                   setlength(result, length(result) + 1);
-                  result[length(result) - 1] = ml[k];
+                  result[length(result) - 1] := ml[k];
                 end;
             end;
         end;
@@ -77,15 +77,15 @@ begin
         begin
           if abs(Move[0, 0] - Move[1, 0]) = abs(Move[0, 1] - Move[1, 1]) then
             begin                                                        //is diagonal
-              if (Board[Move[0, 0], Move[0, 1]].GetColour and (Move[1, 1] - Move[0, 1]) > 0)
+              if (Board[Move[0, 0], Move[0, 1]].GetColour and ((Move[1, 1] - Move[0, 1]) > 0))
               xor ((not Board[Move[0, 0], Move[0, 1]].GetColour) and
-              (Move[1, 1] - Move[0, 1]) < 0 ) then
+              ((Move[1, 1] - Move[0, 1]) < 0 )) then
                 //to move in correct dircetion, based on checker colour
                 begin
                   if abs(Move[0, 0] - Move[1, 0]) = 2 then
                     begin
-                      if assigned(Board[(Move[0, 0] + Move[1, 0])/2,
-                      (Move[0, 1] + Move[1, 1])/2]) then
+                      if assigned(Board[((Move[0, 0] + Move[1, 0]) div 2),
+                      ((Move[0, 1] + Move[1, 1]) div 2)]) then
                       //checks for checker inbetween a 2 space move
                         result := true;
                     end

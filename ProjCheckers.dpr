@@ -3,7 +3,6 @@ program ProjCheckers;
 uses
   Vcl.Forms,
   PCheckers in 'PCheckers.pas' {CheckersForm},
-  USaveLoad in 'USaveLoad.pas',
   UBoard in 'UBoard.pas',
   UAI in 'UAI.pas',
   UMove in 'UMove.pas';
