@@ -28,9 +28,9 @@ type
         { returns number of counters }
       function InitDraughts(var Board: TObjectArray): boolean;
         { places counters in a checkered pattern, with centre rows empty }
-      function AddCounter(ARow, ACol: integer; ACounter: TCounter; var Board: TObjectArray): boolean;
+      function AddCounter(ARow, ACol: integer; ACounter: TCounter; Board: TObjectArray): boolean;
         { places a counter on selected tile of the board }
-      function RemoveCounter(ARow, ACol: integer; var Board: TObjectArray): boolean;
+      function RemoveCounter(ARow, ACol: integer; Board: TObjectArray): boolean;
         { removes a counter on selected tile of the board }
       function ClearBoard(Board: TObjectArray): boolean;
         { Removes all counters from the board }
@@ -64,54 +64,48 @@ end;
 function TBoard.InitDraughts(var Board:TObjectArray): boolean;
 var
   i, j: integer;
-  z, t: boolean;
-  CCounter: TCounter;
+  t, z: boolean;
 begin
   z := false;   // inital state
   t := true;
 
-    for i := 0 to 7 do
-      begin
-        //does not populate middle rows
-        if (i <> 4) and (i <> 5) then
-          begin
-            for j := 0 to 7 do
-              begin
-                if z then
-                  begin
-                    case i mod 2 of
-                      0: begin
-                          CCounter.Create(t, false);
-                          AddCounter(i, j, CCounter, Board);
-                          CCounter.Free;
-                       end;
-                      1: begin
-                          CCounter.Create(t, false);
-                          AddCounter(i, j, CCounter, Board);
-                          CCounter.Free;
+  for i := 0 to 7 do
+    begin
+    //does not populate middle rows
+      if (i <> 3) and (i <> 4) then
+        begin
+          for j := 0 to 7 do
+            begin
+              if z then
+                begin
+                  case i mod 2 of
+                    0: begin
+                         Board[i, j] := TCounter.Create(t, false);
                       end;
-                    end;
+                    1: begin
+                         Board[i, 7 - j] := TCounter.Create(t, false);
+                      end;
                   end;
-                  z := not z;
-              end;
-          end else if (i = 4) or (i = 5) then
-
-            t := false;    // t = false for opponent
+                end;
+              z := not z;
+            end;
+        end
+      else
+        if (i = 3) or (i = 4) then
+          t := false;    // t = false for opponent
       end;
 
-
-
-
   result := true;
+
 end;
 
-function TBoard.AddCounter(ARow, ACol: integer; ACounter: TCounter; var Board: TObjectArray): boolean;
+function TBoard.AddCounter(ARow, ACol: integer; ACounter: TCounter; Board: TObjectArray): boolean;
 begin
   Board[ARow, ACol] := ACounter;
   result := true;
 end;
 
-function TBoard.RemoveCounter(ARow, ACol: integer; var Board: TObjectArray): boolean;
+function TBoard.RemoveCounter(ARow, ACol: integer; Board: TObjectArray): boolean;
 begin
   Board[ARow, ACol].Free;
   Board[ARow, ACol] := nil;

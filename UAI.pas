@@ -70,10 +70,27 @@ begin
 end;
 
 function TAI.Max(a, b: TObjectArray): TObjectArray;
+var
+  i, j: integer;
+  n: boolean;
 begin
-  if a = nil then
-    result := b
-  else if b = nil then
+  n := true;
+  for i := 0 to 7 do
+    begin
+      for j := 0 to 7 do
+        if assigned(a[i, j]) then
+          n := false;
+    end;
+  if n then
+    result := b;
+  n := true;
+  for i := 0 to 7 do
+    begin
+      for j := 0 to 7 do
+        if assigned(b[i, j]) then
+          n := false;
+    end;
+  if n then
     result := a
   else
   begin
@@ -87,10 +104,27 @@ begin
 end;
 
 function TAI.Min(a, b: TObjectArray): TObjectArray;
+var
+  i, j: integer;
+  n: boolean;
 begin
-  if a = nil then
-    result := b
-  else if b = nil then
+  n := true;
+  for i := 0 to 7 do
+    begin
+      for j := 0 to 7 do
+        if assigned(a[i, j]) then
+          n := false;
+    end;
+  if n then
+    result := b;
+  n := true;
+  for i := 0 to 7 do
+    begin
+      for j := 0 to 7 do
+        if assigned(b[i, j]) then
+          n := false;
+    end;
+  if n then
     result := a
   else
   begin
@@ -108,7 +142,8 @@ function TAI.Minimax(Board: TObjectArray; MaxPlayer: boolean; Depth: integer)
 var
   b: TObjectArray;
   CMove: TMove;
-  i: integer;
+  i, j, k: integer;
+  v: boolean;
 begin
   CMove := TMove.Create();
   if Depth <> 0 then
@@ -121,8 +156,19 @@ begin
           AIColour)[i]), false, Depth - 1);
         BestValue := Max(BestValue, b);
         result := BestValue;
-        if (b = BestValue) and (Depth = MaxDepth - 1) then
-          NextBoard := Board;
+        if (Depth = MaxDepth - 1) then
+          begin
+            v := true;
+            for j := Low(Board) to High(Board) do
+              begin
+                for k := Low(Board) to High(Board) do
+                  begin
+                    if BestValue[j, k] <> b[j, k] then
+                      v := false;
+                  end;
+              end;
+            if v then NextBoard := Board;
+          end;
       end;
     end;
     if (not MaxPlayer) then
@@ -133,8 +179,19 @@ begin
           AIColour)[i]), true, Depth - 1);
         BestValue := Min(BestValue, b);
         result := BestValue;
-        if (b = BestValue) and (Depth = MaxDepth - 1) then
-          NextBoard := Board;
+        if (Depth = MaxDepth - 1) then
+          begin
+            v := true;
+            for j := Low(Board) to High(Board) do
+              begin
+                for k := Low(Board) to High(Board) do
+                  begin
+                    if BestValue[j, k] <> b[j, k] then
+                      v := false;
+                  end;
+              end;
+            if v then NextBoard := Board;
+          end;
       end;
     end;
   end;

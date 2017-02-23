@@ -24,19 +24,20 @@ implementation
 
 constructor TMove.Create;
 begin
-
 end;
 
 function TMove.MakeMove(Board: TObjectArray; Move: TMoveVector): TObjectArray;
 var
-  t: TCounter;
+  //t: TCounter;
   CBoard: TBoard;
 begin
-  t := Board[Move[0, 0], Move[0, 1]];
+  //t := Board[Move[0, 0], Move[0, 1]];
   result := Board;
   CBoard.Create();
-  CBoard.RemoveCounter(Move[0, 0], Move[0, 1], result);
-  CBoard.AddCounter(Move[1, 0], Move[1, 1], t, result);
+  //CBoard.RemoveCounter(Move[0, 0], Move[0, 1], result);
+  result[Move[0, 0], Move[0, 1]] := nil;
+  //CBoard.AddCounter(Move[1, 0], Move[1, 1], t, result);
+  result[Move[1, 0], Move[1, 1]] := Board[Move[0, 0], Move[0, 1]];
   CBoard.Free;
 end;
 
@@ -113,7 +114,7 @@ end;
 function TMove.PossibleLegalMoves(Board: TObjectArray;
   Pos: TCoordinate): TMoveList;
 var
-  i, j, k: integer;
+  k: integer;
   t: TMoveVector;
 begin
   if assigned(Board[Pos[0], Pos[1]]) then
