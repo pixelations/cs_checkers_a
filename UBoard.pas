@@ -19,7 +19,7 @@ type
         { changes promoted value of the counter }
   end;
   TObjectArray = array[0..7] of array[0..7] of TCounter;
-  TBoard = class
+  TBoard = class(TObject)
     private
     public
       constructor Create();

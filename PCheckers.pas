@@ -49,12 +49,21 @@ var
 begin
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
+
   CAI := TAI.Create(1, true);
-  for i := 0 to 7 do
+  CAI.Minimax(Board, true, CAI.MaxDepth);
+  for i := Low(Board) to High(Board) do
     begin
-      for j := 0 to 7 do
-        Board[i, j] := CAI.AIMove(Board)[i, j];
+      for j := Low(Board) to High(Board) do
+        Board[i, j] := CAI.NextBoard[i, j];
     end;
+  //for i := 0 to 7 do
+   // begin
+    //  for j := 0 to 7 do
+   //     Board[i, j] := CAI.NextBoard[i, j];
+   // end;
+  //CAI.Free;
+  //CBoard.Free;
 end;
 
 procedure TCheckersForm.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;

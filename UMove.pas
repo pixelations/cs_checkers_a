@@ -8,7 +8,7 @@ uses
 type
   TMoveVector = array[0..1] of TCoordinate;
   TMoveList = Array of TMoveVector;
-  TMove = class
+  TMove = class(TObject)
     public
       constructor Create();
       function MakeMove(Board: TObjectArray; Move: TMoveVector): TObjectArray;
@@ -28,17 +28,27 @@ end;
 
 function TMove.MakeMove(Board: TObjectArray; Move: TMoveVector): TObjectArray;
 var
-  //t: TCounter;
-  CBoard: TBoard;
+  i, j: integer;
+  t: TObjectArray;
+  //CBoard: TBoard;
 begin
   //t := Board[Move[0, 0], Move[0, 1]];
-  result := Board;
-  CBoard.Create();
-  //CBoard.RemoveCounter(Move[0, 0], Move[0, 1], result);
-  result[Move[0, 0], Move[0, 1]] := nil;
-  //CBoard.AddCounter(Move[1, 0], Move[1, 1], t, result);
-  result[Move[1, 0], Move[1, 1]] := Board[Move[0, 0], Move[0, 1]];
-  CBoard.Free;
+  for i := Low(t) to High(t) do
+    begin
+      for j := Low(t[i]) to High(t[i]) do
+        t[i, j] := Board[i, j];
+    end;
+  //CBoard.Create();
+  //CBoard.RemoveCounter(Move[0, 0], Move[0, 1], t);
+  //CBoard.AddCounter(Move[1, 0], Move[1, 1], Board[Move[0, 0], Move[0, 1]], result);
+  t[Move[0, 0], Move[0, 1]] := nil;
+  t[Move[1, 0], Move[1, 1]] := Board[Move[0, 0], Move[0, 1]];
+  for i := Low(t) to High(t) do
+    begin
+      for j := Low(t[i]) to High(t[i]) do
+        result[i, j] := t[i, j];
+    end;
+  //CBoard.Free;
 end;
 
 function TMove.AllPossibleLegalMoves(Board: TObjectArray;
@@ -54,15 +64,18 @@ begin
     begin
       for j := Low(Board[i]) to High(Board[i]) do
         begin
-          if Board[i, j].GetColour = PlayerColour then
+          if assigned(Board[i, j]) then
             begin
-              p[0] := i;
-              p[1] := j;
-              ml := PossibleLegalMoves(Board, p);
-              for k := Low(ml) to High(ml) do
+              if (Board[i, j].GetColour = PlayerColour) then
                 begin
-                  setlength(result, length(result) + 1);
-                  result[length(result) - 1] := ml[k];
+                  p[0] := i;
+                  p[1] := j;
+                  ml := PossibleLegalMoves(Board, p);
+                  for k := Low(ml) to High(ml) do
+                    begin
+                      setlength(result, length(result) + 1);
+                      result[length(result) - 1] := ml[k];
+                    end;
                 end;
             end;
         end;
@@ -114,131 +127,159 @@ end;
 function TMove.PossibleLegalMoves(Board: TObjectArray;
   Pos: TCoordinate): TMoveList;
 var
-  k: integer;
+  i: integer;
   t: TMoveVector;
 begin
   if assigned(Board[Pos[0], Pos[1]]) then
     begin
       t[0, 0] := Pos[0];
       t[0, 1] := Pos[1];
+      setlength(result, 8);
+      i := -1;
       if not Board[Pos[0], Pos[1]].IsPromoted then
         begin
-          setlength(result, 4);
-          k := 4;
           if Board[Pos[0], Pos[1]].GetColour then
             begin
               t[1, 0] := Pos[0] + 1;
               t[1, 1] := Pos[1] + 1;
               if CheckLegalMove(Board, t) then
-                result[0] := t
-              else dec(k);
+              begin
+                inc(i);
+                result[i] := t;
+              end;
 
               t[1, 0] := Pos[0] - 1;
               t[1, 1] := Pos[1] + 1;
               if CheckLegalMove(Board, t) then
-                result[1] := t
-              else dec(k);
+              begin
+                inc(i);
+                result[i] := t;
+              end;
 
               t[1, 0] := Pos[0] + 2;
               t[1, 1] := Pos[1] + 2;
               if CheckLegalMove(Board, t) then
-                result[2] := t
-              else dec(k);
+              begin
+                inc(i);
+                result[i] := t;
+              end;
 
               t[1, 0] := Pos[0] - 2;
               t[1, 1] := Pos[1] + 2;
               if CheckLegalMove(Board, t) then
-                result[3] := t
-              else dec(k);
+              begin
+                inc(i);
+                result[i] := t;
+              end;
 
-            setlength(result, k);
+              setlength(result, i + 1);
             end
           else
             begin
               t[1, 0] := Pos[0] - 1;
               t[1, 1] := Pos[1] - 1;
               if CheckLegalMove(Board, t) then
-                result[0] := t
-              else dec(k);
+              begin
+                inc(i);
+                result[i] := t;
+              end;
 
               t[1, 0] := Pos[0] + 1;
               t[1, 1] := Pos[1] - 1;
               if CheckLegalMove(Board, t) then
-                result[1] := t
-              else dec(k);
+              begin
+                inc(i);
+                result[i] := t;
+              end;
 
               t[1, 0] := Pos[0] - 2;
               t[1, 1] := Pos[1] - 2;
               if CheckLegalMove(Board, t) then
-                result[2] := t
-              else dec(k);
+              begin
+                inc(i);
+                result[i] := t;
+              end;
 
               t[1, 0] := Pos[0] + 2;
               t[1, 1] := Pos[1] - 2;
               if CheckLegalMove(Board, t) then
-                result[3] := t
-              else dec(k);
+              begin
+                inc(i);
+                result[i] := t;
+              end;
 
-            setlength(result, k);
+              setlength(result, i + 1);
             end;
         end
       else
         begin
-          setlength(result, 8);
-          k := 8;
           t[1, 0] := Pos[0] + 1;
           t[1, 1] := Pos[1] + 1;
           if CheckLegalMove(Board, t) then
-          result[0] := t
-          else dec(k);
+            begin
+              inc(i);
+              result[i] := t;
+            end;
 
           t[1, 0] := Pos[0] + 1;
           t[1, 1] := Pos[1] - 1;
           if CheckLegalMove(Board, t) then
-            result[1] := t
-          else dec(k);
+            begin
+              inc(i);
+              result[i] := t;
+            end;
 
           t[1, 0] := Pos[0] - 1;
           t[1, 1] := Pos[1] + 1;
           if CheckLegalMove(Board, t) then
-            result[1] := t
-          else dec(k);
+            begin
+              inc(i);
+              result[i] := t;
+            end;;
 
           t[1, 0] := Pos[0] - 1;
           t[1, 1] := Pos[1] - 1;
           if CheckLegalMove(Board, t) then
-            result[0] := t
-          else dec(k);
+            begin
+              inc(i);
+              result[i] := t;
+            end;
 
           t[1, 0] := Pos[0] + 2;
           t[1, 1] := Pos[1] + 2;
           if CheckLegalMove(Board, t) then
-            result[2] := t
-          else dec(k);
+            begin
+              inc(i);
+              result[i] := t;
+            end;
 
           t[1, 0] := Pos[0] + 2;
           t[1, 1] := Pos[1] - 2;
           if CheckLegalMove(Board, t) then
-            result[3] := t
-          else dec(k);
+            begin
+              inc(i);
+              result[i] := t;
+            end;
 
           t[1, 0] := Pos[0] - 2;
           t[1, 1] := Pos[1] + 2;
           if CheckLegalMove(Board, t) then
-            result[3] := t
-          else dec(k);
+            begin
+              inc(i);
+              result[i] := t;
+            end;
 
           t[1, 0] := Pos[0] - 2;
           t[1, 1] := Pos[1] - 2;
           if CheckLegalMove(Board, t) then
-            result[2] := t
-          else dec(k);
+            begin
+              inc(i);
+              result[i] := t;
+            end;
 
-          setlength(result, k);
+            setlength(result, i + 1);
         end;
-    end
-  else
-    setlength(result, 0);
+    end;
 end;
 
 end.
