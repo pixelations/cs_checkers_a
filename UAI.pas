@@ -117,6 +117,7 @@ begin
 
       for i := Low(t) to High(t)  do
       begin
+      //bestvalue init here?
         b := Minimax(t[i], false, Depth - 1);
         BestValue := Max(BestValue, b);
         result := BestValue;
@@ -138,7 +139,7 @@ begin
     end;
     if (not MaxPlayer) then
     begin
-
+      //bestvalue init here?
       for i := Low(t) to High(t) do
       begin
         b := Minimax(t[i], true, Depth - 1);
