@@ -1,4 +1,17 @@
 ﻿[]
-Coordinates=10,10,73,36
+Coordinates=125,143,63,58
 Visible=True
+
+[BtnStart]
+Coordinates=144,78,61,58
+
+[ListBoxModeSelect]
+Coordinates=0,0,125,124
+
+[BtnRestart]
+Coordinates=46,143,75,58
+Visible=True
+
+[DrawGrid]
+Coordinates=244,1,69,36
 

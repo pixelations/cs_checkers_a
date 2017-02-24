@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
 <TgConfig Version="3" SubLevelDisabled="False">
   <Option Name="namespaceFolder.UMove" Type="System.String" Value="UMove" Category="General" IsBrowsable="False" />
+  <Option Name="namespaceFolder.PCheckers" Type="System.String" Value="PCheckers" Category="General" IsBrowsable="False" />
+  <Option Name="namespaceFolder.UBoard" Type="System.String" Value="UBoard" Category="General" IsBrowsable="False" />
+  <Option Name="namespaceFolder.UAI" Type="System.String" Value="UAI" Category="General" IsBrowsable="False" />
+  <Option Name="namespaceFolder.ProjCheckers" Type="System.String" Value="ProjCheckers" Category="General" IsBrowsable="False" />
 </TgConfig>

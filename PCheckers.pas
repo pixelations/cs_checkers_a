@@ -12,17 +12,21 @@ type
     ListBoxModeSelect: TListBox;
     BtnStart: TButton;
     BtnRestart: TButton;
-    BtnSave: TButton;
-    BtnLoad: TButton;
     DrawGrid: TDrawGrid;
     procedure DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
+    procedure DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
   private
     { Private declarations }
     CBoard: TBoard;
-    CCounter: TCounter;
-    Board: TObjectArray;
+    CAI: TAI;
+    CMove: TMove;
+    Board: TArray;
+    SelectState: Boolean;
+    p: TMoveVector;
+    CounterHold: integer;
   public
     { Public declarations }
   end;
@@ -43,38 +47,42 @@ const
 { TCForm }
 
 procedure TCheckersForm.FormCreate(Sender: TObject);
-var
-  CAI: TAI;
-  i, j: integer;
 begin
+SelectState := true;
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
 
-  CAI := TAI.Create(1, true);
-  CAI.Minimax(Board, true, CAI.MaxDepth);
-  for i := Low(Board) to High(Board) do
-    begin
-      for j := Low(Board) to High(Board) do
-        Board[i, j] := CAI.NextBoard[i, j];
-    end;
-  //for i := 0 to 7 do
-   // begin
-    //  for j := 0 to 7 do
-   //     Board[i, j] := CAI.NextBoard[i, j];
-   // end;
-  //CAI.Free;
-  //CBoard.Free;
+  CMove := TMove.Create;
+  p[0, 0] := 2;
+  p[0, 1] := 1;
+  p[1, 0] := 3;
+  p[1, 1] := 2;
+  //Board := CMove.MakeMove(Board, p);
+  if Cmove.CheckLegalMove(Board,p) then  else Showmessage('');
+                                //legal move checker NOT WORKING
+
+  CMove.Free;
+  {
+  showmessage(inttostr(length(CMove.AllPossibleLegalMoves(Board, false))));
+  Board := CMove.AllPossibleLegalMoves(Board, false)[0];
+  //CAI := TAI.Create(2);
+  //CAI.Minimax(Board, true, CAI.MaxDepth);
+  //Board := CAI.WinningSeq[0];
+
+  //CAI.Free;}
+  CBoard.Free;
 end;
+
 
 procedure TCheckersForm.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
   Rect: TRect; State: TGridDrawState);
 begin
 with DrawGrid do                       // Set scope to DrawGrid
   begin
-    if assigned(Board[ARow, ACol]) then
+    if Board[ARow, ACol] <> -1 then
       begin   // Select colour based on cell array
 
-        if Board[ARow, ACol].GetColour then
+        if (Board[ARow, ACol] = 1) or (Board[ARow, ACol] = 3) then
             Canvas.Brush.Color := clBlack
         else
             Canvas.Brush.Color := clWhite;
@@ -84,6 +92,33 @@ with DrawGrid do                       // Set scope to DrawGrid
 
     Canvas.FillRect(Rect);               // Fill cell with selected colour
   end;
+end;
+
+procedure TCheckersForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
+  var CanSelect: Boolean);
+begin
+  {if SelectState then
+    begin
+      CounterHold := Board[ARow, ACol];
+      Board[ARow, ACol] := -1;
+      p[0, 0] := ARow;
+      p[0, 1] := ACol;
+      SelectState := not SelectState;
+    end
+  else
+    begin
+     p[1, 0] := ARow;
+      p[1, 1] := ACol;
+      CMove := TMove.Create;
+      if CMove.CheckLegalMove(Board, p) then
+        begin
+          Board[ARow, ACol] := CounterHold;
+          SelectState := not SelectState;
+        end
+      else
+       ShowMessage('Not a legal Move');
+      CMove.Free;
+    end; }
 end;
 
 end.

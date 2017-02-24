@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="1pg9rp03fxh_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="design:view:::kgne0d2kinh_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="220,320,129,134" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:ProjCheckers.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::lq6n6p679si_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="200,40,100,151" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UAI.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UAI.TAI" />
+    </reference>
+    <reference referencedUin="design:view:::pzljo2pn12k_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="580,320,116,151" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TCheckersForm" />
+    </reference>
+    <reference referencedUin="design:view:::krkp9a0baqq_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="40,260,100,151" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMoveVector" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMove" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMoveList" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TCoordinate" />
+    </reference>
+    <reference referencedUin="design:view:::6fhos1mkfzp_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="440,60,100,151" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TBoard" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArrayList" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArray" />
+    </reference>
+  </view>
+</nodeSet>
