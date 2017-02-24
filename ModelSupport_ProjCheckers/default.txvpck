@@ -20,6 +20,8 @@
     <reference referencedUin="design:view:::pzljo2pn12k_v">
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="580,320,116,151" />
+      <property name="hideClass" value="False" />
+      <property name="hideModule" value="False" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.@unitclass" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TCheckersForm" />
@@ -28,10 +30,9 @@
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="40,260,100,151" />
       <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMoveVector" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMove" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.@unitclass" />
-      <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMoveList" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TCoordArray" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TCoordinate" />
     </reference>
     <reference referencedUin="design:view:::6fhos1mkfzp_v">
@@ -42,6 +43,10 @@
       <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TBoard" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArrayList" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArray" />
+    </reference>
+    <reference referencedUin="design:view:::a4obxkcvhtr_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,99,42" />
     </reference>
   </view>
 </nodeSet>
