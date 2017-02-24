@@ -19,25 +19,11 @@ type
     function Max(a, b: TArray): TArray;
     function Min(a, b: TArray): TArray;
     function BoardVal(Board: TArray): integer;
-    //function AIMove(Board: TObjectArray): TObjectArray;
   end;
 
 implementation
 
 { TAI }
-
-{function TAI.AIMove(Board: TObjectArray): TObjectArray;
-var
-  i, j: integer;
-begin
-  Minimax(Board, true, MaxDepth);
-  for i := Low(result) to High(result) do
-    begin
-      for j := Low(result) to High(result) do
-        result[i, j] := NextBoard[i, j];
-    end;
-
-end;}
 
 function TAI.BoardVal(Board: TArray): integer;
 var

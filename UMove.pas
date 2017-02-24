@@ -7,14 +7,13 @@ uses
 
 type
   TCoordinate = array[0..1] of integer;
-  TMoveVector = array[0..1] of TCoordinate;
-  TMoveList = Array of TMoveVector;
+  TCoordArray = Array of TCoordinate;
   TMove = class(TObject)
-    public
-      constructor Create();
+  public
+    constructor Create();
       function MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): TArray;
       function CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): Boolean;
-      function PossibleLegalMoves(Board: TArray; Pos: TCoordinate): TMoveList;
+      function PossibleLegalMoves(Board: TArray; ARow, ACol: integer): TCoordArray;
       function AllPossibleLegalMoves(Board: TArray; Player: Boolean): TArrayList;
   end;
 
@@ -27,34 +26,13 @@ constructor TMove.Create;
 begin
 end;
 
-{function TMove.MakeMove(Board: TArray; Move: TMoveVector): TArray;
-var
-  i, j: integer;
-begin
-  for i := 0 to 7 do
-    begin
-      for j := 0 to 7 do
-        begin
-          result[i, j] := Board[i, j];
-        end;
-    end;
-  result[Move[0, 0], Move[0, 1]] := -1;
-  result[Move[1, 0], Move[1, 1]] := Board[Move[0, 0], Move[0, 1]];
-end;}
 function TMove.MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): TArray;
 var
   i, j: integer;
 begin
-  {for i := 0 to 7 do
-    begin
-      for j := 0 to 7 do
-        begin
-          result[i, j] := Board[i, j];
-        end;
-    end;}
   result := Board;
   result[OldRow, OldCol] := -1;
-  result[NewRow, NewCol] := Board[NewRow, NewCol];
+  result[NewRow, NewCol] := Board[OldRow, OldCol];
 end;
 
 
@@ -62,8 +40,7 @@ function TMove.AllPossibleLegalMoves(Board: TArray;
   Player: Boolean): TArrayList;
 var
   i, j, k: integer;
-  p: TCoordinate;
-  t: TMoveList;
+  t: TCoordArray;
   CBoard: TBoard;
 begin
   setlength(result, 0);
@@ -74,13 +51,11 @@ begin
         begin
           if CBoard.WhatPlayer(i, j, Board) = Player then
             begin
-              p[0] := i;
-              p[1] := j;
-              t := PossibleLegalMoves(Board, p);
+              t := PossibleLegalMoves(Board, i, j);
               for k := Low(t) to High(t) do
                 begin
                   setlength(result, length(result) + 1);
-                  result[length(result) - 1] := MakeMove(Board, t[k]);
+                  result[length(result) - 1] := MakeMove(Board, t[k, 0], t[k, 1], i, j);
                 end;
             end;
         end;
@@ -88,46 +63,6 @@ begin
   CBoard.Free
 end;
 
-{function TMove.CheckLegalMove(Board: TArray; Move: TMoveVector): Boolean;
-var
-  CBoard: TBoard;
-begin
-  CBoard := TBoard.Create;
-  if (not (Move[1, 0] < 0)) and (not (Move[1, 0] > 8)) and   //not out of bounds
-      (not (Move[1, 1] < 0)) and not (Move[1, 1] > 8) then
-    begin
-      if Board[Move[1, 0], Move[1, 1]] <> -1 then
-        begin
-          if abs(Move[0, 0] - Move[1, 0]) = abs(Move[0, 1] - Move[1, 1]) then
-            begin                                                        //is diagonal
-              if (CBoard.WhatPlayer(Move[0, 0], Move[0, 1], Board) and ((Move[1, 1] - Move[0, 1]) > 0))
-              xor ((not CBoard.WhatPlayer(Move[0, 0], Move[0, 1], Board)) and
-              ((Move[1, 1] - Move[0, 1]) < 0 )) then
-                //to move in correct direction, based on checker colour
-                begin
-                  if abs(Move[0, 0] - Move[1, 0]) = 2 then
-                    begin
-                      if CBoard.WhatPlayer(((Move[0, 0] + Move[1, 0]) div 2),
-                      ((Move[0, 1] + Move[1, 1]) div 2), Board) <> CBoard.WhatPlayer(Move[0, 0], Move[0, 1], Board) then
-                      //checks for checker inbetween a 2 space move
-                        result := true;
-                    end
-                  else
-                        result := true;
-                end
-              else
-                result := false;
-            end
-          else
-            result := false;
-        end
-      else
-        result := false;
-    end
-  else
-    result := false;
-  CBoard.Free;
-end;}
 function TMove.CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): Boolean;
 var
   CBoard: TBoard;
@@ -138,10 +73,10 @@ begin
     begin
       if Board[NewRow, NewCol] <> -1 then
         begin
-          if abs(Move[NewRow - OldRow]) = abs(NewCol - OldCol) then
+          if abs(NewRow - OldRow) = abs(NewCol - OldCol) then
             begin                                                        //is diagonal
-              if (CBoard.WhatPlayer(Move[0, 0], Move[0, 1], Board) and ((NewRow - OldRow) > 0))
-              xor ((not CBoard.WhatPlayer(Move[0, 0], Move[0, 1], Board)) and
+              if (CBoard.WhatPlayer(OldRow, OldCol, Board) and ((NewRow - OldRow) > 0))
+              xor ((not CBoard.WhatPlayer(OldRow, OldCol, Board)) and
               ((NewRow - OldRow) < 0 )) then
                 //to move in correct direction, based on checker colour
                 begin
@@ -169,77 +104,74 @@ begin
   CBoard.Free;
 end;
 
-function TMove.PossibleLegalMoves(Board: TArray;
-  Pos: TCoordinate): TMoveList;
+function TMove.PossibleLegalMoves(Board: TArray; ARow, ACol: integer): TCoordArray;
 var
-  i: integer;                                 //get rid of pos
-  t: TMoveVector;
+  i: integer;
+  t: TCoordinate;
 begin
-  if Board[Pos[0], Pos[1]] <> -1 then
+  if Board[ARow, ACol] <> -1 then
    begin
-      t[0, 0] := Pos[0];
-      t[0, 1] := Pos[1];
       setlength(result, 8);
       i := -1;
-          t[1, 0] := Pos[0] + 1;
-          t[1, 1] := Pos[1] + 1;
-          if CheckLegalMove(Board, t) then
+          t[0] := ARow + 1;
+          t[1] := ACol + 1;
+          if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
               inc(i);
               result[i] := t;
             end;
 
-          t[1, 0] := Pos[0] + 1;
-          t[1, 1] := Pos[1] - 1;
-          if CheckLegalMove(Board, t) then
+          t[0] := ARow + 1;
+          t[1] := ACol - 1;
+          if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
               inc(i);
               result[i] := t;
             end;
 
-          t[1, 0] := Pos[0] - 1;
-          t[1, 1] := Pos[1] + 1;
-          if CheckLegalMove(Board, t) then
-            begin
-              inc(i);
-              result[i] := t;
-            end;;
-
-          t[1, 0] := Pos[0] - 1;
-          t[1, 1] := Pos[1] - 1;
-          if CheckLegalMove(Board, t) then
+          t[0] := ARow - 1;
+          t[1] := ACol + 1;
+          if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
               inc(i);
               result[i] := t;
             end;
 
-          t[1, 0] := Pos[0] + 2;
-          t[1, 1] := Pos[1] + 2;
-          if CheckLegalMove(Board, t) then
+          t[0] := ARow - 1;
+          t[1] := ACol - 1;
+          if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
               inc(i);
               result[i] := t;
             end;
 
-          t[1, 0] := Pos[0] + 2;
-          t[1, 1] := Pos[1] - 2;
-          if CheckLegalMove(Board, t) then
+          t[0] := ARow + 2;
+          t[1] := ACol + 2;
+          if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
               inc(i);
               result[i] := t;
             end;
 
-          t[1, 0] := Pos[0] - 2;
-          t[1, 1] := Pos[1] + 2;
-          if CheckLegalMove(Board, t) then
+          t[0] := ARow + 2;
+          t[1] := ACol - 2;
+          if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
               inc(i);
               result[i] := t;
             end;
 
-          t[1, 0] := Pos[0] - 2;
-          t[1, 1] := Pos[1] - 2;
-          if CheckLegalMove(Board, t) then
+          t[0] := ARow - 2;
+          t[1] := ACol + 2;
+          if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
+            begin
+              inc(i);
+              result[i] := t;
+            end;
+
+          t[0] := ARow - 2;
+          t[1] := ACol - 2;
+          if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
               inc(i);
               result[i] := t;

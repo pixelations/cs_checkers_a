@@ -20,13 +20,12 @@ type
       var CanSelect: Boolean);
   private
     { Private declarations }
-    CBoard: TBoard;
-    CAI: TAI;
+    CBoard : TBoard;
     CMove: TMove;
+    CAI: TAI;
     Board: TArray;
-    SelectState: Boolean;
-    p: TMoveVector;
-    CounterHold: integer;
+    //p: TMoveVector;
+    //CounterHold: integer;
   public
     { Public declarations }
   end;
@@ -48,17 +47,12 @@ const
 
 procedure TCheckersForm.FormCreate(Sender: TObject);
 begin
-SelectState := true;
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
 
   CMove := TMove.Create;
-  p[0, 0] := 2;
-  p[0, 1] := 1;
-  p[1, 0] := 3;
-  p[1, 1] := 2;
-  //Board := CMove.MakeMove(Board, p);
-  if Cmove.CheckLegalMove(Board,p) then  else Showmessage('');
+  Board:= CMove.MakeMove(Board, 3,3,0, 1);
+  //if Cmove.CheckLegalMove(Board,p) then  else Showmessage('');
                                 //legal move checker NOT WORKING
 
   CMove.Free;
