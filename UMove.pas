@@ -12,8 +12,8 @@ type
   TMove = class(TObject)
     public
       constructor Create();
-      function MakeMove(Board: TArray; Move: TMoveVector): TArray;
-      function CheckLegalMove(Board: TArray; Move: TMoveVector): Boolean;
+      function MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): TArray;
+      function CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): Boolean;
       function PossibleLegalMoves(Board: TArray; Pos: TCoordinate): TMoveList;
       function AllPossibleLegalMoves(Board: TArray; Player: Boolean): TArrayList;
   end;
@@ -27,7 +27,7 @@ constructor TMove.Create;
 begin
 end;
 
-function TMove.MakeMove(Board: TArray; Move: TMoveVector): TArray;
+{function TMove.MakeMove(Board: TArray; Move: TMoveVector): TArray;
 var
   i, j: integer;
 begin
@@ -40,7 +40,23 @@ begin
     end;
   result[Move[0, 0], Move[0, 1]] := -1;
   result[Move[1, 0], Move[1, 1]] := Board[Move[0, 0], Move[0, 1]];
+end;}
+function TMove.MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): TArray;
+var
+  i, j: integer;
+begin
+  {for i := 0 to 7 do
+    begin
+      for j := 0 to 7 do
+        begin
+          result[i, j] := Board[i, j];
+        end;
+    end;}
+  result := Board;
+  result[OldRow, OldCol] := -1;
+  result[NewRow, NewCol] := Board[NewRow, NewCol];
 end;
+
 
 function TMove.AllPossibleLegalMoves(Board: TArray;
   Player: Boolean): TArrayList;
@@ -72,7 +88,7 @@ begin
   CBoard.Free
 end;
 
-function TMove.CheckLegalMove(Board: TArray; Move: TMoveVector): Boolean;
+{function TMove.CheckLegalMove(Board: TArray; Move: TMoveVector): Boolean;
 var
   CBoard: TBoard;
 begin
@@ -111,12 +127,52 @@ begin
   else
     result := false;
   CBoard.Free;
+end;}
+function TMove.CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): Boolean;
+var
+  CBoard: TBoard;
+begin
+  CBoard := TBoard.Create;
+  if (not (NewRow < 0)) and (not (NewRow > 8)) and   //not out of bounds
+      (not (NewCol < 0)) and not (NewCol > 8) then
+    begin
+      if Board[NewRow, NewCol] <> -1 then
+        begin
+          if abs(Move[NewRow - OldRow]) = abs(NewCol - OldCol) then
+            begin                                                        //is diagonal
+              if (CBoard.WhatPlayer(Move[0, 0], Move[0, 1], Board) and ((NewRow - OldRow) > 0))
+              xor ((not CBoard.WhatPlayer(Move[0, 0], Move[0, 1], Board)) and
+              ((NewRow - OldRow) < 0 )) then
+                //to move in correct direction, based on checker colour
+                begin
+                  if abs(OldRow - NewRow) = 2 then
+                    begin
+                      if CBoard.WhatPlayer(((OldRow + NewRow) div 2),
+                      ((OldCol + NewCol) div 2), Board) <> CBoard.WhatPlayer(OldRow, OldCol, Board) then
+                      //checks for checker inbetween a 2 space move
+                        result := true;
+                    end
+                  else
+                        result := true;
+                end
+              else
+                result := false;
+            end
+          else
+            result := false;
+        end
+      else
+        result := false;
+    end
+  else
+    result := false;
+  CBoard.Free;
 end;
 
 function TMove.PossibleLegalMoves(Board: TArray;
   Pos: TCoordinate): TMoveList;
 var
-  i: integer;
+  i: integer;                                 //get rid of pos
   t: TMoveVector;
 begin
   if Board[Pos[0], Pos[1]] <> -1 then
