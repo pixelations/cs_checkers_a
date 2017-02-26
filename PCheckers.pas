@@ -9,7 +9,6 @@ uses
 
 type
   TCheckersForm = class(TForm)
-    ListBoxModeSelect: TListBox;
     BtnStart: TButton;
     BtnRestart: TButton;
     DrawGrid: TDrawGrid;
@@ -51,7 +50,7 @@ begin
   CBoard.InitDraughts(Board);
 
   CMove := TMove.Create;
-  Board:= CMove.MakeMove(Board, 3,3,0, 1);
+  //Board:= CMove.MakeMove(Board, 3,3,0, 1);
   //if Cmove.CheckLegalMove(Board,p) then  else Showmessage('');
                                 //legal move checker NOT WORKING
 
@@ -79,7 +78,7 @@ with DrawGrid do                       // Set scope to DrawGrid
         if (Board[ARow, ACol] = 1) or (Board[ARow, ACol] = 3) then
             Canvas.Brush.Color := clBlack
         else
-            Canvas.Brush.Color := clWhite;
+            Canvas.Brush.Color := clSilver;
       end
     else
       Canvas.Brush.Color := clInfoBk;

@@ -1,12 +1,9 @@
 ﻿[]
-Coordinates=125,143,63,58
+Coordinates=0,0,125,124
 Visible=True
 
 [BtnStart]
 Coordinates=144,78,61,58
-
-[ListBoxModeSelect]
-Coordinates=0,0,125,124
 
 [BtnRestart]
 Coordinates=46,143,75,58
