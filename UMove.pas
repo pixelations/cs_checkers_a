@@ -31,6 +31,8 @@ var
   i, j: integer;
 begin
   result := Board;
+  if abs(NewCol - OldCol) = 2 then                       //removes piece is taken by opp.
+    result[((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2)] := -1;
   result[OldRow, OldCol] := -1;
   result[NewRow, NewCol] := Board[OldRow, OldCol];
 end;
@@ -67,14 +69,15 @@ function TMove.CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: int
 var
   CBoard: TBoard;
 begin
+  result := false;
   CBoard := TBoard.Create;
-  if (not (NewRow < 0)) and (not (NewRow > 8)) and   //not out of bounds
-      (not (NewCol < 0)) and not (NewCol > 8) then
+  if (not (NewRow < 0)) and (not (NewRow > 7)) and   //not out of bounds
+      (not (NewCol < 0)) and not (NewCol > 7) then
     begin
-      if Board[NewRow, NewCol] <> -1 then
+      if Board[NewRow, NewCol] = -1 then
         begin
-          if abs(NewRow - OldRow) = abs(NewCol - OldCol) then
-            begin                                                        //is diagonal
+          if abs(NewRow - OldRow) = abs(NewCol - OldCol) then     //is diagonal
+            begin
               if (CBoard.WhatPlayer(OldRow, OldCol, Board) and ((NewRow - OldRow) > 0))
               xor ((not CBoard.WhatPlayer(OldRow, OldCol, Board)) and
               ((NewRow - OldRow) < 0 )) then
@@ -88,19 +91,11 @@ begin
                         result := true;
                     end
                   else
-                        result := true;
-                end
-              else
-                result := false;
-            end
-          else
-            result := false;
-        end
-      else
-        result := false;
-    end
-  else
-    result := false;
+                    result := true;
+                end;
+            end;
+        end;
+    end;
   CBoard.Free;
 end;
 
@@ -112,72 +107,72 @@ begin
   if Board[ARow, ACol] <> -1 then
    begin
       setlength(result, 8);
-      i := -1;
+      i := 0;
           t[0] := ARow + 1;
           t[1] := ACol + 1;
           if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
-              inc(i);
               result[i] := t;
+              inc(i);
             end;
 
           t[0] := ARow + 1;
           t[1] := ACol - 1;
           if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
-              inc(i);
               result[i] := t;
+              inc(i);
             end;
 
           t[0] := ARow - 1;
           t[1] := ACol + 1;
           if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
-              inc(i);
               result[i] := t;
+              inc(i);
             end;
 
           t[0] := ARow - 1;
           t[1] := ACol - 1;
           if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
-              inc(i);
               result[i] := t;
+              inc(i);
             end;
 
           t[0] := ARow + 2;
           t[1] := ACol + 2;
           if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
-              inc(i);
               result[i] := t;
+              inc(i);
             end;
 
           t[0] := ARow + 2;
           t[1] := ACol - 2;
           if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
-              inc(i);
               result[i] := t;
+              inc(i);
             end;
 
           t[0] := ARow - 2;
           t[1] := ACol + 2;
           if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
-              inc(i);
               result[i] := t;
+              inc(i);
             end;
 
           t[0] := ARow - 2;
           t[1] := ACol - 2;
           if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
             begin
-              inc(i);
               result[i] := t;
+              inc(i);
             end;
 
-            setlength(result, i + 1);
+          setlength(result, i);
    end;
 end;
 

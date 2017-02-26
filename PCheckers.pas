@@ -48,21 +48,18 @@ procedure TCheckersForm.FormCreate(Sender: TObject);
 begin
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
-
+  {
   CMove := TMove.Create;
-  //Board:= CMove.MakeMove(Board, 3,3,0, 1);
-  //if Cmove.CheckLegalMove(Board,p) then  else Showmessage('');
-                                //legal move checker NOT WORKING
-
+  //Board := CMove.MakeMove(Board, 3,2,5,0);
+  //if Cmove.CheckLegalMove(Board, 4, 3, 2, 1) then Board := CMove.MakeMove(Board, 4,3,2,1);
   CMove.Free;
   {
-  showmessage(inttostr(length(CMove.AllPossibleLegalMoves(Board, false))));
-  Board := CMove.AllPossibleLegalMoves(Board, false)[0];
-  //CAI := TAI.Create(2);
-  //CAI.Minimax(Board, true, CAI.MaxDepth);
-  //Board := CAI.WinningSeq[0];
+  CAI := TAI.Create(1);
+  CAI.Minimax(Board, true, CAI.MaxDepth);
+  Board := CAI.WinningSeq[0];
 
-  //CAI.Free;}
+  CAI.Free;
+  }
   CBoard.Free;
 end;
 

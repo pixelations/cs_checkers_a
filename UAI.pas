@@ -6,7 +6,7 @@ uses
   System.SysUtils, UBoard, UMove;
 
 type
-  TAI = class
+  TAI = class(TObject)
   private
     BestValue: TArray;
   public
@@ -122,7 +122,8 @@ begin
         BestValue := Max(BestValue, b);
         result := BestValue;
 
-        //if (Depth = MaxDepth - 1) then
+        if (Depth = MaxDepth - 1) then
+          begin
             v := true;
             for j := 0 to 7 do
               begin
@@ -132,8 +133,9 @@ begin
                       v := false;
                   end;
               end;
-              //nextboard
-            if v then WinningSeq[MaxDepth - Depth] := Board;
+            if v then nextboard  :=   b;
+          end;
+           //if v then WinningSeq[MaxDepth - Depth] := Board;
       end;
 
     end;
@@ -146,7 +148,9 @@ begin
         BestValue := Min(BestValue, b);
         result := BestValue;
 
-        v := true;
+        if (Depth = MaxDepth - 1) then
+          begin
+            v := true;
             for j := 0 to 7 do
               begin
                 for k := 0 to 7 do
@@ -155,7 +159,9 @@ begin
                       v := false;
                   end;
               end;
-            if v then WinningSeq[MaxDepth - Depth] := Board;
+            if v then nextboard  :=   b;
+          end;
+         //   if v then WinningSeq[MaxDepth - Depth] := Board;
       end;
 
     end;
