@@ -53,10 +53,10 @@ begin
   //Board := CMove.MakeMove(Board, 3,2,5,0);
   //if Cmove.CheckLegalMove(Board, 4, 3, 2, 1) then Board := CMove.MakeMove(Board, 4,3,2,1);
   CMove.Free;
-  {
+  }{
   CAI := TAI.Create(1);
   CAI.Minimax(Board, true, CAI.MaxDepth);
-  Board := CAI.WinningSeq[0];
+  Board := CAI.NextBoard;
 
   CAI.Free;
   }

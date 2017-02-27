@@ -9,9 +9,10 @@ type
   TAI = class(TObject)
   private
     BestValue: TArray;
+    MaxBoard: TArray;
+    MinBoard: TArray;
   public
     NextBoard: TArray;
-    WinningSeq: TArrayList;
     MaxDepth: integer;
     constructor Create(ADifficulty: integer);
     function ManualDepth(ADepth: integer): boolean;
@@ -47,6 +48,8 @@ begin // sticking to basic each counter = +-1
 end;
 
 constructor TAI.Create(ADifficulty: integer);
+var
+  i, j: integer;
 begin
   case ADifficulty of
     0:
@@ -56,7 +59,14 @@ begin
     2:
       MaxDepth := 3;
   end;
-  setlength(WinningSeq, MaxDepth);
+  for i := 0 to 7 do
+    begin
+      for j := 0 to 7 do
+      begin
+        MaxBoard[i, j] := 1;
+        MinBoard[i, j] := 0;
+      end;
+    end;
 end;
 
 function TAI.ManualDepth(ADepth: integer): boolean;
@@ -68,33 +78,39 @@ end;
 
 function TAI.Max(a, b: TArray): TArray;
 begin
-          if a[0, 0] = -2 then
-            result := b
-          else
-          if BoardVal(a) > BoardVal(b) then
-            result := a
-          else
-          if BoardVal(b) > BoardVal(a) then
-            result := b
-          else
-          if BoardVal(a) = BoardVal(b) then
-            result := a;
+
+
+        if BoardVal(a) > BoardVal(b) then
+          result := a
+        else
+          begin
+            if BoardVal(b) > BoardVal(a) then
+              result := b
+            else
+              begin
+                if BoardVal(a) = BoardVal(b) then
+                  result := a;
+              end;
+          end;
+
 end;
 
 function TAI.Min(a, b: TArray): TArray;
 
 begin
-          if a[0, 0] = -2 then
-            result := b
-          else
-          if BoardVal(a) < BoardVal(b) then
-            result := a
-          else
+
+      if BoardVal(a) < BoardVal(b) then
+        result := a
+      else
+        begin
           if BoardVal(b) < BoardVal(a) then
             result := b
           else
-          if BoardVal(a) = BoardVal(b) then
-            result := a;
+            begin
+              if BoardVal(a) = BoardVal(b) then
+                result := a;
+            end;
+        end;
 
 end;
 
@@ -110,14 +126,12 @@ begin
   begin
     CMove := TMove.Create();
     t := CMove.AllPossibleLegalMoves(Board, true);
-    BestValue[0, 0] := -2;
 
     if MaxPlayer then
     begin
-
+      BestValue := MinBoard;
       for i := Low(t) to High(t)  do
       begin
-      //bestvalue init here?
         b := Minimax(t[i], false, Depth - 1);
         BestValue := Max(BestValue, b);
         result := BestValue;
@@ -133,15 +147,14 @@ begin
                       v := false;
                   end;
               end;
-            if v then nextboard  :=   b;
+            if v then nextboard  :=   Board;
           end;
-           //if v then WinningSeq[MaxDepth - Depth] := Board;
-      end;
 
+      end;
     end;
     if (not MaxPlayer) then
     begin
-      //bestvalue init here?
+      BestValue := MaxBoard;
       for i := Low(t) to High(t) do
       begin
         b := Minimax(t[i], true, Depth - 1);
@@ -159,9 +172,9 @@ begin
                       v := false;
                   end;
               end;
-            if v then nextboard  :=   b;
+            if v then nextboard  :=   Board;
           end;
-         //   if v then WinningSeq[MaxDepth - Depth] := Board;
+
       end;
 
     end;

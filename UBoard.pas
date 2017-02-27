@@ -50,16 +50,16 @@ begin
         begin
           for j := 0 to 7 do
             begin
-              if z then
+              if z then        //checker pattern
                 begin
                   case i mod 2 of
                     0: begin
-                        if t then
+                        if t then    //if AI side
                           Board[i, j] := 1
-                        else
+                        else                //player counter
                           Board[i, j] := 0;
                       end;
-                    1: begin
+                    1: begin                   //to make the board populate in snaking fashion
                           if t then
                             Board[i, 7 - j] := 1
                           else
