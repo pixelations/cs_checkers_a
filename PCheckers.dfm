@@ -14,21 +14,14 @@ object CheckersForm: TCheckersForm
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object BtnStart: TButton
+  object BtnRestart: TButton
     Left = 848
     Top = 23
     Width = 136
     Height = 34
-    Caption = 'Start'
-    TabOrder = 0
-  end
-  object BtnRestart: TButton
-    Left = 848
-    Top = 95
-    Width = 136
-    Height = 34
     Caption = 'Restart'
-    TabOrder = 1
+    TabOrder = 0
+    OnClick = BtnRestartClick
   end
   object DrawGrid: TDrawGrid
     Left = 0
@@ -42,7 +35,7 @@ object CheckersForm: TCheckersForm
     RowCount = 8
     FixedRows = 0
     ScrollBars = ssNone
-    TabOrder = 2
+    TabOrder = 1
     OnDrawCell = DrawGridDrawCell
     OnSelectCell = DrawGridSelectCell
     ColWidths = (

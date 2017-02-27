@@ -1,9 +1,6 @@
 ﻿[]
-Coordinates=0,0,125,124
-Visible=True
-
-[BtnStart]
 Coordinates=144,78,61,58
+Visible=True
 
 [BtnRestart]
 Coordinates=46,143,75,58

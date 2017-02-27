@@ -74,7 +74,7 @@ begin
   if (not (NewRow < 0)) and (not (NewRow > 7)) and   //not out of bounds
       (not (NewCol < 0)) and not (NewCol > 7) then
     begin
-      if Board[NewRow, NewCol] = -1 then
+      if (Board[NewRow, NewCol] = -1) and (Board[OldRow, OldCol] <> -1) then
         begin
           if abs(NewRow - OldRow) = abs(NewCol - OldCol) then     //is diagonal
             begin

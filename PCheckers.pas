@@ -9,7 +9,6 @@ uses
 
 type
   TCheckersForm = class(TForm)
-    BtnStart: TButton;
     BtnRestart: TButton;
     DrawGrid: TDrawGrid;
     procedure DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
@@ -17,16 +16,19 @@ type
     procedure FormCreate(Sender: TObject);
     procedure DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
       var CanSelect: Boolean);
+    procedure BtnRestartClick(Sender: TObject);
   private
     { Private declarations }
     CBoard : TBoard;
     CMove: TMove;
     CAI: TAI;
     Board: TArray;
-    //p: TMoveVector;
-    //CounterHold: integer;
+    PlayerMove: Boolean;
+    CounterHold: integer;
+    PlayerMoveFrom: TCoordinate;
   public
     { Public declarations }
+    procedure AIMove;
   end;
 
 var
@@ -46,23 +48,41 @@ const
 
 procedure TCheckersForm.FormCreate(Sender: TObject);
 begin
+  PlayerMove := true;
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
+  CBoard.Free;
   {
   CMove := TMove.Create;
-  //Board := CMove.MakeMove(Board, 3,2,5,0);
+  Board := CMove.MakeMove(Board, 3,2,5,0);
   //if Cmove.CheckLegalMove(Board, 4, 3, 2, 1) then Board := CMove.MakeMove(Board, 4,3,2,1);
   CMove.Free;
-  }{
+  {
   CAI := TAI.Create(1);
   CAI.Minimax(Board, true, CAI.MaxDepth);
   Board := CAI.NextBoard;
 
   CAI.Free;
   }
-  CBoard.Free;
 end;
 
+
+procedure TCheckersForm.AIMove;
+begin
+  CAI := TAI.Create(1);   //implement diff. choice selection
+  CAI.Minimax(Board, true, CAI.MaxDepth);
+  Board := CAI.NextBoard;
+  CAI.Free;
+end;
+
+procedure TCheckersForm.BtnRestartClick(Sender: TObject);
+begin
+  CBoard := TBoard.Create();
+  CBoard.InitDraughts(Board);
+  DrawGrid.Invalidate; //forces the board to refresh
+  CBoard.Free;
+  PlayerMove := true;
+end;
 
 procedure TCheckersForm.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
   Rect: TRect; State: TGridDrawState);
@@ -73,9 +93,11 @@ with DrawGrid do                       // Set scope to DrawGrid
       begin   // Select colour based on cell array
 
         if (Board[ARow, ACol] = 1) or (Board[ARow, ACol] = 3) then
-            Canvas.Brush.Color := clBlack
-        else
+            Canvas.Brush.Color := clBlack;
+        if (Board[ARow, ACol] = 0) or (Board[ARow, ACol] = 2) then
             Canvas.Brush.Color := clSilver;
+        if (Board[ARow, ACol] = -2) then
+            Canvas.Brush.Color := clHighlight;
       end
     else
       Canvas.Brush.Color := clInfoBk;
@@ -87,28 +109,30 @@ end;
 procedure TCheckersForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
   var CanSelect: Boolean);
 begin
-  {if SelectState then
+  if PlayerMove then
     begin
+      PlayerMove := not PlayerMove;
+      PlayerMoveFrom[0] := ARow;
+      PlayerMoveFrom[1] := ACol;
       CounterHold := Board[ARow, ACol];
-      Board[ARow, ACol] := -1;
-      p[0, 0] := ARow;
-      p[0, 1] := ACol;
-      SelectState := not SelectState;
+      Board[ARow, ACol] := -2;
+      DrawGrid.Invalidate;
     end
   else
     begin
-     p[1, 0] := ARow;
-      p[1, 1] := ACol;
       CMove := TMove.Create;
-      if CMove.CheckLegalMove(Board, p) then
+      PlayerMove := not PlayerMove;
+      Board[PlayerMoveFrom[0],PlayerMoveFrom[1]] := CounterHold;
+      if CMove.CheckLegalMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1])  then
         begin
-          Board[ARow, ACol] := CounterHold;
-          SelectState := not SelectState;
+          Board := CMove.MakeMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1]);
+          AIMove;
         end
       else
-       ShowMessage('Not a legal Move');
+        ShowMessage('Not a legal move.');
+      DrawGrid.Invalidate;
       CMove.Free;
-    end; }
+    end;
 end;
 
 end.
