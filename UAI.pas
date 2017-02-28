@@ -15,14 +15,30 @@ type
     NextBoard: TArray;
     MaxDepth: integer;
     constructor Create(ADifficulty: integer);
+      { sets MaxDepth and defines best and worst board }
     function ManualDepth(ADepth: integer): boolean;
+      { allows you to manually set the MaxDepth }
     function Minimax(Board: TArray; MaxPlayer: boolean; Depth: integer): TArray;
+      {  }
     function Max(a, b: TArray): TArray;
+      { compares two boards and outputs the board that has the hightest value }
     function Min(a, b: TArray): TArray;
+      { compares two boards and outputs the board that has the lowest value }
     function BoardVal(Board: TArray): integer;
+      { evaluates each board with an integer value }
   end;
 
 implementation
+
+const
+  C_P1 = 0;     //P1 counter
+  C_P1_P = 2;   //promoted P1 counter
+  C_AI = 1;     //AI counter
+  C_AI_P = 3;   //promoted AI counter
+  NC = -1;      //no counter
+  EASY = 0;
+  INTER = 1;
+  HARD = 2;
 
 { TAI }
 
@@ -35,11 +51,11 @@ begin // sticking to basic each counter = +-1
   begin
     for j := Low(Board[i]) to High(Board[i]) do
       begin
-        if Board[i, j] <> -1 then
+        if Board[i, j] <> NC then
           begin
-            if (Board[i, j] = 0) or (Board[i, j] = 2) then
+            if (Board[i, j] = C_P1) or (Board[i, j] = C_P1_P) then
               dec(k);
-            if (Board[i, j] = 1) or (Board[i, j] = 3) then
+            if (Board[i, j] = C_AI) or (Board[i, j] = C_AI_P) then
               inc(k);
           end;
       end;
@@ -52,19 +68,19 @@ var
   i, j: integer;
 begin
   case ADifficulty of
-    0:
-      MaxDepth := 1;
-    1:
+    EASY:
       MaxDepth := 2;
-    2:
+    INTER:
       MaxDepth := 3;
+    HARD:
+      MaxDepth := 4;
   end;
   for i := 0 to 7 do
     begin
       for j := 0 to 7 do
       begin
-        MaxBoard[i, j] := 1;
-        MinBoard[i, j] := 0;
+        MaxBoard[i, j] := C_AI;
+        MinBoard[i, j] := C_P1;
       end;
     end;
 end;
@@ -78,40 +94,36 @@ end;
 
 function TAI.Max(a, b: TArray): TArray;
 begin
-
-
-        if BoardVal(a) > BoardVal(b) then
-          result := a
-        else
-          begin
-            if BoardVal(b) > BoardVal(a) then
-              result := b
-            else
-              begin
-                if BoardVal(a) = BoardVal(b) then
-                  result := a;
-              end;
-          end;
+  if BoardVal(a) > BoardVal(b) then
+    result := a
+  else
+    begin
+      if BoardVal(b) > BoardVal(a) then
+        result := b
+      else
+        begin
+          if BoardVal(a) = BoardVal(b) then
+            result := a;
+        end;
+    end;
 
 end;
 
 function TAI.Min(a, b: TArray): TArray;
 
 begin
-
-      if BoardVal(a) < BoardVal(b) then
-        result := a
+  if BoardVal(a) < BoardVal(b) then
+    result := a
+  else
+    begin
+      if BoardVal(b) < BoardVal(a) then
+        result := b
       else
         begin
-          if BoardVal(b) < BoardVal(a) then
-            result := b
-          else
-            begin
-              if BoardVal(a) = BoardVal(b) then
-                result := a;
-            end;
+          if BoardVal(a) = BoardVal(b) then
+            result := a;
         end;
-
+    end;
 end;
 
 function TAI.Minimax(Board: TArray; MaxPlayer: boolean; Depth: integer): TArray;
@@ -147,7 +159,7 @@ begin
                       v := false;
                   end;
               end;
-            if v then nextboard  :=   Board;
+            if v then nextboard := Board;
           end;
 
       end;
@@ -172,7 +184,7 @@ begin
                       v := false;
                   end;
               end;
-            if v then nextboard  :=   Board;
+            if v then nextboard := Board;
           end;
 
       end;

@@ -11,21 +11,28 @@ type
   TCheckersForm = class(TForm)
     BtnRestart: TButton;
     DrawGrid: TDrawGrid;
+    Label1: TLabel;
+    btnEasy: TButton;
+    btnInter: TButton;
+    btnHard: TButton;
     procedure DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
     procedure DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
       var CanSelect: Boolean);
     procedure BtnRestartClick(Sender: TObject);
+    procedure btnEasyClick(Sender: TObject);
+    procedure btnInterClick(Sender: TObject);
+    procedure btnHardClick(Sender: TObject);
   private
     { Private declarations }
     CBoard : TBoard;
     CMove: TMove;
     CAI: TAI;
     Board: TArray;
-    PlayerMove: Boolean;
-    CounterHold: integer;
     PlayerMoveFrom: TCoordinate;
+    PlayerMove: Boolean;
+    CounterHold, Difficulty: integer;
   public
     { Public declarations }
     procedure AIMove;
@@ -39,8 +46,14 @@ var
 implementation
 
 const
-  ROWS  = 8;
-  COLUMNS = 8;
+  C_P1 = 0;     //P1 counter
+  C_P1_P = 2;   //promoted P1 counter
+  C_AI = 1;     //AI counter
+  C_AI_P = 3;   //promoted AI counter
+  NC = -1;      //no counter
+  EASY = 0;
+  INTER = 1;
+  HARD = 2;
 
 {$R *.dfm}                                  //init draughts error
 
@@ -48,31 +61,44 @@ const
 
 procedure TCheckersForm.FormCreate(Sender: TObject);
 begin
+  Difficulty := INTER;
   PlayerMove := true;
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
   CBoard.Free;
-  {
-  CMove := TMove.Create;
-  Board := CMove.MakeMove(Board, 3,2,5,0);
-  //if Cmove.CheckLegalMove(Board, 4, 3, 2, 1) then Board := CMove.MakeMove(Board, 4,3,2,1);
-  CMove.Free;
-  {
-  CAI := TAI.Create(1);
-  CAI.Minimax(Board, true, CAI.MaxDepth);
-  Board := CAI.NextBoard;
-
-  CAI.Free;
-  }
 end;
 
 
 procedure TCheckersForm.AIMove;
 begin
-  CAI := TAI.Create(1);   //implement diff. choice selection
+  CAI := TAI.Create(Difficulty);   //implement diff. choice selection
   CAI.Minimax(Board, true, CAI.MaxDepth);
   Board := CAI.NextBoard;
   CAI.Free;
+end;
+
+procedure TCheckersForm.btnEasyClick(Sender: TObject);
+begin
+  btnEasy.Enabled := false;
+  btnInter.Enabled := false;
+  btnHard.Enabled := false;
+  Difficulty := EASY;
+end;
+
+procedure TCheckersForm.btnHardClick(Sender: TObject);
+begin
+  btnEasy.Enabled := false;
+  btnInter.Enabled := false;
+  btnHard.Enabled := false;
+  Difficulty := HARD;
+end;
+
+procedure TCheckersForm.btnInterClick(Sender: TObject);
+begin
+  btnEasy.Enabled := false;
+  btnInter.Enabled := false;
+  btnHard.Enabled := false;
+  Difficulty := INTER;
 end;
 
 procedure TCheckersForm.BtnRestartClick(Sender: TObject);
@@ -82,6 +108,9 @@ begin
   DrawGrid.Invalidate; //forces the board to refresh
   CBoard.Free;
   PlayerMove := true;
+  btnEasy.Enabled := true;
+  btnInter.Enabled := true;
+  btnHard.Enabled := true;
 end;
 
 procedure TCheckersForm.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
