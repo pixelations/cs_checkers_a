@@ -12,9 +12,13 @@ type
   public
     constructor Create();
       function MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): TArray;
+        { moves a counter from one cell to another }
       function CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): Boolean;
+        { checks the move agianst the ruleset }
       function PossibleLegalMoves(Board: TArray; ARow, ACol: integer): TCoordArray;
+        { list all the result coordinates of legal moves from a given coordinate }
       function AllPossibleLegalMoves(Board: TArray; Player: Boolean): TArrayList;
+        { uses AllPossibleLegalMoves output all boards for which a player can move to }
   end;
 
 implementation

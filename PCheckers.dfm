@@ -21,15 +21,6 @@ object CheckersForm: TCheckersForm
     Height = 13
     Caption = 'AI Difficulty:'
   end
-  object BtnRestart: TButton
-    Left = 848
-    Top = 23
-    Width = 136
-    Height = 34
-    Caption = 'Restart'
-    TabOrder = 0
-    OnClick = BtnRestartClick
-  end
   object DrawGrid: TDrawGrid
     Left = 0
     Top = 0
@@ -63,6 +54,15 @@ object CheckersForm: TCheckersForm
       100
       100
       100)
+  end
+  object BtnRestart: TButton
+    Left = 848
+    Top = 23
+    Width = 136
+    Height = 34
+    Caption = 'Restart'
+    TabOrder = 0
+    OnClick = BtnRestartClick
   end
   object btnEasy: TButton
     Left = 872

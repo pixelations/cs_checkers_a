@@ -31,7 +31,7 @@ type
     CAI: TAI;
     Board: TArray;
     PlayerMoveFrom: TCoordinate;
-    PlayerMove: Boolean;
+    PlayerMove, startDiff: Boolean;
     CounterHold, Difficulty: integer;
   public
     { Public declarations }
@@ -62,6 +62,7 @@ const
 procedure TCheckersForm.FormCreate(Sender: TObject);
 begin
   Difficulty := INTER;
+  startDiff := false;
   PlayerMove := true;
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
@@ -79,6 +80,7 @@ end;
 
 procedure TCheckersForm.btnEasyClick(Sender: TObject);
 begin
+  startDiff := true;
   btnEasy.Enabled := false;
   btnInter.Enabled := false;
   btnHard.Enabled := false;
@@ -87,6 +89,7 @@ end;
 
 procedure TCheckersForm.btnHardClick(Sender: TObject);
 begin
+  startDiff := true;
   btnEasy.Enabled := false;
   btnInter.Enabled := false;
   btnHard.Enabled := false;
@@ -95,6 +98,7 @@ end;
 
 procedure TCheckersForm.btnInterClick(Sender: TObject);
 begin
+  startDiff := true;
   btnEasy.Enabled := false;
   btnInter.Enabled := false;
   btnHard.Enabled := false;
@@ -103,6 +107,7 @@ end;
 
 procedure TCheckersForm.BtnRestartClick(Sender: TObject);
 begin
+  startDiff := false;
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
   DrawGrid.Invalidate; //forces the board to refresh
@@ -130,7 +135,6 @@ with DrawGrid do                       // Set scope to DrawGrid
       end
     else
       Canvas.Brush.Color := clInfoBk;
-
     Canvas.FillRect(Rect);               // Fill cell with selected colour
   end;
 end;
@@ -138,6 +142,8 @@ end;
 procedure TCheckersForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
   var CanSelect: Boolean);
 begin
+if startDiff then
+  begin
   if PlayerMove then
     begin
       PlayerMove := not PlayerMove;
@@ -162,6 +168,9 @@ begin
       DrawGrid.Invalidate;
       CMove.Free;
     end;
+  end
+else
+  ShowMessage('Pick AI difficulty');
 end;
 
 end.

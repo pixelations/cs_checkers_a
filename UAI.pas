@@ -19,7 +19,7 @@ type
     function ManualDepth(ADepth: integer): boolean;
       { allows you to manually set the MaxDepth }
     function Minimax(Board: TArray; MaxPlayer: boolean; Depth: integer): TArray;
-      {  }
+      { this will create a tree to decide the best move for given depth of tree }
     function Max(a, b: TArray): TArray;
       { compares two boards and outputs the board that has the hightest value }
     function Min(a, b: TArray): TArray;
@@ -69,11 +69,11 @@ var
 begin
   case ADifficulty of
     EASY:
-      MaxDepth := 2;
-    INTER:
       MaxDepth := 3;
+    INTER:
+      MaxDepth := 5;
     HARD:
-      MaxDepth := 4;
+      MaxDepth := 7;
   end;
   for i := 0 to 7 do
     begin
