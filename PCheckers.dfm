@@ -14,6 +14,13 @@ object CheckersForm: TCheckersForm
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object Label1: TLabel
+    Left = 872
+    Top = 152
+    Width = 60
+    Height = 13
+    Caption = 'AI Difficulty:'
+  end
   object BtnRestart: TButton
     Left = 848
     Top = 23
@@ -56,5 +63,32 @@ object CheckersForm: TCheckersForm
       100
       100
       100)
+  end
+  object btnEasy: TButton
+    Left = 872
+    Top = 171
+    Width = 75
+    Height = 25
+    Caption = 'Easy'
+    TabOrder = 2
+    OnClick = btnEasyClick
+  end
+  object btnInter: TButton
+    Left = 872
+    Top = 202
+    Width = 75
+    Height = 25
+    Caption = 'Intermediate'
+    TabOrder = 3
+    OnClick = btnInterClick
+  end
+  object btnHard: TButton
+    Left = 872
+    Top = 233
+    Width = 75
+    Height = 25
+    Caption = 'Hard'
+    TabOrder = 4
+    OnClick = btnHardClick
   end
 end

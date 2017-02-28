@@ -19,6 +19,12 @@ type
 
 implementation
 
+const
+  C_P1 = 0;     //P1 counter
+  C_P1_P = 2;   //promoted P1 counter
+  C_AI = 1;     //AI counter
+  C_AI_P = 3;   //promoted AI counter
+  NC = -1;      //no counter
 
 { TMove }
 
@@ -27,13 +33,11 @@ begin
 end;
 
 function TMove.MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): TArray;
-var
-  i, j: integer;
 begin
   result := Board;
   if abs(NewCol - OldCol) = 2 then                       //removes piece is taken by opp.
     result[((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2)] := -1;
-  result[OldRow, OldCol] := -1;
+  result[OldRow, OldCol] := NC;
   result[NewRow, NewCol] := Board[OldRow, OldCol];
 end;
 
@@ -74,7 +78,7 @@ begin
   if (not (NewRow < 0)) and (not (NewRow > 7)) and   //not out of bounds
       (not (NewCol < 0)) and not (NewCol > 7) then
     begin
-      if (Board[NewRow, NewCol] = -1) and (Board[OldRow, OldCol] <> -1) then
+      if (Board[NewRow, NewCol] = NC) and (Board[OldRow, OldCol] <> NC) then
         begin
           if abs(NewRow - OldRow) = abs(NewCol - OldCol) then     //is diagonal
             begin
@@ -104,7 +108,7 @@ var
   i: integer;
   t: TCoordinate;
 begin
-  if Board[ARow, ACol] <> -1 then
+  if Board[ARow, ACol] <> NC then
    begin
       setlength(result, 8);
       i := 0;

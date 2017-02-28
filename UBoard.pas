@@ -17,11 +17,19 @@ type
       function RemoveCounter(ARow, ACol: integer; Board: TArray): boolean;
         { removes a counter on selected tile of the board }
       function ClearBoard(Board: TArray): boolean;
-        { Removes all counters from the board }
+        { removes all counters from the board }
       function WhatPlayer(ARow, ACol: integer; Board: TArray): boolean;
+        { determines if the counter belongs to AI or P1 }
   end;
 
 implementation
+
+const
+  C_P1 = 0;     //P1 counter
+  C_P1_P = 2;   //promoted P1 counter
+  C_AI = 1;     //AI counter
+  C_AI_P = 3;   //promoted AI counter
+  NC = -1;      //no counter
 
 { TBoard }
 
@@ -40,7 +48,7 @@ begin
   for i := 0 to 7 do
     begin
       for j := 0 to 7 do
-        Board[i, j] := -1;
+        Board[i, j] := NC;
     end;
 
   for i := 0 to 7 do
@@ -55,15 +63,15 @@ begin
                   case i mod 2 of
                     0: begin
                         if t then    //if AI side
-                          Board[i, j] := 1
+                          Board[i, j] := C_AI
                         else                //player counter
-                          Board[i, j] := 0;
+                          Board[i, j] := C_P1;
                       end;
                     1: begin                   //to make the board populate in snaking fashion
                           if t then
-                            Board[i, 7 - j] := 1
+                            Board[i, 7 - j] := C_AI
                           else
-                            Board[i, 7 - j] := 0;
+                            Board[i, 7 - j] := C_P1;
                       end;
                   end;
                 end;
@@ -87,14 +95,14 @@ end;
 
 function TBoard.RemoveCounter(ARow, ACol: integer; Board: TArray): boolean;
 begin
-  Board[ARow, ACol] := -1;
+  Board[ARow, ACol] := NC;
   result := true;
 end;
 
 function TBoard.WhatPlayer(ARow, ACol: integer; Board: TArray): boolean;
 begin
-if (Board[ARow, ACol] = 0) or (Board[ARow, ACol] = 2) then result := false;
-if (Board[ARow, ACol] = 1) or (Board[ARow, ACol] = 3) then result := true;
+if (Board[ARow, ACol] = C_P1) or (Board[ARow, ACol] = C_P1_P) then result := false;
+if (Board[ARow, ACol] = C_AI) or (Board[ARow, ACol] = C_AI_P) then result := true;
 end;
 
 function TBoard.ClearBoard(Board: TArray): boolean;
