@@ -5,7 +5,7 @@
     <property name="$name" value="Class Diagram" />
     <reference referencedUin="delphi:e_class:src:ProjCheckers:UAI.TAI">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="71,65,150,221" />
+      <property name="bounds" value="71,65,147,250" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.MaxDepth" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.AIColour" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.BestValue" />
@@ -18,12 +18,12 @@
       <reference referencedUin="delphi:e_method:src:ProjCheckers:UAI.TAI.BoardVal(UBoard.TCounter[][])" />
       <reference referencedUin="delphi:e_method:src:ProjCheckers:UAI.TAI.AIMove(UBoard.TCounter[][])" />
       <reference referencedUin="delphi:l_ast:src:ProjCheckers:UAI.TAI.NextBoard">
-        <property name="sourceAnchor" value="221,263" />
+        <property name="sourceAnchor" value="218,268" />
         <property name="targetAnchor" value="341,400" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_ast:src:ProjCheckers:UAI.TAI.BestValue">
-        <property name="sourceAnchor" value="221,258" />
+        <property name="sourceAnchor" value="218,266" />
         <property name="targetAnchor" value="347,400" />
         <property name="bendpoints" value="" />
       </reference>
@@ -46,6 +46,18 @@
       <reference referencedUin="delphi:l_ast:src:ProjCheckers:UAI.TAI.WinningSeq">
         <property name="sourceAnchor" value="116,286" />
         <property name="targetAnchor" value="116,360" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.MaxBoard" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.MinBoard" />
+      <reference referencedUin="delphi:l_ast:src:ProjCheckers:UAI.TAI.MaxBoard">
+        <property name="sourceAnchor" value="218,274" />
+        <property name="targetAnchor" value="335,400" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:l_ast:src:ProjCheckers:UAI.TAI.MinBoard">
+        <property name="sourceAnchor" value="218,279" />
+        <property name="targetAnchor" value="329,400" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
@@ -107,7 +119,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TCheckersForm">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="580,320,181,250" />
+      <property name="bounds" value="580,320,178,430" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.ListBoxModeSelect" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.BtnStart" />
@@ -154,9 +166,23 @@
       <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.CAI" />
       <reference referencedUin="delphi:l_ast:src:ProjCheckers:PCheckers.TCheckersForm.CAI">
         <property name="sourceAnchor" value="580,395" />
-        <property name="targetAnchor" value="221,210" />
+        <property name="targetAnchor" value="218,224" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.Label1" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.btnEasy" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.btnInter" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.btnHard" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TCheckersForm.BtnRestartClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TCheckersForm.btnEasyClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TCheckersForm.btnInterClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TCheckersForm.btnHardClick(System.TObject)" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.PlayerMoveFrom" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.PlayerMove" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.startDiff" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.CounterHold" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TCheckersForm.Difficulty" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TCheckersForm.AIMove()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArray">
       <property name="$shortcutReference" value="true" />
