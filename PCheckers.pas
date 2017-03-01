@@ -126,9 +126,9 @@ with DrawGrid do                       // Set scope to DrawGrid
     if Board[ARow, ACol] <> -1 then
       begin   // Select colour based on cell array
 
-        if (Board[ARow, ACol] = 1) or (Board[ARow, ACol] = 3) then
+        if (Board[ARow, ACol] = C_AI) or (Board[ARow, ACol] = C_AI_P) then
             Canvas.Brush.Color := clBlack;
-        if (Board[ARow, ACol] = 0) or (Board[ARow, ACol] = 2) then
+        if (Board[ARow, ACol] = C_P1) or (Board[ARow, ACol] = C_P1_P) then
             Canvas.Brush.Color := clSilver;
         if (Board[ARow, ACol] = -2) then
             Canvas.Brush.Color := clHighlight;

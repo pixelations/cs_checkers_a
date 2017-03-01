@@ -37,12 +37,23 @@ begin
 end;
 
 function TMove.MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): TArray;
+var
+  CBoard: TBoard;
 begin
   result := Board;
   if abs(NewCol - OldCol) = 2 then                       //removes piece is taken by opp.
     result[((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2)] := -1;
+  result[NewRow, NewCol] := result[OldRow, OldCol];
   result[OldRow, OldCol] := NC;
-  result[NewRow, NewCol] := Board[OldRow, OldCol];
+
+  //to be promoted
+  CBoard := TBoard.Create;
+  if ((CBoard.WhatPlayer(NewRow, NewCol, result)) and (NewRow = 7)) then
+    result[NewRow, NewCol] := C_AI_P;
+  if (not ((CBoard.WhatPlayer(NewRow, NewCol, result))) and (NewRow = 0)) then
+    result[NewRow, NewCol] := C_P1_P;
+  CBoard.Free;
+
 end;
 
 
@@ -86,20 +97,38 @@ begin
         begin
           if abs(NewRow - OldRow) = abs(NewCol - OldCol) then     //is diagonal
             begin
-              if (CBoard.WhatPlayer(OldRow, OldCol, Board) and ((NewRow - OldRow) > 0))
-              xor ((not CBoard.WhatPlayer(OldRow, OldCol, Board)) and
-              ((NewRow - OldRow) < 0 )) then
-                //to move in correct direction, based on checker colour
+              if (abs(OldRow - NewRow) = 1) xor (abs(OldRow - NewRow) = 2) then  // moves 1 or 2 spaces, but not both
                 begin
-                  if abs(OldRow - NewRow) = 2 then
-                    begin
-                      if CBoard.WhatPlayer(((OldRow + NewRow) div 2),
-                      ((OldCol + NewCol) div 2), Board) <> CBoard.WhatPlayer(OldRow, OldCol, Board) then
-                      //checks for checker inbetween a 2 space move
+                  if (CBoard.WhatPlayer(OldRow, OldCol, Board) and ((NewRow - OldRow) > 0)) xor
+                   ((not CBoard.WhatPlayer(OldRow, OldCol, Board)) and ((NewRow - OldRow) < 0 )) then
+                            //to move in correct direction, based on checker colour
+                    begin        
+                      if abs(OldRow - NewRow) = 2 then
+                        begin
+                          if CBoard.WhatPlayer(((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2), Board)
+                          <> CBoard.WhatPlayer(OldRow, OldCol, Board) then
+                          //checks for checker inbetween a 2 space move
+                              result := true;
+                        end
+                      else
                         result := true;
                     end
                   else
-                    result := true;
+                    begin
+                      if (Board[OldRow, OldCol] = C_AI_P) xor (Board[OldRow, OldCol] = C_P1_P) then
+                        //if promoted, no directional check
+                        begin  
+                          if abs(OldRow - NewRow) = 2 then
+                            begin
+                              if CBoard.WhatPlayer(((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2), Board)
+                              <> CBoard.WhatPlayer(OldRow, OldCol, Board) then
+                              //checks for checker inbetween a 2 space move
+                                result := true;
+                            end
+                          else
+                            result := true;
+                        end;
+                    end;
                 end;
             end;
         end;

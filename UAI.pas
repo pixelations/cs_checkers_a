@@ -53,10 +53,14 @@ begin // sticking to basic each counter = +-1
       begin
         if Board[i, j] <> NC then
           begin
-            if (Board[i, j] = C_P1) or (Board[i, j] = C_P1_P) then
+            if (Board[i, j] = C_P1) then
               dec(k);
-            if (Board[i, j] = C_AI) or (Board[i, j] = C_AI_P) then
+            if (Board[i, j] = C_P1_P) then
+              dec(k, 2);
+            if (Board[i, j] = C_AI) then
               inc(k);
+            if (Board[i, j] = C_AI_P) then
+              inc(k, 2);
           end;
       end;
   end;
