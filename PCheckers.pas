@@ -51,6 +51,7 @@ const
   C_AI = 1;     //AI counter
   C_AI_P = 3;   //promoted AI counter
   NC = -1;      //no counter
+  HIGHLIGHT = -2;
   EASY = 0;
   INTER = 1;
   HARD = 2;
@@ -123,19 +124,44 @@ procedure TCheckersForm.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
 begin
 with DrawGrid do                       // Set scope to DrawGrid
   begin
-    if Board[ARow, ACol] <> -1 then
-      begin   // Select colour based on cell array
-
-        if (Board[ARow, ACol] = C_AI) or (Board[ARow, ACol] = C_AI_P) then
-            Canvas.Brush.Color := clBlack;
-        if (Board[ARow, ACol] = C_P1) or (Board[ARow, ACol] = C_P1_P) then
-            Canvas.Brush.Color := clSilver;
-        if (Board[ARow, ACol] = -2) then
-            Canvas.Brush.Color := clHighlight;
+    Canvas.Pen.Color := clBlack;
+    Canvas.Brush.Color := clInfoBk;
+    if ARow mod 2 = 0 then
+      begin
+       if ACol mod 2 = 1 then
+          Canvas.Brush.Color := clGray;
       end
     else
-      Canvas.Brush.Color := clInfoBk;
-    Canvas.FillRect(Rect);               // Fill cell with selected colour
+        if ACol mod 2 = 0 then
+          Canvas.Brush.Color := clGray;
+    Canvas.FillRect(Rect);
+        case Board[ARow, ACol] of
+          C_AI: begin
+                    Canvas.Brush.Color := clWhite;
+                    Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+          end;
+          C_AI_P: begin
+                    Canvas.Brush.Color := clBlack;
+                    Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+                    Canvas.Brush.Color := clWhite;
+                    Canvas.Ellipse(Rect.Left + 20, Rect.Top + 20, Rect.Left + 80, Rect.Top + 80);
+          end;
+          C_P1: begin
+                  Canvas.Brush.Color := clRed;
+                  Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+          end;
+          C_P1_P: begin
+                    Canvas.Brush.Color := clBlack;
+                    Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+                    Canvas.Brush.Color := clRed;
+                    Canvas.Ellipse(Rect.Left + 20, Rect.Top + 20, Rect.Left + 80, Rect.Top + 80);
+          end;
+          HIGHLIGHT: begin
+                      Canvas.Brush.Color := clHighlight;
+                      Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+          end;
+        end;
+
   end;
 end;
 
