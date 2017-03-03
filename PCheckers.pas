@@ -168,7 +168,7 @@ end;
 procedure TCheckersForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
   var CanSelect: Boolean);
 begin
-if startDiff then
+if startDiff and not ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
   begin
   if PlayerMove then
     begin
@@ -176,7 +176,7 @@ if startDiff then
       PlayerMoveFrom[0] := ARow;
       PlayerMoveFrom[1] := ACol;
       CounterHold := Board[ARow, ACol];
-      Board[ARow, ACol] := -2;
+      Board[ARow, ACol] := HIGHLIGHT;
       DrawGrid.Invalidate;
     end
   else
@@ -196,7 +196,12 @@ if startDiff then
     end;
   end
 else
-  ShowMessage('Pick AI difficulty');
+  begin
+  if not startDiff then
+    ShowMessage('Pick AI difficulty');
+  if ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
+    ShowMessage('Not a legal move');
+  end;
 end;
 
 end.
