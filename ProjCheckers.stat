@@ -1,14 +1,14 @@
 [Stats]
 <<<<<<< HEAD
-EditorSecs=81150
-DesignerSecs=1919
+EditorSecs=81188
+DesignerSecs=1925
 InspectorSecs=912
-CompileSecs=552943
-OtherSecs=3165
+CompileSecs=554086
+OtherSecs=3168
 StartTime=10/01/2017 14:58:16
 RealKeys=0
 EffectiveKeys=0
-DebugSecs=18086
+DebugSecs=18245
 =======
 EditorSecs=73727
 DesignerSecs=1755
