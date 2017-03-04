@@ -1,7 +1,7 @@
-object CheckersForm: TCheckersForm
+object DraughtsForm: TDraughtsForm
   Left = 0
   Top = 0
-  Caption = 'Checkers'
+  Caption = 'Draughts'
   ClientHeight = 900
   ClientWidth = 1000
   Color = clBtnFace
@@ -16,7 +16,7 @@ object CheckersForm: TCheckersForm
   TextHeight = 13
   object Label1: TLabel
     Left = 872
-    Top = 152
+    Top = 240
     Width = 60
     Height = 13
     Caption = 'AI Difficulty:'
@@ -66,7 +66,7 @@ object CheckersForm: TCheckersForm
   end
   object btnEasy: TButton
     Left = 872
-    Top = 171
+    Top = 259
     Width = 75
     Height = 25
     Caption = 'Easy'
@@ -75,7 +75,7 @@ object CheckersForm: TCheckersForm
   end
   object btnInter: TButton
     Left = 872
-    Top = 202
+    Top = 290
     Width = 75
     Height = 25
     Caption = 'Intermediate'
@@ -84,11 +84,27 @@ object CheckersForm: TCheckersForm
   end
   object btnHard: TButton
     Left = 872
-    Top = 233
+    Top = 321
     Width = 75
     Height = 25
     Caption = 'Hard'
     TabOrder = 4
     OnClick = btnHardClick
+  end
+  object btnSave: TButton
+    Left = 848
+    Top = 79
+    Width = 136
+    Height = 34
+    Caption = 'Save Game'
+    TabOrder = 5
+  end
+  object btnLoad: TButton
+    Left = 848
+    Top = 135
+    Width = 136
+    Height = 34
+    Caption = 'Load Game'
+    TabOrder = 6
   end
 end

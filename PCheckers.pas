@@ -8,13 +8,15 @@ uses
   Vcl.Grids, Vcl.StdCtrls, UBoard, UMove, UAI;
 
 type
-  TCheckersForm = class(TForm)
+  TDraughtsForm = class(TForm)
     BtnRestart: TButton;
     DrawGrid: TDrawGrid;
     Label1: TLabel;
     btnEasy: TButton;
     btnInter: TButton;
     btnHard: TButton;
+    btnSave: TButton;
+    btnLoad: TButton;
     procedure DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
@@ -39,7 +41,7 @@ type
   end;
 
 var
-  CheckersForm: TCheckersForm;
+  DraughtsForm: TDraughtsForm;
 
 
 
@@ -60,7 +62,7 @@ const
 
 { TCForm }
 
-procedure TCheckersForm.FormCreate(Sender: TObject);
+procedure TDraughtsForm.FormCreate(Sender: TObject);
 begin
   Difficulty := INTER;
   startDiff := false;
@@ -71,7 +73,7 @@ begin
 end;
 
 
-procedure TCheckersForm.AIMove;
+procedure TDraughtsForm.AIMove;
 begin
   CAI := TAI.Create(Difficulty);   //implement diff. choice selection
   CAI.Minimax(Board, true, CAI.MaxDepth);
@@ -79,7 +81,7 @@ begin
   CAI.Free;
 end;
 
-procedure TCheckersForm.btnEasyClick(Sender: TObject);
+procedure TDraughtsForm.btnEasyClick(Sender: TObject);
 begin
   startDiff := true;
   btnEasy.Enabled := false;
@@ -88,7 +90,7 @@ begin
   Difficulty := EASY;
 end;
 
-procedure TCheckersForm.btnHardClick(Sender: TObject);
+procedure TDraughtsForm.btnHardClick(Sender: TObject);
 begin
   startDiff := true;
   btnEasy.Enabled := false;
@@ -97,7 +99,7 @@ begin
   Difficulty := HARD;
 end;
 
-procedure TCheckersForm.btnInterClick(Sender: TObject);
+procedure TDraughtsForm.btnInterClick(Sender: TObject);
 begin
   startDiff := true;
   btnEasy.Enabled := false;
@@ -106,7 +108,7 @@ begin
   Difficulty := INTER;
 end;
 
-procedure TCheckersForm.BtnRestartClick(Sender: TObject);
+procedure TDraughtsForm.BtnRestartClick(Sender: TObject);
 begin
   startDiff := false;
   CBoard := TBoard.Create();
@@ -119,7 +121,7 @@ begin
   btnHard.Enabled := true;
 end;
 
-procedure TCheckersForm.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
+procedure TDraughtsForm.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
   Rect: TRect; State: TGridDrawState);
 begin
 with DrawGrid do                       // Set scope to DrawGrid
@@ -165,7 +167,7 @@ with DrawGrid do                       // Set scope to DrawGrid
   end;
 end;
 
-procedure TCheckersForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
+procedure TDraughtsForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
   var CanSelect: Boolean);
 begin
 if startDiff and not ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
