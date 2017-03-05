@@ -5,4 +5,5 @@
   <Option Name="namespaceFolder.UBoard" Type="System.String" Value="UBoard" Category="General" IsBrowsable="False" />
   <Option Name="namespaceFolder.UAI" Type="System.String" Value="UAI" Category="General" IsBrowsable="False" />
   <Option Name="namespaceFolder.ProjCheckers" Type="System.String" Value="ProjCheckers" Category="General" IsBrowsable="False" />
+  <Option Name="namespaceFolder.USaveLoad" Type="System.String" Value="USaveLoad" Category="General" IsBrowsable="False" />
 </TgConfig>

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Vcl.Grids, Vcl.StdCtrls, UBoard, UMove, UAI;
+  Vcl.Grids, Vcl.StdCtrls, UBoard, UMove, UAI, USaveLoad;
 
 type
   TDraughtsForm = class(TForm)
@@ -26,6 +26,8 @@ type
     procedure btnEasyClick(Sender: TObject);
     procedure btnInterClick(Sender: TObject);
     procedure btnHardClick(Sender: TObject);
+    procedure btnSaveClick(Sender: TObject);
+    procedure btnLoadClick(Sender: TObject);
   private
     { Private declarations }
     CBoard : TBoard;
@@ -53,7 +55,9 @@ const
   C_AI = 1;     //AI counter
   C_AI_P = 3;   //promoted AI counter
   NC = -1;      //no counter
+  EXCEPTION = -3; //if there is an exception
   HIGHLIGHT = -2;
+  EMPTY = -4;
   EASY = 0;
   INTER = 1;
   HARD = 2;
@@ -67,6 +71,7 @@ begin
   Difficulty := INTER;
   startDiff := false;
   PlayerMove := true;
+  CounterHold := EMPTY;
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
   CBoard.Free;
@@ -108,6 +113,41 @@ begin
   Difficulty := INTER;
 end;
 
+procedure TDraughtsForm.btnLoadClick(Sender: TObject);
+var
+  CSaveLoad: TSaveLoad;
+  LoadDialog: TOpenDialog;
+begin
+  BtnRestartClick(Sender);
+  LoadDialog := TOpenDialog.Create(Self);
+  LoadDialog.InitialDir := GetCurrentDir;
+  LoadDialog.Options := [ofFileMustExist];
+  LoadDialog.Filter := 'Text File|*.txt';
+  LoadDialog.FilterIndex := 1;
+  if LoadDialog.Execute then
+    begin
+      CSaveLoad := TSaveLoad.Create;
+      Board := CSaveLoad.Load(LoadDialog.FileName, Difficulty);
+      case Difficulty of
+        EASY: begin
+                btnEasyClick(Sender);
+                ShowMessage('AI difficulty is: Easy.');
+        end;
+        INTER: begin
+                btnInterClick(Sender);
+                ShowMessage('AI difficulty is: Intermediate.');
+        end;
+        HARD: begin
+                btnHardClick(Sender);
+                ShowMessage('AI difficulty is: Hard.');
+        end;
+      end;
+      CSaveLoad.Free;
+    end;
+  LoadDialog.Free;
+  DrawGrid.Invalidate;
+end;
+
 procedure TDraughtsForm.BtnRestartClick(Sender: TObject);
 begin
   startDiff := false;
@@ -119,6 +159,35 @@ begin
   btnEasy.Enabled := true;
   btnInter.Enabled := true;
   btnHard.Enabled := true;
+end;
+
+procedure TDraughtsForm.btnSaveClick(Sender: TObject);
+var
+  CSaveLoad: TSaveLoad;
+  SaveDialog: TSaveDialog;
+begin
+  if startDiff and (CounterHold = EMPTY) then
+    begin
+      SaveDialog := TSaveDialog.Create(Self);
+      SaveDialog.Title := 'Save as...';
+      SaveDialog.InitialDir := GetCurrentDir;
+      SaveDialog.Filter := 'Text file|*.txt';
+      SaveDialog.DefaultExt := 'txt';
+      SaveDialog.FilterIndex := 1;
+      if SaveDialog.Execute then
+        begin
+          CSaveLoad := TSaveLoad.Create;
+          if not(CSaveLoad.Save(Board, Difficulty, SaveDialog.FileName)) then
+            ShowMessage('An error occured while saving the game.');
+          CSaveload.Free;
+        end;
+      SaveDialog.Free;
+    end
+  else
+    begin
+      if not startDiff then ShowMessage('The game must have a difficulty to be saved.');
+      if not(CounterHold = EMPTY) then ShowMessage('You are not allowed to save the game while making a move.');
+    end;
 end;
 
 procedure TDraughtsForm.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
@@ -162,6 +231,10 @@ with DrawGrid do                       // Set scope to DrawGrid
                       Canvas.Brush.Color := clHighlight;
                       Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
           end;
+          EXCEPTION: begin
+                      ShowMessage('The save file you have loaded is erroneous.');
+                      BtnRestartClick(Sender);
+          end;
         end;
 
   end;
@@ -195,6 +268,7 @@ if startDiff and not ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P
         ShowMessage('Not a legal move.');
       DrawGrid.Invalidate;
       CMove.Free;
+      CounterHold := EMPTY;
     end;
   end
 else

@@ -4,5 +4,48 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TDraughtsForm">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,178,460" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.BtnRestart" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.DrawGrid" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.Label1" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnEasy" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnInter" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnHard" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnSave" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnLoad" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.DrawGridDrawCell(System.TObject,System.Integer,System.Integer,System.Types.TRect,TGridDrawState)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.FormCreate(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.DrawGridSelectCell(System.TObject,System.Integer,System.Integer,ref@System.Boolean)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.BtnRestartClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnEasyClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnInterClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnHardClick(System.TObject)" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.CBoard" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.CMove" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.CAI" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.Board" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.PlayerMoveFrom" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.PlayerMove" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.startDiff" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.CounterHold" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.Difficulty" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.AIMove()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.DraughtsForm" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.C_P1" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.C_P1_P" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.C_AI" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.C_AI_P" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.NC" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.HIGHLIGHT" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.EASY" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.INTER" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.HARD" />
+      <reference referencedUin="delphi:l_ast:src:ProjCheckers:PCheckers.@unitclass.DraughtsForm" />
+    </reference>
   </view>
 </nodeSet>

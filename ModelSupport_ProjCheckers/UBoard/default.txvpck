@@ -4,5 +4,31 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArrayList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,162,36" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TBoard">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="191,1,164,173" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:UBoard.TBoard.Create()" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:UBoard.TBoard.InitDraughts(ref@System.Integer[][])" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:UBoard.TBoard.AddCounter(System.Integer,System.Integer,System.Integer,System.Integer[][])" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:UBoard.TBoard.RemoveCounter(System.Integer,System.Integer,System.Integer[][])" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:UBoard.TBoard.ClearBoard(System.Integer[][])" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:UBoard.TBoard.WhatPlayer(System.Integer,System.Integer,System.Integer[][])" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:UBoard.@unitclass.C_P1" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:UBoard.@unitclass.C_P1_P" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:UBoard.@unitclass.C_AI" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:UBoard.@unitclass.C_AI_P" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:UBoard.@unitclass.NC" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArray">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="374,1,248,36" />
+    </reference>
   </view>
 </nodeSet>

@@ -25,6 +25,7 @@
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.@unitclass" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TCheckersForm" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TDraughtsForm" />
     </reference>
     <reference referencedUin="design:view:::krkp9a0baqq_v">
       <property name="$shortcutReference" value="true" />
@@ -47,6 +48,12 @@
     <reference referencedUin="design:view:::a4obxkcvhtr_v">
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="10,10,99,42" />
+    </reference>
+    <reference referencedUin="uml:package:ProjCheckers:src:USaveLoad">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="78,71,120,151" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:USaveLoad.TSaveLoad" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:USaveLoad.@unitclass" />
     </reference>
   </view>
 </nodeSet>

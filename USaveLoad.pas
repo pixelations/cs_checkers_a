@@ -3,16 +3,16 @@ unit USaveLoad;
 interface
 
 uses
-  UBoard;
+  SysUtils, UBoard;
 
 type
   TSaveLoad = class(TObject)
     private
     public
       constructor Create();
-      function Save(Board: TArray; FileName: string): Boolean;
+      function Save(Board: TArray; ADifficulty: integer; FileName: string): Boolean;
         { function will save TArray to a file }
-      function Load(FileName: string): TArray;
+      function Load(FileName: string; var ADifficulty: integer): TArray;
         { function will output an array according to file }
   end;
 
@@ -35,50 +35,60 @@ constructor TSaveLoad.Create;
 begin
 end;
 
-function TSaveLoad.Load(FileName: string): TArray;
+function TSaveLoad.Load(FileName: string; var ADifficulty: integer): TArray;
 var
   AFile: TextFile;
-  intg, i: integer;
+  i: integer;
+  intg: string;
 begin
   assignfile(AFile, FileName);
   reset(AFile);
-  i := -1;
-  while not eof(AFile) do                                     /////TODO/////
-    begin                                                {in proj, make it 'restart if encounter EXCEPTION and showmsg}
+  i := 0;
+  while not eof(AFile) do
+    begin
       inc(i);
-      intg := EXCEPTION;
+      intg := inttostr(EXCEPTION);
       try
-        read(AFile, intg);
+        readln(AFile, intg);
       finally
-        if intg = EXCEPTION then
-          result[(i div 7), (i mod 8)] := EXCEPTION
+        if intg = inttostr(EXCEPTION) then
+          begin
+            result[(i div 8), ((i-1) mod 8)] := EXCEPTION ;
+            seekEof(AFile);
+          end
         else
-          result[(i div 7), (i mod 8)] := intg;
+          begin
+            if (i div 8) = 8 then
+              ADifficulty := strtoint(intg)
+            else
+              result[(i div 8), ((i-1) mod 8)] := strtoint(intg);
+          end;
       end;
     end;
   closefile(AFile);
 end;
 
-function TSaveLoad.Save(Board: TArray; FileName: string): Boolean;
+function TSaveLoad.Save(Board: TArray; ADifficulty: integer; FileName: string): Boolean;
 var
   AFile: TextFile;
   i, j: integer;
 begin
-  result := false;
+  result := true;
   assignfile(AFile, FileName);
   rewrite(AFile);
   try
-  for i := Low(Board) to High(Board) do                    {if FALSE then showmessage}
+  for i := Low(Board) to High(Board) do
     begin
       for j := Low(Board) to High(Board) do
         begin
           write(AFile, Board[i, j]:1);
+          writeln(AFile);
         end;
-      writeln(AFile);
     end;
   except
     result := false; //if exception occurs, the reult will be false
   end;
+  write(AFile, ADifficulty);
   closefile(AFile);
 end;
 

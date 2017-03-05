@@ -98,6 +98,7 @@ object DraughtsForm: TDraughtsForm
     Height = 34
     Caption = 'Save Game'
     TabOrder = 5
+    OnClick = btnSaveClick
   end
   object btnLoad: TButton
     Left = 848
@@ -106,5 +107,6 @@ object DraughtsForm: TDraughtsForm
     Height = 34
     Caption = 'Load Game'
     TabOrder = 6
+    OnClick = btnLoadClick
   end
 end

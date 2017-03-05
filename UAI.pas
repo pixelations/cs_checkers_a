@@ -142,6 +142,11 @@ begin
   begin
     CMove := TMove.Create();
     t := CMove.AllPossibleLegalMoves(Board, true);
+    if Depth = MaxDepth then
+      begin
+        if length(t) = 0 then
+          //add here
+      end;
 
     if MaxPlayer then
     begin
