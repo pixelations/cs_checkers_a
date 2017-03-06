@@ -35,11 +35,12 @@ type
     CAI: TAI;
     Board: TArray;
     PlayerMoveFrom: TCoordinate;
-    PlayerMove, startDiff: Boolean;
+    PlayerMove, startDiff, pwin, aiwin: Boolean;
     CounterHold, Difficulty: integer;
   public
     { Public declarations }
     procedure AIMove;
+    procedure CheckWin;
   end;
 
 var
@@ -68,7 +69,8 @@ const
 
 procedure TDraughtsForm.FormCreate(Sender: TObject);
 begin
-  Difficulty := INTER;
+  pwin := false;
+  aiwin := false;
   startDiff := false;
   PlayerMove := true;
   CounterHold := EMPTY;
@@ -80,10 +82,16 @@ end;
 
 procedure TDraughtsForm.AIMove;
 begin
-  CAI := TAI.Create(Difficulty);   //implement diff. choice selection
-  CAI.Minimax(Board, true, CAI.MaxDepth);
-  Board := CAI.NextBoard;
-  CAI.Free;
+  if (not pwin) and (not aiwin) then
+    begin
+      CAI := TAI.Create(Difficulty);   //implement diff. choice selection
+      CAI.Minimax(Board, true, CAI.MaxDepth);
+      Board := CAI.NextBoard;
+      CAI.Free;
+    end;
+  CheckWin;
+  if pwin then ShowMessage('Player wins!');
+  if aiwin then ShowMessage('AI wins!');
 end;
 
 procedure TDraughtsForm.btnEasyClick(Sender: TObject);
@@ -150,6 +158,8 @@ end;
 
 procedure TDraughtsForm.BtnRestartClick(Sender: TObject);
 begin
+  pwin := false;
+  aiwin := false;
   startDiff := false;
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
@@ -187,6 +197,42 @@ begin
     begin
       if not startDiff then ShowMessage('The game must have a difficulty to be saved.');
       if not(CounterHold = EMPTY) then ShowMessage('You are not allowed to save the game while making a move.');
+    end;
+end;
+
+procedure TDraughtsForm.CheckWin;
+var
+  i, j: integer;
+  CMove: TMove;
+begin
+  if (not pwin) and (not aiwin) then
+    begin
+      for i := Low(Board) to High(Board) do
+        begin
+          for j := Low(Board) to High(Board) do
+            begin
+              if (Board[i, j] = C_P1) or (Board[i, j] = C_P1_P) then
+                pwin := true;
+              if (Board[i, j] = C_AI) or (Board[i, j] = C_AI_P) then
+                aiwin := true;
+            end;
+        end;
+      if pwin and aiwin then
+        begin
+          pwin := false;
+          aiwin := false;
+          CMove := TMove.Create;
+          if length(CMove.AllPossibleLegalMoves(Board, false)) = 0 then
+            aiwin := true;
+          if length(CMove.AllPossibleLegalMoves(Board, true)) = 0 then
+            pwin := true;
+          CMove.Free;
+          if pwin and aiwin then
+            begin
+              pwin := false;
+              aiwin := false;
+            end;
+        end;
     end;
 end;
 
@@ -243,41 +289,47 @@ end;
 procedure TDraughtsForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
   var CanSelect: Boolean);
 begin
-if startDiff and not ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
-  begin
-  if PlayerMove then
-    begin
-      PlayerMove := not PlayerMove;
-      PlayerMoveFrom[0] := ARow;
-      PlayerMoveFrom[1] := ACol;
-      CounterHold := Board[ARow, ACol];
-      Board[ARow, ACol] := HIGHLIGHT;
-      DrawGrid.Invalidate;
-    end
-  else
-    begin
-      CMove := TMove.Create;
-      PlayerMove := not PlayerMove;
-      Board[PlayerMoveFrom[0],PlayerMoveFrom[1]] := CounterHold;
-      if CMove.CheckLegalMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1])  then
+  //if (not pwin) and (not aiwin) then
+    //begin
+      if startDiff and not ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
         begin
-          Board := CMove.MakeMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1]);
-          AIMove;
+          if PlayerMove then
+            begin
+              PlayerMove := not PlayerMove;
+              PlayerMoveFrom[0] := ARow;
+              PlayerMoveFrom[1] := ACol;
+              CounterHold := Board[ARow, ACol];
+              Board[ARow, ACol] := HIGHLIGHT;
+              DrawGrid.Invalidate;
+            end
+          else
+            begin
+              CMove := TMove.Create;
+              PlayerMove := not PlayerMove;
+              Board[PlayerMoveFrom[0],PlayerMoveFrom[1]] := CounterHold;
+              if CMove.CheckLegalMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1])  then
+                begin
+                  Board := CMove.MakeMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1]);
+                  AIMove;
+                end
+              else
+                ShowMessage('Not a legal move.');
+              DrawGrid.Invalidate;
+              CMove.Free;
+              CounterHold := EMPTY;
+            end;
         end
       else
-        ShowMessage('Not a legal move.');
-      DrawGrid.Invalidate;
-      CMove.Free;
-      CounterHold := EMPTY;
-    end;
-  end
-else
-  begin
-  if not startDiff then
-    ShowMessage('Pick AI difficulty');
-  if ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
-    ShowMessage('Not a legal move');
-  end;
+        begin
+          if not startDiff then
+            ShowMessage('Pick AI difficulty');
+          if ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
+            ShowMessage('Not a legal move');
+        end;
+    //end;
+  CheckWin;                                       //possibly move above the stuuf
+  if pwin then ShowMessage('Player wins!');
+  if aiwin then ShowMessage('AI wins!');
 end;
 
 end.

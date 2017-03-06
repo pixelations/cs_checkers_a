@@ -45,21 +45,21 @@ const
 function TAI.BoardVal(Board: TArray): integer;
 var
   i, j, k: integer;
-begin // sticking to basic each counter = +-1
-  k := 0;
+begin
+  k := 0;    //zero-sum game
   for i := Low(Board) to High(Board) do
   begin
     for j := Low(Board[i]) to High(Board[i]) do
       begin
         if Board[i, j] <> NC then
           begin
-            if (Board[i, j] = C_P1) then
+            if (Board[i, j] = C_P1) then       // -1 if C_P1
               dec(k);
-            if (Board[i, j] = C_P1_P) then
+            if (Board[i, j] = C_P1_P) then     // -2 if C_P1_P
               dec(k, 2);
-            if (Board[i, j] = C_AI) then
+            if (Board[i, j] = C_AI) then      // +1 if C_AI
               inc(k);
-            if (Board[i, j] = C_AI_P) then
+            if (Board[i, j] = C_AI_P) then    // +2 if C_AI_P
               inc(k, 2);
           end;
       end;
@@ -73,9 +73,9 @@ var
 begin
   case ADifficulty of
     EASY:
-      MaxDepth := 3;
+      MaxDepth := 4;
     INTER:
-      MaxDepth := 5;
+      MaxDepth := 6;
     HARD:
       MaxDepth := 7;
   end;
@@ -83,8 +83,8 @@ begin
     begin
       for j := 0 to 7 do
       begin
-        MaxBoard[i, j] := C_AI;
-        MinBoard[i, j] := C_P1;
+        MaxBoard[i, j] := C_AI_P;       //Best value board
+        MinBoard[i, j] := C_P1_P;       //Worst value board
       end;
     end;
 end;
@@ -96,7 +96,7 @@ begin
   result := true;
 end;
 
-function TAI.Max(a, b: TArray): TArray;
+function TAI.Max(a, b: TArray): TArray;     //best value board is result
 begin
   if BoardVal(a) > BoardVal(b) then
     result := a
@@ -113,7 +113,7 @@ begin
 
 end;
 
-function TAI.Min(a, b: TArray): TArray;
+function TAI.Min(a, b: TArray): TArray;   //worst value board is result
 
 begin
   if BoardVal(a) < BoardVal(b) then
@@ -138,26 +138,21 @@ var
   i, j, k: integer;
   v: boolean;
 begin
-  if Depth <> 0 then
+  if Depth <> 0 then           //at depth 0 result is Board
   begin
     CMove := TMove.Create();
     t := CMove.AllPossibleLegalMoves(Board, true);
-    if Depth = MaxDepth then
-      begin
-        if length(t) = 0 then
-          //add here
-      end;
 
     if MaxPlayer then
     begin
       BestValue := MinBoard;
       for i := Low(t) to High(t)  do
       begin
-        b := Minimax(t[i], false, Depth - 1);
+        b := Minimax(t[i], false, Depth - 1);    //implementation of Minimax algorithm
         BestValue := Max(BestValue, b);
         result := BestValue;
 
-        if (Depth = MaxDepth - 1) then
+        if (Depth = MaxDepth - 1) then      //picks which board is NextBoard
           begin
             v := true;
             for j := 0 to 7 do
@@ -178,11 +173,11 @@ begin
       BestValue := MaxBoard;
       for i := Low(t) to High(t) do
       begin
-        b := Minimax(t[i], true, Depth - 1);
+        b := Minimax(t[i], true, Depth - 1);     //implementation of Minimax algorithm
         BestValue := Min(BestValue, b);
         result := BestValue;
 
-        if (Depth = MaxDepth - 1) then
+        if (Depth = MaxDepth - 1) then       //picks which board is NextBoard
           begin
             v := true;
             for j := 0 to 7 do
@@ -202,7 +197,7 @@ begin
     CMove.Free;
   end
   else
-result := Board;
+    result := Board;
 end;
 
 end.

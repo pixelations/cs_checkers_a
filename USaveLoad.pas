@@ -51,16 +51,16 @@ begin
       try
         readln(AFile, intg);
       finally
-        if intg = inttostr(EXCEPTION) then
-          begin
+        if intg = inttostr(EXCEPTION) then    //if read had exception
+          begin                               //it returns exception and ends
             result[(i div 8), ((i-1) mod 8)] := EXCEPTION ;
-            seekEof(AFile);
+            seekEof(AFile);     //to stop while-loop
           end
         else
           begin
-            if (i div 8) = 8 then
+            if eof(AFile) then       //if last value then difficulty is the value
               ADifficulty := strtoint(intg)
-            else
+            else                               //else, enter value into board
               result[(i div 8), ((i-1) mod 8)] := strtoint(intg);
           end;
       end;
@@ -81,14 +81,14 @@ begin
     begin
       for j := Low(Board) to High(Board) do
         begin
-          write(AFile, Board[i, j]:1);
-          writeln(AFile);
+          write(AFile, Board[i, j]:1);  //writes value to file
+          writeln(AFile);              //new line
         end;
     end;
   except
     result := false; //if exception occurs, the reult will be false
   end;
-  write(AFile, ADifficulty);
+  write(AFile, ADifficulty); //last line is difficulty
   closefile(AFile);
 end;
 

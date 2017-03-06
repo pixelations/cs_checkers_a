@@ -41,19 +41,18 @@ var
   CBoard: TBoard;
 begin
   result := Board;
-  if abs(NewCol - OldCol) = 2 then                       //removes piece is taken by opp.
-    result[((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2)] := -1;
+  if abs(NewCol - OldCol) = 2 then                //removes piece that is taken by player
+    result[((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2)] := NC;
   result[NewRow, NewCol] := result[OldRow, OldCol];
   result[OldRow, OldCol] := NC;
 
-  //to be promoted
+  //for counter promotion
   CBoard := TBoard.Create;
   if ((CBoard.WhatPlayer(NewRow, NewCol, result)) and (NewRow = 7)) then
     result[NewRow, NewCol] := C_AI_P;
   if (not ((CBoard.WhatPlayer(NewRow, NewCol, result))) and (NewRow = 0)) then
     result[NewRow, NewCol] := C_P1_P;
   CBoard.Free;
-
 end;
 
 
@@ -70,9 +69,9 @@ begin
     begin
       for j := 0 to 7 do
         begin
-          if CBoard.WhatPlayer(i, j, Board) = Player then
-            begin
-              t := PossibleLegalMoves(Board, i, j);
+          if CBoard.WhatPlayer(i, j, Board) = Player then    //for every player counter
+            begin                                            //it will output the resultant
+              t := PossibleLegalMoves(Board, i, j);          //moves each counter can do
               for k := Low(t) to High(t) do
                 begin
                   setlength(result, length(result) + 1);
@@ -143,8 +142,8 @@ var
 begin
   if Board[ARow, ACol] <> NC then
    begin
-      setlength(result, 8);
-      i := 0;
+      setlength(result, 8);         //out of the 8 possible moves, the result
+      i := 0;                       //is reduced down to the legal moves
           t[0] := ARow + 1;
           t[1] := ACol + 1;
           if CheckLegalMove(Board, t[0], t[1], ARow, ACol) then
