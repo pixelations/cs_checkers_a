@@ -46,14 +46,14 @@ begin
   i := 0;
   while not eof(AFile) do
     begin
-      inc(i);
+
       intg := inttostr(EXCEPTION);
       try
         readln(AFile, intg);
       finally
         if intg = inttostr(EXCEPTION) then    //if read had exception
           begin                               //it returns exception and ends
-            result[(i div 8), ((i-1) mod 8)] := EXCEPTION ;
+            result[(i div 8), ((i) mod 8)] := EXCEPTION ;
             seekEof(AFile);     //to stop while-loop
           end
         else
@@ -61,9 +61,10 @@ begin
             if eof(AFile) then       //if last value then difficulty is the value
               ADifficulty := strtoint(intg)
             else                               //else, enter value into board
-              result[(i div 8), ((i-1) mod 8)] := strtoint(intg);
+              result[(i div 8), ((i) mod 8)] := strtoint(intg);
           end;
       end;
+      inc(i);
     end;
   closefile(AFile);
 end;
