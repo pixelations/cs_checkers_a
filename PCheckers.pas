@@ -30,9 +30,6 @@ type
     procedure btnLoadClick(Sender: TObject);
   private
     { Private declarations }
-    CBoard : TBoard;
-    CMove: TMove;
-    CAI: TAI;
     Board: TArray;
     PlayerMoveFrom: TCoordinate;
     PlayerMove, startDiff, pwin, aiwin: Boolean;
@@ -68,6 +65,8 @@ const
 { TCForm }
 
 procedure TDraughtsForm.FormCreate(Sender: TObject);
+var
+  CBoard: TBoard;
 begin
   pwin := false;
   aiwin := false;
@@ -81,6 +80,8 @@ end;
 
 
 procedure TDraughtsForm.AIMove;
+  var
+  CAI: TAI;
 begin
   if (not pwin) and (not aiwin) then
     begin
@@ -157,6 +158,8 @@ begin
 end;
 
 procedure TDraughtsForm.BtnRestartClick(Sender: TObject);
+var
+  CBoard: TBoard;
 begin
   pwin := false;
   aiwin := false;
@@ -288,6 +291,8 @@ end;
 
 procedure TDraughtsForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
   var CanSelect: Boolean);
+var
+  CMove: TMove;
 begin
   //if (not pwin) and (not aiwin) then
     //begin
