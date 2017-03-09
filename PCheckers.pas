@@ -68,14 +68,19 @@ procedure TDraughtsForm.FormCreate(Sender: TObject);
 var
   CBoard: TBoard;
 begin
+  //starting variables
   pwin := false;
   aiwin := false;
   startDiff := false;
   PlayerMove := true;
   CounterHold := EMPTY;
+  btnEasy.Enabled := true;
+  btnInter.Enabled := true;
+  btnHard.Enabled := true;
   CBoard := TBoard.Create();
   CBoard.InitDraughts(Board);
   CBoard.Free;
+  DrawGrid.Invalidate;    //forces the board to refresh
 end;
 
 
@@ -85,10 +90,11 @@ procedure TDraughtsForm.AIMove;
 begin
   if (not pwin) and (not aiwin) then
     begin
-      CAI := TAI.Create(Difficulty);   //implement diff. choice selection
+      CAI := TAI.Create(Difficulty);  //send difficult to AI unit
       CAI.Minimax(Board, true, CAI.MaxDepth);
       Board := CAI.NextBoard;
       CAI.Free;
+      DrawGrid.Invalidate;
     end;
   CheckWin;
   if pwin then ShowMessage('Player wins!');
@@ -97,7 +103,7 @@ end;
 
 procedure TDraughtsForm.btnEasyClick(Sender: TObject);
 begin
-  startDiff := true;
+  startDiff := true;  //player can make a move
   btnEasy.Enabled := false;
   btnInter.Enabled := false;
   btnHard.Enabled := false;
@@ -106,7 +112,7 @@ end;
 
 procedure TDraughtsForm.btnHardClick(Sender: TObject);
 begin
-  startDiff := true;
+  startDiff := true;       //player can make a move
   btnEasy.Enabled := false;
   btnInter.Enabled := false;
   btnHard.Enabled := false;
@@ -115,7 +121,7 @@ end;
 
 procedure TDraughtsForm.btnInterClick(Sender: TObject);
 begin
-  startDiff := true;
+  startDiff := true;       //player can make a move
   btnEasy.Enabled := false;
   btnInter.Enabled := false;
   btnHard.Enabled := false;
@@ -128,6 +134,7 @@ var
   LoadDialog: TOpenDialog;
 begin
   BtnRestartClick(Sender);
+  //settings for the laod dialog
   LoadDialog := TOpenDialog.Create(Self);
   LoadDialog.InitialDir := GetCurrentDir;
   LoadDialog.Options := [ofFileMustExist];
@@ -139,15 +146,15 @@ begin
       Board := CSaveLoad.Load(LoadDialog.FileName, Difficulty);
       case Difficulty of
         EASY: begin
-                btnEasyClick(Sender);
+                btnEasyClick(Sender); //simulates the clickig of btnEasy
                 ShowMessage('AI difficulty is: Easy.');
         end;
         INTER: begin
-                btnInterClick(Sender);
+                btnInterClick(Sender); //simulates the clickig of btnInter
                 ShowMessage('AI difficulty is: Intermediate.');
         end;
         HARD: begin
-                btnHardClick(Sender);
+                btnHardClick(Sender); //simulates the clickig of btnHard
                 ShowMessage('AI difficulty is: Hard.');
         end;
       end;
@@ -158,20 +165,8 @@ begin
 end;
 
 procedure TDraughtsForm.BtnRestartClick(Sender: TObject);
-var
-  CBoard: TBoard;
 begin
-  pwin := false;
-  aiwin := false;
-  startDiff := false;
-  CBoard := TBoard.Create();
-  CBoard.InitDraughts(Board);
-  DrawGrid.Invalidate; //forces the board to refresh
-  CBoard.Free;
-  PlayerMove := true;
-  btnEasy.Enabled := true;
-  btnInter.Enabled := true;
-  btnHard.Enabled := true;
+  FormCreate(Sender);   //simulates form create
 end;
 
 procedure TDraughtsForm.btnSaveClick(Sender: TObject);
@@ -246,6 +241,7 @@ with DrawGrid do                       // Set scope to DrawGrid
   begin
     Canvas.Pen.Color := clBlack;
     Canvas.Brush.Color := clInfoBk;
+    //creates a checkerboard pattern
     if ARow mod 2 = 0 then
       begin
        if ACol mod 2 = 1 then
@@ -255,12 +251,14 @@ with DrawGrid do                       // Set scope to DrawGrid
         if ACol mod 2 = 0 then
           Canvas.Brush.Color := clGray;
     Canvas.FillRect(Rect);
+    //based on what counter there is, an ellipse is drawn
+    //then the ellipse is filled with counter colour
         case Board[ARow, ACol] of
           C_AI: begin
                     Canvas.Brush.Color := clWhite;
                     Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
           end;
-          C_AI_P: begin
+          C_AI_P: begin   //promoted counters have two ellipses
                     Canvas.Brush.Color := clBlack;
                     Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
                     Canvas.Brush.Color := clWhite;
@@ -270,7 +268,7 @@ with DrawGrid do                       // Set scope to DrawGrid
                   Canvas.Brush.Color := clRed;
                   Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
           end;
-          C_P1_P: begin
+          C_P1_P: begin   //promoted counters have two ellipses
                     Canvas.Brush.Color := clBlack;
                     Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
                     Canvas.Brush.Color := clRed;
@@ -280,7 +278,7 @@ with DrawGrid do                       // Set scope to DrawGrid
                       Canvas.Brush.Color := clHighlight;
                       Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
           end;
-          EXCEPTION: begin
+          EXCEPTION: begin    //occurs when there is a loading error
                       ShowMessage('The save file you have loaded is erroneous.');
                       BtnRestartClick(Sender);
           end;
@@ -294,17 +292,16 @@ procedure TDraughtsForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
 var
   CMove: TMove;
 begin
-  //if (not pwin) and (not aiwin) then
-    //begin
+        //if the difficulty has been set and the player is not selecting an AI counter
       if startDiff and not ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
         begin
           if PlayerMove then
             begin
               PlayerMove := not PlayerMove;
-              PlayerMoveFrom[0] := ARow;
+              PlayerMoveFrom[0] := ARow;  //saves coordinates
               PlayerMoveFrom[1] := ACol;
-              CounterHold := Board[ARow, ACol];
-              Board[ARow, ACol] := HIGHLIGHT;
+              CounterHold := Board[ARow, ACol]; //hold the counter temporarily
+              Board[ARow, ACol] := HIGHLIGHT; //highlights counter
               DrawGrid.Invalidate;
             end
           else
@@ -331,7 +328,6 @@ begin
           if ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
             ShowMessage('Not a legal move');
         end;
-    //end;
   CheckWin;                                       //possibly move above the stuuf
   if pwin then ShowMessage('Player wins!');
   if aiwin then ShowMessage('AI wins!');

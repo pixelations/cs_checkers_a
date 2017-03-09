@@ -42,13 +42,13 @@ var
   i, j: integer;
   t, z: boolean;
 begin
-  z := false;   // inital state
+  z := false;   // inital states
   t := true;
 
   for i := 0 to 7 do
     begin
       for j := 0 to 7 do
-        Board[i, j] := NC;
+        Board[i, j] := NC;     //board populated with no counters
     end;
 
   for i := 0 to 7 do
@@ -67,7 +67,7 @@ begin
                         else                //player counter
                           Board[i, j] := C_P1;
                       end;
-                    1: begin                   //to make the board populate in snaking fashion
+                    1: begin     //to make the board populate in snaking fashion
                           if t then
                             Board[i, 7 - j] := C_AI
                           else
@@ -75,7 +75,7 @@ begin
                       end;
                   end;
                 end;
-              z := not z;
+              z := not z;      //next cell will have either NC or a counter
             end;
         end
       else
@@ -89,18 +89,19 @@ end;
 
 function TBoard.AddCounter(ARow, ACol, PlayerVal: integer; Board: TArray): boolean;
 begin
-  Board[ARow, ACol] := PlayerVal;
+  Board[ARow, ACol] := PlayerVal; //adds a counter to the board
   result := true;
 end;
 
 function TBoard.RemoveCounter(ARow, ACol: integer; Board: TArray): boolean;
 begin
-  Board[ARow, ACol] := NC;
+  Board[ARow, ACol] := NC;  //replaces the exisiting counter with no counter
   result := true;
 end;
 
 function TBoard.WhatPlayer(ARow, ACol: integer; Board: TArray): boolean;
 begin
+//if it is a player counter -> FALSE, ai counter -> TRUE
 if (Board[ARow, ACol] = C_P1) or (Board[ARow, ACol] = C_P1_P) then result := false;
 if (Board[ARow, ACol] = C_AI) or (Board[ARow, ACol] = C_AI_P) then result := true;
 end;
@@ -111,7 +112,7 @@ var
   j: Integer;
 begin
   for i := 0 to 7 do
-    begin
+    begin              //removes all counters on the board
       for j := 0 to 7 do
         RemoveCounter(i, j, Board);
     end;
