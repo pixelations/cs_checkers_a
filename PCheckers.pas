@@ -140,6 +140,7 @@ begin
   LoadDialog.Options := [ofFileMustExist];
   LoadDialog.Filter := 'Text File|*.txt';
   LoadDialog.FilterIndex := 1;
+
   if LoadDialog.Execute then
     begin
       CSaveLoad := TSaveLoad.Create;
@@ -176,12 +177,14 @@ var
 begin
   if startDiff and (CounterHold = EMPTY) then
     begin
+      //setting for the save dialog
       SaveDialog := TSaveDialog.Create(Self);
       SaveDialog.Title := 'Save as...';
       SaveDialog.InitialDir := GetCurrentDir;
       SaveDialog.Filter := 'Text file|*.txt';
       SaveDialog.DefaultExt := 'txt';
       SaveDialog.FilterIndex := 1;
+
       if SaveDialog.Execute then
         begin
           CSaveLoad := TSaveLoad.Create;
@@ -194,6 +197,7 @@ begin
   else
     begin
       if not startDiff then ShowMessage('The game must have a difficulty to be saved.');
+      //if a counter is highlighted (the user is the middle of a move)
       if not(CounterHold = EMPTY) then ShowMessage('You are not allowed to save the game while making a move.');
     end;
 end;
@@ -215,20 +219,21 @@ begin
                 aiwin := true;
             end;
         end;
-      if pwin and aiwin then
+      if pwin and aiwin then    //if there are counters for both players
         begin
-          pwin := false;
+          pwin := false; //resets the win variables
           aiwin := false;
           CMove := TMove.Create;
           if length(CMove.AllPossibleLegalMoves(Board, false)) = 0 then
-            aiwin := true;
+            aiwin := true;        //if the player is out of moves
           if length(CMove.AllPossibleLegalMoves(Board, true)) = 0 then
-            pwin := true;
+            pwin := true;        //if the ai is out of moves
           CMove.Free;
-          if pwin and aiwin then
+          if pwin and aiwin then //if both players are out of moves
             begin
               pwin := false;
               aiwin := false;
+              ShowMessage('The game is a draw!');
             end;
         end;
     end;
@@ -308,9 +313,12 @@ begin
             begin
               CMove := TMove.Create;
               PlayerMove := not PlayerMove;
+              //counter is put back
               Board[PlayerMoveFrom[0],PlayerMoveFrom[1]] := CounterHold;
+              //CheckLegalMove will take the board and both coordinates for checking
               if CMove.CheckLegalMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1])  then
                 begin
+                  //makes a move
                   Board := CMove.MakeMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1]);
                   AIMove;
                 end
