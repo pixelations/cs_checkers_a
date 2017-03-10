@@ -5,7 +5,8 @@
     <property name="$name" value="Class Diagram" />
     <reference referencedUin="delphi:e_class:src:ProjCheckers:UAI.TAI">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="71,65,147,250" />
+      <property name="bounds" value="460,100,147,250" />
+      <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.MaxDepth" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.AIColour" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.BestValue" />
@@ -18,13 +19,13 @@
       <reference referencedUin="delphi:e_method:src:ProjCheckers:UAI.TAI.BoardVal(UBoard.TCounter[][])" />
       <reference referencedUin="delphi:e_method:src:ProjCheckers:UAI.TAI.AIMove(UBoard.TCounter[][])" />
       <reference referencedUin="delphi:l_ast:src:ProjCheckers:UAI.TAI.NextBoard">
-        <property name="sourceAnchor" value="218,268" />
-        <property name="targetAnchor" value="341,400" />
+        <property name="sourceAnchor" value="460,260" />
+        <property name="targetAnchor" value="344,360" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_ast:src:ProjCheckers:UAI.TAI.BestValue">
-        <property name="sourceAnchor" value="218,266" />
-        <property name="targetAnchor" value="347,400" />
+        <property name="sourceAnchor" value="460,278" />
+        <property name="targetAnchor" value="348,360" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.WinningSeq" />
@@ -51,19 +52,24 @@
       <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.MaxBoard" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:UAI.TAI.MinBoard" />
       <reference referencedUin="delphi:l_ast:src:ProjCheckers:UAI.TAI.MaxBoard">
-        <property name="sourceAnchor" value="218,274" />
-        <property name="targetAnchor" value="335,400" />
+        <property name="sourceAnchor" value="460,272" />
+        <property name="targetAnchor" value="346,360" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_ast:src:ProjCheckers:UAI.TAI.MinBoard">
-        <property name="sourceAnchor" value="218,279" />
-        <property name="targetAnchor" value="329,400" />
+        <property name="sourceAnchor" value="460,266" />
+        <property name="targetAnchor" value="345,360" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::2c2jrrgau1t_l">
+        <property name="sourceAnchor" value="460,129" />
+        <property name="targetAnchor" value="434,129" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
     <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TBoard">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="280,60,164,173" />
+      <property name="bounds" value="160,500,164,173" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:ProjCheckers:UBoard.TBoard.GetCounters(UBoard.TCounter[][])" />
       <reference referencedUin="delphi:e_method:src:ProjCheckers:UBoard.TBoard.InitDraughts(ref@UBoard.TCounter[][])" />
@@ -90,7 +96,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMove">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="160,520,214,158" />
+      <property name="bounds" value="220,0,214,158" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:ProjCheckers:UMove.TMove.Create()" />
       <reference referencedUin="delphi:e_method:src:ProjCheckers:UMove.TMove.MakeMove(UBoard.TCounter[][],System.Integer[][])" />
@@ -104,6 +110,16 @@
       <reference referencedUin="design:link:::02zve33xf8lmzootk_l">
         <property name="sourceAnchor" value="190,520" />
         <property name="targetAnchor" value="190,286" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::anwv9r58p9mve9awh_l">
+        <property name="sourceAnchor" value="274,158" />
+        <property name="targetAnchor" value="113,400" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::xw723w8qz3n7h5han_l">
+        <property name="sourceAnchor" value="327,158" />
+        <property name="targetAnchor" value="327,360" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
@@ -186,13 +202,93 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArray">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="240,400,248,36" />
+      <property name="bounds" value="200,360,248,36" />
       <property name="location_set_by_user" value="True" />
+      <reference referencedUin="design:link:::p12bxs6g9yjvrheal_l">
+        <property name="sourceAnchor" value="262,396" />
+        <property name="targetAnchor" value="262,500" />
+        <property name="bendpoints" value="" />
+      </reference>
     </reference>
     <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArrayList">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="0,360,162,36" />
+      <property name="bounds" value="20,400,162,36" />
       <property name="location_set_by_user" value="True" />
+      <reference referencedUin="design:link:::wottofgf0lk96y7fo_l">
+        <property name="sourceAnchor" value="171,436" />
+        <property name="targetAnchor" value="171,500" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ProjCheckers:USaveLoad.TSaveLoad">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="500,500,150,128" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:USaveLoad.TSaveLoad.Create()" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:USaveLoad.TSaveLoad.Save(System.Integer[][],System.Integer,System.string)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:USaveLoad.TSaveLoad.Load(System.string,ref@System.Integer)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TDraughtsForm">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="700,0,178,490" />
+      <property name="hideAttribute" value="False" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.BtnRestart" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.DrawGrid" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.Label1" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnEasy" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnInter" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnHard" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnSave" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.btnLoad" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.DrawGridDrawCell(System.TObject,System.Integer,System.Integer,System.Types.TRect,TGridDrawState)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.FormCreate(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.DrawGridSelectCell(System.TObject,System.Integer,System.Integer,ref@System.Boolean)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.BtnRestartClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnEasyClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnInterClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnHardClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnSaveClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnLoadClick(System.TObject)" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.Board" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.PlayerMoveFrom" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.PlayerMove" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.startDiff" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.pwin" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.aiwin" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.CounterHold" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.Difficulty" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.AIMove()" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.CheckWin()" />
+      <reference referencedUin="delphi:l_ast:src:ProjCheckers:PCheckers.TDraughtsForm.Board">
+        <property name="sourceAnchor" value="700,378" />
+        <property name="targetAnchor" value="448,378" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::eaqllzedcpq_l">
+        <property name="sourceAnchor" value="700,79" />
+        <property name="targetAnchor" value="434,79" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::hhdve6v193l_l">
+        <property name="sourceAnchor" value="700,225" />
+        <property name="targetAnchor" value="607,225" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::59l5k18wbjo_l">
+        <property name="sourceAnchor" value="700,377" />
+        <property name="targetAnchor" value="617,500" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::xpuui63vpqh_l">
+        <property name="sourceAnchor" value="700,300" />
+        <property name="targetAnchor" value="324,534" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ProjCheckers:ProjCheckers.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="564,142,0,0" />
     </reference>
   </view>
 </nodeSet>

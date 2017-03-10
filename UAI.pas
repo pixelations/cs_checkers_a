@@ -19,7 +19,7 @@ type
     function ManualDepth(ADepth: integer): boolean;
       { allows you to manually set the MaxDepth }
     function Minimax(Board: TArray; MaxPlayer: boolean; Depth: integer): TArray;
-      { this will create a tree to decide the best move for given depth of tree }
+      { this will create a tree to decide the best move for a given depth }
     function Max(a, b: TArray): TArray;
       { compares two boards and outputs the board that has the hightest value }
     function Min(a, b: TArray): TArray;
@@ -75,9 +75,9 @@ begin
     EASY:
       MaxDepth := 4;
     INTER:
-      MaxDepth := 6;
+      MaxDepth := 5;
     HARD:
-      MaxDepth := 7;
+      MaxDepth := 6;
   end;
   for i := 0 to 7 do
     begin
@@ -148,11 +148,12 @@ begin
       BestValue := MinBoard;
       for i := Low(t) to High(t)  do
       begin
-        b := Minimax(t[i], false, Depth - 1);    //implementation of Minimax algorithm
+        //implementation of Minimax algorithm
+        b := Minimax(t[i], false, Depth - 1);
         BestValue := Max(BestValue, b);
         result := BestValue;
 
-        if (Depth = MaxDepth - 1) then      //picks which board is NextBoard
+        if (Depth = MaxDepth - 1) then //picks which board is NextBoard
           begin
             v := true;
             for j := 0 to 7 do
@@ -173,7 +174,8 @@ begin
       BestValue := MaxBoard;
       for i := Low(t) to High(t) do
       begin
-        b := Minimax(t[i], true, Depth - 1);     //implementation of Minimax algorithm
+        //implementation of Minimax algorithm
+        b := Minimax(t[i], true, Depth - 1);
         BestValue := Min(BestValue, b);
         result := BestValue;
 

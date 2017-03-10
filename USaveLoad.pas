@@ -10,7 +10,8 @@ type
     private
     public
       constructor Create();
-      function Save(Board: TArray; ADifficulty: integer; FileName: string): Boolean;
+      function Save(Board: TArray; ADifficulty: integer; FileName: string):
+       Boolean;
         { function will save TArray to a file }
       function Load(FileName: string; var ADifficulty: integer): TArray;
         { function will output an array according to file }
@@ -58,7 +59,7 @@ begin
           end
         else
           begin
-            if eof(AFile) then       //if last value then difficulty is the value
+            if eof(AFile) then     //if last value then difficulty is the value
               ADifficulty := strtoint(intg)
             else                               //else, enter value into board
               result[(i div 8), ((i) mod 8)] := strtoint(intg);
@@ -69,7 +70,8 @@ begin
   closefile(AFile);
 end;
 
-function TSaveLoad.Save(Board: TArray; ADifficulty: integer; FileName: string): Boolean;
+function TSaveLoad.Save(Board: TArray; ADifficulty: integer; FileName: string):
+ Boolean;
 var
   AFile: TextFile;
   i, j: integer;

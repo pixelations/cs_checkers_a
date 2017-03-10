@@ -68,7 +68,7 @@ procedure TDraughtsForm.FormCreate(Sender: TObject);
 var
   CBoard: TBoard;
 begin
-  //starting variables
+  //Initialization variables
   pwin := false;
   aiwin := false;
   startDiff := false;
@@ -88,6 +88,7 @@ procedure TDraughtsForm.AIMove;
   var
   CAI: TAI;
 begin
+  CheckWin;   //checks if previous (player) move was a win/loss event
   if (not pwin) and (not aiwin) then
     begin
       CAI := TAI.Create(Difficulty);  //send difficult to AI unit
@@ -96,9 +97,6 @@ begin
       CAI.Free;
       DrawGrid.Invalidate;
     end;
-  CheckWin;
-  if pwin then ShowMessage('Player wins!');
-  if aiwin then ShowMessage('AI wins!');
 end;
 
 procedure TDraughtsForm.btnEasyClick(Sender: TObject);
@@ -261,27 +259,34 @@ with DrawGrid do                       // Set scope to DrawGrid
         case Board[ARow, ACol] of
           C_AI: begin
                     Canvas.Brush.Color := clWhite;
-                    Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+                    Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10,
+                     Rect.Left + 90, Rect.Top + 90);
           end;
           C_AI_P: begin   //promoted counters have two ellipses
                     Canvas.Brush.Color := clBlack;
-                    Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+                    Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10,
+                     Rect.Left + 90, Rect.Top + 90);
                     Canvas.Brush.Color := clWhite;
-                    Canvas.Ellipse(Rect.Left + 20, Rect.Top + 20, Rect.Left + 80, Rect.Top + 80);
+                    Canvas.Ellipse(Rect.Left + 20, Rect.Top + 20,
+                     Rect.Left + 80, Rect.Top + 80);
           end;
           C_P1: begin
                   Canvas.Brush.Color := clRed;
-                  Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+                  Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10,
+                   Rect.Left + 90, Rect.Top + 90);
           end;
           C_P1_P: begin   //promoted counters have two ellipses
                     Canvas.Brush.Color := clBlack;
-                    Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+                    Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10,
+                     Rect.Left + 90, Rect.Top + 90);
                     Canvas.Brush.Color := clRed;
-                    Canvas.Ellipse(Rect.Left + 20, Rect.Top + 20, Rect.Left + 80, Rect.Top + 80);
+                    Canvas.Ellipse(Rect.Left + 20, Rect.Top + 20,
+                     Rect.Left + 80, Rect.Top + 80);
           end;
           HIGHLIGHT: begin
                       Canvas.Brush.Color := clHighlight;
-                      Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10, Rect.Left + 90, Rect.Top + 90);
+                      Canvas.Ellipse(Rect.Left + 10, Rect.Top + 10,
+                       Rect.Left + 90, Rect.Top + 90);
           end;
           EXCEPTION: begin    //occurs when there is a loading error
                       ShowMessage('The save file you have loaded is erroneous.');
@@ -297,8 +302,11 @@ procedure TDraughtsForm.DrawGridSelectCell(Sender: TObject; ACol, ARow: Integer;
 var
   CMove: TMove;
 begin
-        //if the difficulty has been set and the player is not selecting an AI counter
-      if startDiff and not ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
+  if (not pwin) and (not aiwin) then
+    begin
+    //if the difficulty is set and the player is not selecting an AI counter
+      if startDiff and not ((Board[ARow, ACol] = C_AI) xor
+       (Board[ARow, ACol] = C_AI_P)) then
         begin
           if PlayerMove then
             begin
@@ -315,18 +323,20 @@ begin
               PlayerMove := not PlayerMove;
               //counter is put back
               Board[PlayerMoveFrom[0],PlayerMoveFrom[1]] := CounterHold;
-              //CheckLegalMove will take the board and both coordinates for checking
-              if CMove.CheckLegalMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1])  then
+              //CheckLegalMove compares the board and both coordinates
+              if CMove.CheckLegalMove(Board, ARow, ACol, PlayerMoveFrom[0],
+               PlayerMoveFrom[1])  then
                 begin
                   //makes a move
-                  Board := CMove.MakeMove(Board, ARow, ACol, PlayerMoveFrom[0], PlayerMoveFrom[1]);
+                  Board := CMove.MakeMove(Board, ARow, ACol, PlayerMoveFrom[0],
+                   PlayerMoveFrom[1]);
                   AIMove;
                 end
               else
                 ShowMessage('Not a legal move.');
               DrawGrid.Invalidate;
               CMove.Free;
-              CounterHold := EMPTY;
+              CounterHold := EMPTY;     //useful for the save function
             end;
         end
       else
@@ -336,7 +346,8 @@ begin
           if ((Board[ARow, ACol] = C_AI) xor (Board[ARow, ACol] = C_AI_P)) then
             ShowMessage('Not a legal move');
         end;
-  CheckWin;                                       //possibly move above the stuuf
+    end;
+  CheckWin;                   //checks for a win/loss after the AI move
   if pwin then ShowMessage('Player wins!');
   if aiwin then ShowMessage('AI wins!');
 end;

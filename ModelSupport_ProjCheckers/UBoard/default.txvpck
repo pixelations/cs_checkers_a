@@ -31,4 +31,16 @@
       <property name="bounds" value="374,1,248,36" />
     </reference>
   </view>
+  <link uin="p12bxs6g9yjvrheal_l">
+    <property name="$metaclass" value="Dependency Link" />
+    <property name="$name" value="Dependency Link1" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArray" role="Client" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TBoard" role="Supplier" />
+  </link>
+  <link uin="wottofgf0lk96y7fo_l">
+    <property name="$metaclass" value="Dependency Link" />
+    <property name="$name" value="Dependency Link2" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArrayList" role="Client" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TBoard" role="Supplier" />
+  </link>
 </nodeSet>

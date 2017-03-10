@@ -11,14 +11,18 @@ type
   TMove = class(TObject)
   public
     constructor Create();
-      function MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): TArray;
+      function MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer)
+      : TArray;
         { moves a counter from one cell to another }
-      function CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): Boolean;
+      function CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow,
+       OldCol: integer): Boolean;
         { checks the move agianst the ruleset }
-      function PossibleLegalMoves(Board: TArray; ARow, ACol: integer): TCoordArray;
-        { list all the result coordinates of legal moves from a given coordinate }
-      function AllPossibleLegalMoves(Board: TArray; Player: Boolean): TArrayList;
-        { uses AllPossibleLegalMoves output all boards for which a player can move to }
+      function PossibleLegalMoves(Board: TArray; ARow, ACol: integer):
+       TCoordArray;
+        { list the result coordinates of legal moves from a given coordinate }
+      function AllPossibleLegalMoves(Board: TArray; Player: Boolean):
+       TArrayList;
+        { uses PossibleLegalMoves to output all boards that a player can do }
   end;
 
 implementation
@@ -36,12 +40,13 @@ constructor TMove.Create;
 begin
 end;
 
-function TMove.MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): TArray;
+function TMove.MakeMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer):
+ TArray;
 var
   CBoard: TBoard;
 begin
   result := Board;
-  if abs(NewCol - OldCol) = 2 then                //removes piece that is taken by player
+  if abs(NewCol - OldCol) = 2 then      //removes piece that is taken by player
     result[((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2)] := NC;
   result[NewRow, NewCol] := result[OldRow, OldCol];
   result[OldRow, OldCol] := NC;
@@ -69,13 +74,16 @@ begin
     begin
       for j := 0 to 7 do
         begin
-          if CBoard.WhatPlayer(i, j, Board) = Player then    //for every player counter
-            begin                                            //it will output the resultant
-              t := PossibleLegalMoves(Board, i, j);          //moves each counter can do
+          //for every player counter it will output the resultant moves
+          //each counter can do
+          if CBoard.WhatPlayer(i, j, Board) = Player then
+            begin
+              t := PossibleLegalMoves(Board, i, j);
               for k := Low(t) to High(t) do
                 begin
                   setlength(result, length(result) + 1);
-                  result[length(result) - 1] := MakeMove(Board, t[k, 0], t[k, 1], i, j);
+                  result[length(result) - 1] := MakeMove(Board, t[k, 0],
+                   t[k, 1], i, j);
                 end;
             end;
         end;
@@ -83,7 +91,8 @@ begin
   CBoard.Free
 end;
 
-function TMove.CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow, OldCol: integer): Boolean;
+function TMove.CheckLegalMove(Board: TArray; NewRow, NewCol, OldRow,
+ OldCol: integer): Boolean;
 var
   CBoard: TBoard;
 begin
@@ -96,15 +105,19 @@ begin
         begin
           if abs(NewRow - OldRow) = abs(NewCol - OldCol) then     //is diagonal
             begin
-              if (abs(OldRow - NewRow) = 1) xor (abs(OldRow - NewRow) = 2) then  // moves 1 or 2 spaces, but not both
+              // moves 1 or 2 spaces, but not both
+              if (abs(OldRow - NewRow) = 1) xor (abs(OldRow - NewRow) = 2) then
                 begin
-                  if (CBoard.WhatPlayer(OldRow, OldCol, Board) and ((NewRow - OldRow) > 0)) xor
-                   ((not CBoard.WhatPlayer(OldRow, OldCol, Board)) and ((NewRow - OldRow) < 0 )) then
-                            //to move in correct direction, based on checker colour
-                    begin        
+                  if (CBoard.WhatPlayer(OldRow, OldCol, Board) and
+                   ((NewRow - OldRow) > 0)) xor
+                   ((not CBoard.WhatPlayer(OldRow, OldCol, Board)) and
+                    ((NewRow - OldRow) < 0 )) then
+                    //to move in correct direction, based on checker colour
+                    begin
                       if abs(OldRow - NewRow) = 2 then
                         begin
-                          if CBoard.WhatPlayer(((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2), Board)
+                          if CBoard.WhatPlayer(((OldRow + NewRow) div 2),
+                           ((OldCol + NewCol) div 2), Board)
                           <> CBoard.WhatPlayer(OldRow, OldCol, Board) then
                           //checks for checker inbetween a 2 space move
                               result := true;
@@ -114,12 +127,14 @@ begin
                     end
                   else
                     begin
-                      if (Board[OldRow, OldCol] = C_AI_P) xor (Board[OldRow, OldCol] = C_P1_P) then
+                      if (Board[OldRow, OldCol] = C_AI_P) xor (Board[OldRow,
+                       OldCol] = C_P1_P) then
                         //if promoted, no directional check
-                        begin  
+                        begin
                           if abs(OldRow - NewRow) = 2 then
                             begin
-                              if CBoard.WhatPlayer(((OldRow + NewRow) div 2), ((OldCol + NewCol) div 2), Board)
+                              if CBoard.WhatPlayer(((OldRow + NewRow) div 2),
+                               ((OldCol + NewCol) div 2), Board)
                               <> CBoard.WhatPlayer(OldRow, OldCol, Board) then
                               //checks for checker inbetween a 2 space move
                                 result := true;
@@ -135,7 +150,8 @@ begin
   CBoard.Free;
 end;
 
-function TMove.PossibleLegalMoves(Board: TArray; ARow, ACol: integer): TCoordArray;
+function TMove.PossibleLegalMoves(Board: TArray; ARow, ACol: integer):
+ TCoordArray;
 var
   i: integer;
   t: TCoordinate;

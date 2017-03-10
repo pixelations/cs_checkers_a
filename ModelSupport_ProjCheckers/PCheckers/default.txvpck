@@ -32,6 +32,11 @@
       <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.CounterHold" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.Difficulty" />
       <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.AIMove()" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnSaveClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.btnLoadClick(System.TObject)" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.pwin" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.TDraughtsForm.aiwin" />
+      <reference referencedUin="delphi:e_method:src:ProjCheckers:PCheckers.TDraughtsForm.CheckWin()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.@unitclass">
       <property name="$shortcutReference" value="true" />
@@ -46,6 +51,32 @@
       <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.INTER" />
       <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.HARD" />
       <reference referencedUin="delphi:l_ast:src:ProjCheckers:PCheckers.@unitclass.DraughtsForm" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.EXCEPTION" />
+      <reference referencedUin="delphi:e_field:src:ProjCheckers:PCheckers.@unitclass.EMPTY" />
     </reference>
   </view>
+  <link uin="eaqllzedcpq_l">
+    <property name="$metaclass" value="Dependency Link" />
+    <property name="$name" value="Dependency Link1" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TDraughtsForm" role="Client" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMove" role="Supplier" />
+  </link>
+  <link uin="hhdve6v193l_l">
+    <property name="$metaclass" value="Dependency Link" />
+    <property name="$name" value="Dependency Link2" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TDraughtsForm" role="Client" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UAI.TAI" role="Supplier" />
+  </link>
+  <link uin="59l5k18wbjo_l">
+    <property name="$metaclass" value="Dependency Link" />
+    <property name="$name" value="Dependency Link3" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TDraughtsForm" role="Client" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:USaveLoad.TSaveLoad" role="Supplier" />
+  </link>
+  <link uin="xpuui63vpqh_l">
+    <property name="$metaclass" value="Dependency Link" />
+    <property name="$name" value="Dependency Link4" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:PCheckers.TDraughtsForm" role="Client" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TBoard" role="Supplier" />
+  </link>
 </nodeSet>

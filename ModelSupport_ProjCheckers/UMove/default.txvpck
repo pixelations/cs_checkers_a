@@ -5,4 +5,16 @@
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
   </view>
+  <link uin="anwv9r58p9mve9awh_l">
+    <property name="$metaclass" value="Dependency Link" />
+    <property name="$name" value="Dependency Link1" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMove" role="Client" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArrayList" role="Supplier" />
+  </link>
+  <link uin="xw723w8qz3n7h5han_l">
+    <property name="$metaclass" value="Dependency Link" />
+    <property name="$name" value="Dependency Link2" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UMove.TMove" role="Client" />
+    <participant referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArray" role="Supplier" />
+  </link>
 </nodeSet>

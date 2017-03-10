@@ -12,7 +12,8 @@ type
         { initialises variables }
       function InitDraughts(var Board: TArray): boolean;
         { places counters in a checkered pattern, with centre rows empty }
-      function AddCounter(ARow, ACol, PlayerVal: integer; Board: TArray): boolean;
+      function AddCounter(ARow, ACol, PlayerVal: integer; Board: TArray):
+       boolean;
         { places a counter on selected tile of the board }
       function RemoveCounter(ARow, ACol: integer; Board: TArray): boolean;
         { removes a counter on selected tile of the board }
@@ -87,7 +88,8 @@ begin
 
 end;
 
-function TBoard.AddCounter(ARow, ACol, PlayerVal: integer; Board: TArray): boolean;
+function TBoard.AddCounter(ARow, ACol, PlayerVal: integer; Board: TArray):
+ boolean;
 begin
   Board[ARow, ACol] := PlayerVal; //adds a counter to the board
   result := true;
@@ -102,8 +104,10 @@ end;
 function TBoard.WhatPlayer(ARow, ACol: integer; Board: TArray): boolean;
 begin
 //if it is a player counter -> FALSE, ai counter -> TRUE
-if (Board[ARow, ACol] = C_P1) or (Board[ARow, ACol] = C_P1_P) then result := false;
-if (Board[ARow, ACol] = C_AI) or (Board[ARow, ACol] = C_AI_P) then result := true;
+if (Board[ARow, ACol] = C_P1) or (Board[ARow, ACol] = C_P1_P) then
+  result := false;
+if (Board[ARow, ACol] = C_AI) or (Board[ARow, ACol] = C_AI_P) then
+  result := true;
 end;
 
 function TBoard.ClearBoard(Board: TArray): boolean;

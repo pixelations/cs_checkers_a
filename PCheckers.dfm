@@ -22,7 +22,7 @@ object DraughtsForm: TDraughtsForm
     Caption = 'AI Difficulty:'
   end
   object DrawGrid: TDrawGrid
-    Left = 0
+    Left = -5
     Top = 0
     Width = 825
     Height = 825

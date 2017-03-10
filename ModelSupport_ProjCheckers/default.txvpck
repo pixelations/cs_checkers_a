@@ -42,14 +42,18 @@
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.@unitclass" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TBoard" />
-      <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArrayList" />
-      <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArray" />
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArrayList">
+        <reference referencedUin="design:link:::wottofgf0lk96y7fo_l" />
+      </reference>
+      <reference referencedUin="delphi:e_class:src:ProjCheckers:UBoard.TArray">
+        <reference referencedUin="design:link:::p12bxs6g9yjvrheal_l" />
+      </reference>
     </reference>
     <reference referencedUin="design:view:::a4obxkcvhtr_v">
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="10,10,99,42" />
     </reference>
-    <reference referencedUin="uml:package:ProjCheckers:src:USaveLoad">
+    <reference referencedUin="design:view:::9noajrr0dnl_v">
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="78,71,120,151" />
       <reference referencedUin="delphi:e_class:src:ProjCheckers:USaveLoad.TSaveLoad" />
