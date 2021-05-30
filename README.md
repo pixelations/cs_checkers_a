@@ -1,2 +1,2 @@
-# cs_checkers_a
-The computer science project I am currently working on: checkers.
+# Checkers Bot
+Play against a checkers bot.
